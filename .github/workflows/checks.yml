@@ -101,10 +101,10 @@ jobs:
         with:
           python-version: '3.13'
           cache: pip
-      - name: Systempaket qpdf (Strukturprüfung der PDF-Exporte)
+      - name: Systempakete (LibreOffice für das PDF/A-Testdokument und den Rundlauf der Exporte, poppler-utils, qpdf)
         run: |
           sudo apt-get update -q
-          sudo apt-get install -y -q --no-install-recommends qpdf
+          sudo apt-get install -y -q --no-install-recommends libreoffice-writer libreoffice-impress poppler-utils qpdf
       - name: Pakete installieren
         run: |
           npm ci
