@@ -28,7 +28,7 @@ with sync_playwright() as pw:
     print('pdf-lib über CDN:', pg.evaluate('[typeof PDFLib, (document.querySelector("script[src*=pdf-lib]") || {}).integrity || "", DP.state.docs[4].annErr || "ohne Fehler", document.getElementById("snacks").innerText]'))
     ext = sorted(set(u for u in reqs if '127.0.0.1' not in u and not u.startswith('blob:') and not u.startswith('data:')))
     print('Fremdanfragen:', ext)
-    want = sorted('https://cdnjs.cloudflare.com/ajax/libs/' + f for f in ['jszip/3.10.1/jszip.min.js', 'pdf.js/3.11.174/pdf.min.js', 'pdf.js/3.11.174/pdf.worker.min.js', 'pdf-lib/1.17.1/pdf-lib.min.js'])
+    want = sorted('https://cdnjs.cloudflare.com/ajax/libs/' + f for f in ['jszip/3.10.2/jszip.min.js', 'pdf.js/3.11.174/pdf.min.js', 'pdf.js/3.11.174/pdf.worker.min.js', 'pdf-lib/1.17.1/pdf-lib.min.js'])
     print('Genau die cdnjs-Dateien:', 'ja' if ext == want else 'NEIN ' + repr(set(ext) ^ set(want)))
     ok(ext == want, 'genau die vier Dateien von cdnjs, keine andere Anfrage')
     ok(pg.evaluate('typeof JSZip') == 'function' and pg.evaluate('typeof pdfjsLib') == 'object' and pg.evaluate('typeof PDFLib') == 'object', 'JSZip, pdf.js und pdf-lib geladen')

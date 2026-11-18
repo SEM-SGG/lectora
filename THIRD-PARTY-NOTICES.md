@@ -6,7 +6,7 @@ Lectora selbst steht noch unter keiner Lizenz (siehe README). Die folgenden Komp
 
 | Komponente | Version | Lizenz | Wo |
 | --- | --- | --- | --- |
-| JSZip | 3.10.1 | MIT (gewählt aus «MIT OR GPL-3.0-or-later») | Offline-Ausgabe: eingebettet. Artefakt: von cdnjs geladen (dieselbe Datei, mit Integritätsprüfung). |
+| JSZip | 3.10.2 | MIT (gewählt aus «MIT OR GPL-3.0-or-later») | Offline-Ausgabe: eingebettet. Artefakt: von cdnjs geladen (dieselbe Datei, mit Integritätsprüfung). |
 | ↳ pako | 1.0.11 (in JSZip gebündelt) | MIT AND Zlib | in JSZip |
 | ↳ lie | 3.3.0 (in JSZip gebündelt) | MIT | in JSZip |
 | ↳ immediate | 3.0.6 (in JSZip gebündelt) | MIT | in JSZip |
@@ -20,7 +20,7 @@ Lectora selbst steht noch unter keiner Lizenz (siehe README). Die folgenden Komp
 | IBM Plex Sans | 5.3.0 | OFL-1.1 | Alle Ausgaben: Schnitte 300, 400, 400 kursiv, 600 (Teilmenge latin, WOFF2) als data:-Adresse im Stilblock. |
 | IBM Plex Serif | 5.3.0 | OFL-1.1 | Alle Ausgaben: Schnitte 400 und 400 kursiv (latin, WOFF2). |
 | IBM Plex Mono | 5.3.0 | OFL-1.1 | Alle Ausgaben: Schnitt 400 (latin, WOFF2). |
-| Lucide (lucide-static) | 1.72.0 | ISC; Icons aus Feather zusätzlich MIT | Alle Ausgaben: Pfade der verwendeten Icons (Liste in build.mjs, ICON_MAP) als Text im Skript. |
+| Lucide (lucide-static) | 1.73.0 | ISC; Icons aus Feather zusätzlich MIT | Alle Ausgaben: Pfade der verwendeten Icons (Liste in build.mjs, ICON_MAP) als Text im Skript. |
 
 Die Beispieldokumente in der Datei sind von Lectora selbst erzeugt (test/make_fixtures.py) und frei erfunden.
 
@@ -44,7 +44,7 @@ Diese Werkzeuge gelangen nicht in die verteilten Dateien.
 
 ## Lizenztexte
 
-### JSZip 3.10.1
+### JSZip 3.10.2
 
 ```text
 JSZip is dual licensed. At your choice you may use it under the MIT license *or* the GPLv3
@@ -897,7 +897,7 @@ FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
 OTHER DEALINGS IN THE FONT SOFTWARE.
 ```
 
-### Lucide (lucide-static) 1.72.0
+### Lucide (lucide-static) 1.73.0
 
 ```text
 ISC License
