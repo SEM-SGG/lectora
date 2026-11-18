@@ -5,7 +5,8 @@ Datei bestimmt ihr Inhalt (Signatur), nicht die Endung: Eine umbenannte Word-Dat
   - keine absoluten Pfade einer Arbeitsumgebung (Home-Verzeichnisse unter Linux, macOS und Windows, auch mit /, /mnt/…, UNC-Pfade \\\\server\\freigabe)
   - keine Links auf Sitzungen, Chats, Projekte oder Artefakte von claude.ai (auch claude.site)
   - keine internen Adressen: Hosts unter admin.ch ausser den öffentlichen (Liste PUBLIC_HOSTS), Intranet, SharePoint, .local, .intra
-  - keine E-Mail-Adressen ausser unter example.com (example.org, example.net), users.noreply.github.com und noreply@anthropic.com,
+  - keine E-Mail-Adressen ausser unter example.com (example.org, example.net), users.noreply.github.com, noreply@anthropic.com und den
+    Adressen von GitHub selbst (noreply@github.com, support@github.com),
     auch nicht verschleiert («name [at] domain»); Ausnahmen: die unverändert übernommenen Lizenztexte in THIRD-PARTY-NOTICES.md und
     die Paketangaben Dritter in package-lock.json
   - keine Zugangsdaten (Token von GitHub, Anthropic, AWS, Slack, private Schlüssel) und keine Dateien wie .env oder settings.local.json
@@ -33,7 +34,8 @@ FICTIONAL = {'Dana Muster', 'Kai Beispiel', 'Lectora', 'python-docx', 'Writer', 
 OFFICE_TEMPLATES_OK = {'', 'Normal.dotm', 'Normal'}
 PUBLIC_HOSTS = {'fedlex.admin.ch', 'www.fedlex.admin.ch', 'fedlex.data.admin.ch', 'www.admin.ch', 'www.bk.admin.ch'}
 ALLOWED_MAIL = re.compile(r'(?:^|\.)example\.(?:com|org|net)$|^users\.noreply\.github\.com$', re.I)
-ALLOWED_ADDR = {'noreply@anthropic.com'}
+# GitHub selbst schreibt Commits als «GitHub <noreply@github.com>» (Zusammenführen im Web) und Dependabot zeichnet mit support@github.com.
+ALLOWED_ADDR = {'noreply@anthropic.com', 'noreply@github.com', 'support@github.com'}
 
 PATTERNS = [
     ('absoluter Pfad', re.compile(r'(?<![\w.~-])/(?:home/[a-z_][\w-]*|root)/|(?<![\w])/Users/[A-Za-z][\w.-]+/|(?<![\w])/mnt/(?:user-data|c/Users|data|uploads)\b|(?<![\w])/var/folder[s]/'
@@ -47,7 +49,7 @@ EMAIL = re.compile(r'(?<![\w.+-])([A-Za-z0-9._%+-]+)@([A-Za-z0-9-]+(?:\.[A-Za-z0
 EMAIL_HIDDEN = re.compile(r'(?i)\b[\w.+-]+\s*[\[(]\s*(?:at|ät|chez)\s*[\])]\s*[\w-]+(?:\s*[\[(]?\s*(?:dot|punkt|point)\s*[\])]?\s*[\w-]+|\.[\w-]+)+')
 FORBIDDEN_NAMES = re.compile(r'(?:^|/)(?:\.env(?:\..*)?|settings\.local\.json|credentials\.json|id_rsa|.*\.pem|.*\.key|.*\.p12|.*\.pfx)$')
 OFFICE_EXT = {'.docx', '.pptx', '.xlsx', '.docm', '.dotx', '.potx', '.pptm', '.xlsm'}
-TRAILER_OK = re.compile(r'^(?:Co-Authored-By: [^\n]*|Claude-Session: https://claude\.ai/code/session_[0-9A-Za-z]+)\s*$', re.M)
+TRAILER_OK = re.compile(r'^(?:Co-Authored-By: [^\n]*|Signed-off-by: dependabot\[bot\] <support@github\.com>|Claude-Session: https://claude\.ai/code/session_[0-9A-Za-z]+)\s*$', re.M)
 
 
 def files(root):

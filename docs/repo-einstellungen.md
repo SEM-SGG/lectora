@@ -21,6 +21,14 @@ Die Pfade beziehen sich auf die englische Oberfläche von GitHub. «Organisation
 | Sperrliste der Hygiene (optional) | Repository → Settings → Secrets and variables → Actions → **New repository secret**, Name `LECTORA_HYGIENE_SPERRLISTE`, Inhalt: eine Zeichenfolge je Zeile (Namen von Personen, interne Bezeichnungen) | Workflow `checks` (Hygiene der Dateien und Commits) | Die Hygiene prüft ohne Sperrliste: Namen von Personen findet sie dann nur in Metadaten, nicht im Text |
 | Labels | Repository → Issues → Labels: **fehler**, **fehlalarm** anlegen | Vorlagen `.github/ISSUE_TEMPLATE/fehler.yml` und `fehlalarm.yml` | Issues entstehen ohne Label; die Sortierung fehlt |
 
+## Adresse in den eigenen Commits
+
+Die Hygieneprüfung lässt in Commits nur Adressen zu, die nichts über eine Person verraten: die `noreply`-Adressen von GitHub, Adressen unter `example.com` und die Adressen von GitHub selbst. Ein Commit mit einer persönlichen oder dienstlichen Adresse lässt den Workflow `checks` scheitern.
+
+1. Öffne bei GitHub Settings → Emails und schalte **Keep my email addresses private** ein.
+2. Kopiere die dort angezeigte Adresse der Form `ID+name@users.noreply.github.com`.
+3. Trage sie lokal ein: `git config user.email "ID+name@users.noreply.github.com"`.
+
 ## Organisation und Repository: nicht umbenennen, nicht löschen
 
 Offline-Ausgaben, die schon verteilt sind, fragen fest bei `https://sem-sgg.github.io/lectora/version.json` nach und verweisen zum Herunterladen fest auf `https://github.com/SEM-SGG/lectora/releases/latest`. Daraus folgt:
