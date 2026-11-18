@@ -1,0 +1,227 @@
+{
+ "F01": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "F02": {
+  "precision": null,
+  "recall": null,
+  "unjudged": 0
+ },
+ "F03": {
+  "precision": null,
+  "recall": null,
+  "unjudged": 0
+ },
+ "F04": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "F05": {
+  "precision": null,
+  "recall": null,
+  "unjudged": 0
+ },
+ "S01": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "S02": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "S03": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "S08": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "S09": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "L01": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "L02": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "L03": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "L04": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "L05": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "L06": {
+  "precision": 0.5,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "T01": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "T02": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "T03": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "T04": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "T05": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "T06": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "T07": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "T08": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "T10": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "R01": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "R02": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "R03": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "R04": {
+  "precision": null,
+  "recall": null,
+  "unjudged": 0
+ },
+ "D01": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "D02": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "D03": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "D04": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "D05": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "D08": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "X01": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "X02": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "X03": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "X04": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "X05": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "X06": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "X07": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "X08": {
+  "precision": null,
+  "recall": null,
+  "unjudged": 0
+ },
+ "X11": {
+  "precision": 1.0,
+  "recall": 1.0,
+  "unjudged": 0
+ },
+ "X12": {
+  "precision": null,
+  "recall": null,
+  "unjudged": 0
+ }
+}

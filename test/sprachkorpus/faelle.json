@@ -1,0 +1,1740 @@
+{
+ "_info": "Sprachkorpus für X11, X12 und R04: eigene und synthetische Sätze (keine Auszüge aus echten Dokumenten). flag = true: die Prüfung muss melden; false: sie darf nicht melden. bekannt: bewusste Grenze der Prüfung (zählt in Präzision und Trefferquote, bricht den Lauf nicht ab). Aufbau und Pflege: test/sprachkorpus/README.md.",
+ "X11": [
+  {
+   "la": "de",
+   "a": "Die gesuchstellende Person reicht die Unterlagen innert 30 Tagen ein.",
+   "lb": "fr",
+   "b": "La personne requérante doit présenter les documents dans les 30 jours.",
+   "flag": false,
+   "note": "indicative=obligation DE",
+   "id": "X11-001"
+  },
+  {
+   "la": "fr",
+   "a": "Le requérant présente les documents dans les 30 jours.",
+   "lb": "it",
+   "b": "Il richiedente deve presentare i documenti entro 30 giorni.",
+   "flag": false,
+   "note": "indicative=obligation FR",
+   "id": "X11-002"
+  },
+  {
+   "la": "de",
+   "a": "Der Bund soll die Kantone bei der Integration unterstützen.",
+   "lb": "fr",
+   "b": "La Confédération soutient les cantons dans l’intégration.",
+   "flag": false,
+   "note": "soll vs indicative",
+   "id": "X11-003"
+  },
+  {
+   "la": "de",
+   "a": "Die Mitarbeitenden können die Software ohne Schulung bedienen.",
+   "lb": "it",
+   "b": "I collaboratori sanno usare il software senza formazione.",
+   "flag": false,
+   "note": "kann ability",
+   "id": "X11-004"
+  },
+  {
+   "la": "fr",
+   "a": "Cette mesure peut entraîner des coûts supplémentaires.",
+   "lb": "de",
+   "b": "Diese Massnahme kann zu Mehrkosten führen.",
+   "flag": false,
+   "note": "peut epistemic",
+   "id": "X11-005"
+  },
+  {
+   "la": "fr",
+   "a": "Cette mesure peut entraîner des coûts supplémentaires.",
+   "lb": "de",
+   "b": "Diese Massnahme führt möglicherweise zu Mehrkosten.",
+   "flag": false,
+   "note": "peut epistemic vs adverb",
+   "id": "X11-006"
+  },
+  {
+   "la": "fr",
+   "a": "L’office ne peut statuer que sur demande.",
+   "lb": "de",
+   "b": "Das Amt entscheidet nur auf Gesuch.",
+   "flag": false,
+   "note": "ne…que",
+   "id": "X11-007"
+  },
+  {
+   "la": "fr",
+   "a": "Les données ne doivent être communiquées qu’aux autorités compétentes.",
+   "lb": "de",
+   "b": "Die Daten dürfen nur den zuständigen Behörden bekanntgegeben werden.",
+   "flag": false,
+   "note": "ne doivent…que vs dürfen nur",
+   "id": "X11-008"
+  },
+  {
+   "la": "de",
+   "a": "Muss die Kanzlei das Gesuch weiterleiten?",
+   "lb": "fr",
+   "b": "La chancellerie doit-elle transmettre la demande ?",
+   "flag": false,
+   "note": "question",
+   "id": "X11-009"
+  },
+  {
+   "la": "de",
+   "a": "Kann die Behörde die Frist verlängern?",
+   "lb": "it",
+   "b": "L’autorità può prorogare il termine?",
+   "flag": false,
+   "note": "question",
+   "id": "X11-010"
+  },
+  {
+   "la": "de",
+   "a": "Wenn die Frist abläuft, muss die Behörde entscheiden.",
+   "lb": "fr",
+   "b": "Si le délai expire, l’autorité doit statuer.",
+   "flag": false,
+   "note": "conditional",
+   "id": "X11-011"
+  },
+  {
+   "la": "de",
+   "a": "Die Kanzlei muss nicht nur das Gesuch, sondern auch die Beilagen prüfen.",
+   "lb": "fr",
+   "b": "La chancellerie doit vérifier non seulement la demande, mais aussi les annexes.",
+   "flag": false,
+   "note": "nicht nur",
+   "id": "X11-012"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde darf die Daten nicht ohne Zustimmung weitergeben.",
+   "lb": "fr",
+   "b": "L’autorité ne peut communiquer les données sans consentement.",
+   "flag": false,
+   "note": "ne peut without pas",
+   "id": "X11-013"
+  },
+  {
+   "la": "de",
+   "a": "Kein Gesuch darf ohne Prüfung abgelehnt werden.",
+   "lb": "fr",
+   "b": "Aucune demande ne peut être rejetée sans examen.",
+   "flag": false,
+   "note": "negative subject",
+   "id": "X11-014"
+  },
+  {
+   "la": "de",
+   "a": "In keinem Fall darf die Behörde die Daten an Dritte weitergeben.",
+   "lb": "fr",
+   "b": "En aucun cas l’autorité ne peut communiquer les données à des tiers.",
+   "flag": false,
+   "note": "In keinem Fall",
+   "id": "X11-015"
+  },
+  {
+   "la": "de",
+   "a": "Unter keinen Umständen dürfen die Daten an Dritte weitergegeben werden.",
+   "lb": "it",
+   "b": "In nessun caso i dati possono essere comunicati a terzi.",
+   "flag": false,
+   "note": "Unter keinen Umständen / in nessun caso",
+   "id": "X11-016"
+  },
+  {
+   "la": "de",
+   "a": "Keinesfalls darf die Behörde die Daten an Dritte weitergeben.",
+   "lb": "fr",
+   "b": "L’autorité ne doit en aucun cas communiquer les données à des tiers.",
+   "flag": false,
+   "note": "Keinesfalls sentence-initial",
+   "id": "X11-017"
+  },
+  {
+   "la": "de",
+   "a": "Die Daten dürfen höchstens zwei Jahre aufbewahrt werden.",
+   "lb": "fr",
+   "b": "Les données peuvent être conservées deux ans au plus.",
+   "flag": false,
+   "note": "höchstens",
+   "id": "X11-018"
+  },
+  {
+   "la": "de",
+   "a": "Die Frist kann nicht erstreckt werden.",
+   "lb": "it",
+   "b": "Il termine non è prorogabile.",
+   "flag": false,
+   "note": "one-sided nper",
+   "id": "X11-019"
+  },
+  {
+   "la": "de",
+   "a": "Das Gesuch muss nicht begründet werden.",
+   "lb": "fr",
+   "b": "La demande n’a pas besoin d’être motivée.",
+   "flag": false,
+   "note": "nob=nob",
+   "id": "X11-020"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde ist gehalten, rasch zu entscheiden.",
+   "lb": "fr",
+   "b": "L’autorité est tenue de statuer rapidement.",
+   "flag": false,
+   "note": "gehalten",
+   "id": "X11-021"
+  },
+  {
+   "la": "de",
+   "a": "Die Kantone dürfen die Gebühr erlassen, wenn die Person nicht zahlungsfähig ist.",
+   "lb": "fr",
+   "b": "Les cantons peuvent renoncer à l’émolument si la personne n’est pas solvable.",
+   "flag": false,
+   "note": "neg in subclause",
+   "id": "X11-022"
+  },
+  {
+   "la": "de",
+   "a": "Die Kantone dürfen die Gebühr, wenn die Person nicht zahlungsfähig ist, erlassen.",
+   "lb": "it",
+   "b": "I Cantoni possono condonare l’emolumento se la persona non è solvibile.",
+   "flag": false,
+   "note": "neg in embedded subclause",
+   "id": "X11-023"
+  },
+  {
+   "la": "it",
+   "a": "Il nulla osta del SEM può essere revocato in ogni momento.",
+   "lb": "de",
+   "b": "Die Zustimmung des SEM kann jederzeit widerrufen werden.",
+   "flag": false,
+   "note": "nulla osta",
+   "id": "X11-024"
+  },
+  {
+   "la": "it",
+   "a": "Se il richiedente non può presentarsi, deve informare l’ufficio.",
+   "lb": "fr",
+   "b": "Si le requérant ne peut pas se présenter, il doit informer l’office.",
+   "flag": false,
+   "note": "neg possibility + obligation",
+   "id": "X11-025"
+  },
+  {
+   "la": "fr",
+   "a": "Nul ne doit être discriminé.",
+   "lb": "de",
+   "b": "Niemand darf diskriminiert werden.",
+   "flag": false,
+   "note": "Nul ne doit",
+   "id": "X11-026"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde muss das Gesuch prüfen. Sie kann Auskünfte einholen.",
+   "lb": "fr",
+   "b": "L’autorité peut demander des renseignements. Elle doit examiner la demande.",
+   "flag": false,
+   "note": "reordered sentences",
+   "id": "X11-027"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde muss das Gesuch prüfen; sie darf es nicht ohne Anhörung ablehnen.",
+   "lb": "fr",
+   "b": "L’autorité examine la demande ; elle ne peut la rejeter sans audition.",
+   "flag": false,
+   "note": "mixed",
+   "id": "X11-028"
+  },
+  {
+   "la": "fr",
+   "a": "Les cantons ne peuvent pas non plus percevoir d’émolument.",
+   "lb": "it",
+   "b": "Nemmeno i Cantoni possono riscuotere emolumenti.",
+   "flag": false,
+   "note": "nemmeno",
+   "id": "X11-029"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde kann nicht ausschliessen, dass Verzögerungen eintreten.",
+   "lb": "fr",
+   "b": "L’autorité ne peut exclure que des retards surviennent.",
+   "flag": false,
+   "note": "ne peut exclure que",
+   "id": "X11-030"
+  },
+  {
+   "la": "de",
+   "a": "Die Sektion braucht das Formular nicht zu unterschreiben.",
+   "lb": "it",
+   "b": "La sezione non è tenuta a firmare il modulo.",
+   "flag": false,
+   "note": "braucht nicht zu",
+   "id": "X11-031"
+  },
+  {
+   "la": "fr",
+   "a": "Le requérant n’est plus autorisé à travailler.",
+   "lb": "de",
+   "b": "Die gesuchstellende Person darf nicht mehr arbeiten.",
+   "flag": false,
+   "note": "n’est plus autorisé",
+   "id": "X11-032"
+  },
+  {
+   "la": "it",
+   "a": "La domanda va presentata per iscritto.",
+   "lb": "fr",
+   "b": "La demande doit être présentée par écrit.",
+   "flag": false,
+   "note": "va + participio",
+   "id": "X11-033"
+  },
+  {
+   "la": "de",
+   "a": "Die Anmeldung hat schriftlich zu erfolgen.",
+   "lb": "it",
+   "b": "La notifica deve avvenire per iscritto.",
+   "flag": false,
+   "note": "hat zu erfolgen",
+   "id": "X11-034"
+  },
+  {
+   "la": "de",
+   "a": "Sie dürfen das Formular nicht vergessen.",
+   "lb": "fr",
+   "b": "Vous ne devez pas oublier le formulaire.",
+   "flag": false,
+   "note": "darf nicht = ne doit pas",
+   "id": "X11-035"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde soll in der Regel innert 60 Tagen entscheiden.",
+   "lb": "it",
+   "b": "L’autorità decide di regola entro 60 giorni.",
+   "flag": false,
+   "note": "soll in der Regel",
+   "id": "X11-036"
+  },
+  {
+   "la": "fr",
+   "a": "Les personnes concernées peuvent, si elles le souhaitent, être accompagnées.",
+   "lb": "de",
+   "b": "Die betroffenen Personen können sich auf Wunsch begleiten lassen.",
+   "flag": false,
+   "note": "peuvent with incise",
+   "id": "X11-037"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde darf weder Daten bearbeiten noch weitergeben.",
+   "lb": "fr",
+   "b": "L’autorité ne peut ni traiter ni communiquer les données.",
+   "flag": false,
+   "note": "weder/ni",
+   "id": "X11-038"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde muss weder Daten bearbeiten noch weitergeben.",
+   "lb": "fr",
+   "b": "L’autorité n’est tenue ni de traiter ni de communiquer les données.",
+   "flag": false,
+   "note": "muss weder / n’est tenue ni",
+   "id": "X11-039"
+  },
+  {
+   "la": "it",
+   "a": "Nessun dato deve essere trasmesso senza consenso.",
+   "lb": "de",
+   "b": "Keine Daten dürfen ohne Zustimmung übermittelt werden.",
+   "flag": false,
+   "note": "Nessun dato deve",
+   "id": "X11-040"
+  },
+  {
+   "la": "de",
+   "a": "Die Kosten können bis zu 500 Franken betragen.",
+   "lb": "fr",
+   "b": "Les frais peuvent atteindre 500 francs.",
+   "flag": false,
+   "note": "possibility",
+   "id": "X11-041"
+  },
+  {
+   "la": "de",
+   "a": "Das Amt muss die Person anhören, bevor es entscheidet.",
+   "lb": "fr",
+   "b": "Avant de statuer, l’office entend la personne.",
+   "flag": false,
+   "note": "indicative FR",
+   "id": "X11-042"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde stellt sicher, dass die Daten nicht weitergegeben werden.",
+   "lb": "fr",
+   "b": "L’autorité veille à ce que les données ne soient pas transmises.",
+   "flag": false,
+   "note": "no modal",
+   "id": "X11-043"
+  },
+  {
+   "la": "de",
+   "a": "Nicht jede Person darf das Gebäude betreten.",
+   "lb": "fr",
+   "b": "Toutes les personnes ne peuvent pas entrer dans le bâtiment.",
+   "flag": false,
+   "note": "partial negation",
+   "id": "X11-044"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde kann das Gesuch ablehnen.",
+   "lb": "fr",
+   "b": "L’autorité doit rejeter la demande.",
+   "flag": true,
+   "note": "kann vs doit",
+   "id": "X11-045"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde muss die Daten nicht weitergeben.",
+   "lb": "it",
+   "b": "L’autorità non deve comunicare i dati.",
+   "flag": true,
+   "note": "muss nicht vs non deve",
+   "id": "X11-046"
+  },
+  {
+   "la": "de",
+   "a": "Sie müssen das Formular nicht unterschreiben.",
+   "lb": "fr",
+   "b": "Vous ne devez pas signer le formulaire.",
+   "flag": true,
+   "note": "classic",
+   "id": "X11-047"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde ist verpflichtet, die Daten zu löschen.",
+   "lb": "it",
+   "b": "L’autorità può cancellare i dati.",
+   "flag": true,
+   "note": "verpflichtet vs può",
+   "id": "X11-048"
+  },
+  {
+   "la": "fr",
+   "a": "Le requérant n’est pas autorisé à travailler.",
+   "lb": "de",
+   "b": "Die gesuchstellende Person darf arbeiten.",
+   "flag": true,
+   "note": "pro vs per",
+   "id": "X11-049"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde kann die Frist nicht verlängern.",
+   "lb": "fr",
+   "b": "L’autorité peut prolonger le délai.",
+   "flag": true,
+   "note": "nper vs per",
+   "id": "X11-050"
+  },
+  {
+   "la": "de",
+   "a": "Die Kantone dürfen keine Gebühren erheben.",
+   "lb": "fr",
+   "b": "Les cantons peuvent percevoir des émoluments.",
+   "flag": true,
+   "note": "keine vs peuvent",
+   "id": "X11-051"
+  },
+  {
+   "la": "it",
+   "a": "Il SEM può rilasciare un visto nazionale.",
+   "lb": "fr",
+   "b": "Le SEM doit délivrer un visa national.",
+   "flag": true,
+   "note": "può vs doit",
+   "id": "X11-052"
+  },
+  {
+   "la": "de",
+   "a": "Das Gesuch ist innert 30 Tagen einzureichen.",
+   "lb": "it",
+   "b": "La domanda può essere presentata entro 30 giorni.",
+   "flag": true,
+   "note": "ist einzureichen vs può",
+   "id": "X11-053"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde hat die Kantone anzuhören.",
+   "lb": "it",
+   "b": "L’autorità può sentire i Cantoni.",
+   "flag": true,
+   "note": "hat anzuhören vs può",
+   "id": "X11-054"
+  },
+  {
+   "la": "fr",
+   "a": "Il n’est pas nécessaire de joindre une copie.",
+   "lb": "de",
+   "b": "Eine Kopie muss beigelegt werden.",
+   "flag": true,
+   "note": "nob vs obl",
+   "id": "X11-055"
+  },
+  {
+   "la": "it",
+   "a": "Non è necessario allegare una copia.",
+   "lb": "fr",
+   "b": "Il faut joindre une copie.",
+   "flag": true,
+   "note": "nob vs obl IT",
+   "id": "X11-056"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde soll die Daten löschen.",
+   "lb": "fr",
+   "b": "L’autorité ne doit pas effacer les données.",
+   "flag": true,
+   "note": "soll vs ne doit pas",
+   "id": "X11-057"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde kann das Gesuch ablehnen.",
+   "lb": "fr",
+   "b": "L’autorité rejette la demande.",
+   "flag": true,
+   "note": "Kann vs indicative (discretion lost)",
+   "bekannt": "Indikativ wird nicht verglichen (siehe c.X11.d)",
+   "id": "X11-058"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde darf nur in Ausnahmefällen Daten weitergeben.",
+   "lb": "fr",
+   "b": "L’autorité doit transmettre les données dans des cas exceptionnels.",
+   "flag": true,
+   "note": "nur + permission vs obligation",
+   "bekannt": "«nur» macht die Lesart unsicher",
+   "id": "X11-059"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde muss die Kantone informieren.",
+   "lb": "fr",
+   "b": "L’autorité peut informer les cantons, si nécessaire.",
+   "flag": true,
+   "note": "obl vs per with incise",
+   "id": "X11-060"
+  },
+  {
+   "la": "fr",
+   "a": "L’autorité doit informer la personne concernée.",
+   "lb": "it",
+   "b": "L’autorità dovrebbe informare la persona interessata.",
+   "flag": true,
+   "note": "doit vs dovrebbe",
+   "id": "X11-061"
+  },
+  {
+   "la": "de",
+   "a": "Die Daten müssen gelöscht werden.",
+   "lb": "fr",
+   "b": "Les données ne peuvent pas être effacées.",
+   "flag": true,
+   "note": "obl vs nper",
+   "id": "X11-062"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde muss die Gebühr erheben, wenn die Person nicht zahlt.",
+   "lb": "fr",
+   "b": "L’autorité peut percevoir l’émolument si la personne ne paie pas.",
+   "flag": true,
+   "note": "obl vs per with neg subclause",
+   "id": "X11-063"
+  },
+  {
+   "la": "it",
+   "a": "L’ufficio è tenuto a rispondere entro 10 giorni.",
+   "lb": "de",
+   "b": "Das Amt kann innert 10 Tagen antworten.",
+   "flag": true,
+   "note": "tenuto vs kann",
+   "id": "X11-064"
+  },
+  {
+   "la": "fr",
+   "a": "Le SEM doit-il informer le canton ?",
+   "lb": "de",
+   "b": "Das SEM darf den Kanton nicht informieren.",
+   "flag": false,
+   "note": "Frage: unsicher, kein Vergleich",
+   "id": "X11-065"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde muss das Gesuch innert 30 Tagen prüfen. Sie kann Auskünfte einholen.",
+   "lb": "fr",
+   "b": "L’autorité peut examiner la demande dans les 30 jours. Elle peut demander des renseignements.",
+   "flag": true,
+   "note": "two-sentence obl→per",
+   "id": "X11-066"
+  },
+  {
+   "la": "fr",
+   "a": "Le canton peut, après avoir entendu la personne, prononcer une interdiction d’entrée.",
+   "lb": "de",
+   "b": "Der Kanton muss nach Anhörung der Person ein Einreiseverbot verfügen.",
+   "flag": true,
+   "note": "peut incise vs muss",
+   "id": "X11-067"
+  },
+  {
+   "la": "it",
+   "a": "I Cantoni non possono riscuotere emolumenti.",
+   "lb": "fr",
+   "b": "Les cantons ne sont pas tenus de percevoir des émoluments.",
+   "flag": true,
+   "note": "nper vs nob",
+   "id": "X11-068"
+  },
+  {
+   "la": "de",
+   "a": "Die Kantone haben die Gesuche dem SEM zu unterbreiten.",
+   "lb": "fr",
+   "b": "Les cantons peuvent soumettre les demandes au SEM.",
+   "flag": true,
+   "note": "haben zu vs peuvent",
+   "id": "X11-069"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde muss nicht jedes Gesuch mündlich prüfen.",
+   "lb": "fr",
+   "b": "L’autorité n’est pas tenue d’examiner oralement chaque demande.",
+   "flag": false,
+   "note": "muss nicht jedes",
+   "id": "X11-070"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde darf die Daten nicht ohne Zustimmung der Person weitergeben.",
+   "lb": "fr",
+   "b": "L’autorité ne doit pas communiquer les données sans le consentement de la personne.",
+   "flag": false,
+   "note": "nicht ohne / ne doit pas sans",
+   "id": "X11-071"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde darf die Daten nicht ohne Zustimmung der Person weitergeben.",
+   "lb": "it",
+   "b": "L’autorità non può comunicare i dati senza il consenso della persona.",
+   "flag": false,
+   "note": "nicht ohne / non può senza",
+   "id": "X11-072"
+  },
+  {
+   "la": "de",
+   "a": "Auf keinen Fall dürfen die Daten an Dritte weitergegeben werden.",
+   "lb": "it",
+   "b": "In nessun caso i dati possono essere comunicati a terzi.",
+   "flag": false,
+   "note": "Auf keinen Fall / in nessun caso",
+   "id": "X11-073"
+  },
+  {
+   "la": "it",
+   "a": "Nessun emolumento deve essere riscosso per questa procedura.",
+   "lb": "fr",
+   "b": "Aucun émolument ne doit être perçu pour cette procédure.",
+   "flag": false,
+   "note": "Nessun / Aucun",
+   "id": "X11-074"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde darf nicht alle Daten weitergeben.",
+   "lb": "fr",
+   "b": "L’autorité ne peut pas communiquer toutes les données.",
+   "flag": false,
+   "note": "nicht alle",
+   "id": "X11-075"
+  },
+  {
+   "la": "fr",
+   "a": "Vous devez signer le formulaire et le renvoyer.",
+   "lb": "de",
+   "b": "Sie können das Formular unterschreiben und zurücksenden.",
+   "flag": true,
+   "note": "vous devez / können",
+   "id": "X11-076"
+  },
+  {
+   "la": "fr",
+   "a": "Vous pouvez joindre une copie de votre passeport.",
+   "lb": "it",
+   "b": "Dovete allegare una copia del passaporto.",
+   "flag": true,
+   "note": "vous pouvez / dovete",
+   "id": "X11-077"
+  },
+  {
+   "la": "fr",
+   "a": "Nous devons informer le canton.",
+   "lb": "de",
+   "b": "Wir können den Kanton informieren.",
+   "flag": true,
+   "note": "nous devons / können",
+   "id": "X11-078"
+  },
+  {
+   "la": "fr",
+   "a": "Vous ne pouvez pas travailler pendant la procédure.",
+   "lb": "de",
+   "b": "Sie dürfen während des Verfahrens arbeiten.",
+   "flag": true,
+   "note": "vous ne pouvez pas / dürfen",
+   "id": "X11-079"
+  },
+  {
+   "la": "it",
+   "a": "Potete consultare gli atti in qualsiasi momento.",
+   "lb": "de",
+   "b": "Sie müssen die Akten jederzeit einsehen.",
+   "flag": true,
+   "note": "potete / müssen",
+   "id": "X11-080"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde muss keine Gebühr erheben.",
+   "lb": "fr",
+   "b": "L’autorité ne doit percevoir aucun émolument.",
+   "flag": true,
+   "note": "muss keine / ne doit … aucun",
+   "id": "X11-081"
+  },
+  {
+   "la": "fr",
+   "a": "Vous devez joindre une copie du passeport.",
+   "lb": "it",
+   "b": "Deve allegare una copia del passaporto.",
+   "flag": false,
+   "note": "vous devez / deve (Lei)",
+   "id": "X11-082"
+  },
+  {
+   "la": "fr",
+   "a": "Vous ne devez pas signer ce formulaire.",
+   "lb": "de",
+   "b": "Sie dürfen dieses Formular nicht unterschreiben.",
+   "flag": false,
+   "note": "vous ne devez pas / dürfen nicht",
+   "id": "X11-083"
+  },
+  {
+   "la": "fr",
+   "a": "Devez-vous joindre une copie ?",
+   "lb": "de",
+   "b": "Müssen Sie eine Kopie beilegen?",
+   "flag": false,
+   "note": "Frage mit Bindestrich",
+   "id": "X11-084"
+  },
+  {
+   "la": "it",
+   "a": "Dovete allegare una copia del passaporto.",
+   "lb": "de",
+   "b": "Sie müssen eine Kopie des Passes beilegen.",
+   "flag": false,
+   "note": "dovete / müssen",
+   "id": "X11-085"
+  },
+  {
+   "la": "de",
+   "a": "Die Behörde soll die Daten löschen.",
+   "lb": "it",
+   "b": "L’autorità non deve cancellare i dati.",
+   "flag": true,
+   "note": "soll / non deve (Verbot)",
+   "id": "X11-086"
+  }
+ ],
+ "X12": [
+  {
+   "la": "de",
+   "a": "Gemäss Art. 30 AIG kann das SEM Ausnahmen bewilligen.",
+   "lb": "fr",
+   "b": "Selon l’art. 30 LEI, le SEM peut accorder des dérogations.",
+   "flag": false,
+   "note": "correct",
+   "id": "X12-001"
+  },
+  {
+   "la": "de",
+   "a": "Gemäss Art. 30 AIG kann das SEM Ausnahmen bewilligen.",
+   "lb": "fr",
+   "b": "Selon l’art. 30 LAsi, le SEM peut accorder des dérogations.",
+   "flag": true,
+   "note": "different act",
+   "id": "X12-002"
+  },
+  {
+   "la": "de",
+   "a": "Gemäss Art. 30 AIG kann das SEM Ausnahmen bewilligen.",
+   "lb": "it",
+   "b": "Secondo l’art. 30 OASA, la SEM può concedere deroghe.",
+   "flag": true,
+   "note": "law vs ordinance",
+   "id": "X12-003"
+  },
+  {
+   "la": "de",
+   "a": "Gemäss Art. 30 AIG kann das SEM Ausnahmen bewilligen.",
+   "lb": "it",
+   "b": "Secondo l’art. 30 LEI, la SEM può concedere deroghe.",
+   "flag": true,
+   "note": "FR abbr in IT (X12 lang or R04)",
+   "r04": true,
+   "id": "X12-004"
+  },
+  {
+   "la": "de",
+   "a": "Die Abkürzungen lauten AIG (deutsch), LEI (französisch) und LStrI (italienisch).",
+   "lb": "fr",
+   "b": "Les abréviations sont AIG (allemand), LEI (français) et LStrI (italien).",
+   "flag": false,
+   "note": "list all three",
+   "id": "X12-005"
+  },
+  {
+   "la": "de",
+   "a": "Die Abkürzungen lauten AIG, LEI und LStrI.",
+   "lb": "it",
+   "b": "Le abbreviazioni sono AIG, LEI e LStrI.",
+   "flag": false,
+   "note": "list all three no markers",
+   "id": "X12-006"
+  },
+  {
+   "la": "de",
+   "a": "Nach Art. 5 AsylG und Art. 30 AIG wird entschieden.",
+   "lb": "fr",
+   "b": "Selon l’art. 30 LEI et l’art. 5 LAsi, il est statué.",
+   "flag": false,
+   "note": "reordered two acts",
+   "id": "X12-007"
+  },
+  {
+   "la": "de",
+   "a": "Nach Art. 5 AsylG und Art. 30 AIG wird entschieden.",
+   "lb": "fr",
+   "b": "Selon l’art. 30 LEI, il est statué.",
+   "flag": true,
+   "note": "one of two acts missing",
+   "id": "X12-008"
+  },
+  {
+   "la": "de",
+   "a": "Die Haftung richtet sich nach dem OR.",
+   "lb": "fr",
+   "b": "La responsabilité est régie par le CO.",
+   "flag": false,
+   "note": "OR/CO no article",
+   "id": "X12-009"
+  },
+  {
+   "la": "de",
+   "a": "Die Haftung richtet sich nach dem OR.",
+   "lb": "fr",
+   "b": "La responsabilité est régie par le CC.",
+   "flag": true,
+   "note": "OR vs CC no article",
+   "id": "X12-010"
+  },
+  {
+   "la": "de",
+   "a": "Die Haftung richtet sich nach Art. 41 OR.",
+   "lb": "it",
+   "b": "La responsabilità è retta dall’art. 41 CC.",
+   "flag": true,
+   "note": "OR vs CC IT",
+   "id": "X12-011"
+  },
+  {
+   "la": "de",
+   "a": "Die Daten werden gemäss DSG bearbeitet.",
+   "lb": "fr",
+   "b": "Les données sont traitées conformément à la LPD.",
+   "flag": false,
+   "note": "DSG/LPD",
+   "id": "X12-012"
+  },
+  {
+   "la": "de",
+   "a": "Die Daten werden gemäss DSG bearbeitet.",
+   "lb": "fr",
+   "b": "Les données sont traitées conformément à la LTrans.",
+   "flag": true,
+   "note": "DSG/LTrans",
+   "id": "X12-013"
+  },
+  {
+   "la": "de",
+   "a": "Die Daten werden gemäss DSG (SR 235.1) bearbeitet.",
+   "lb": "fr",
+   "b": "Les données sont traitées conformément à la LPD (RS 235.11).",
+   "flag": true,
+   "note": "wrong RS in FR",
+   "r04": true,
+   "id": "X12-014"
+  },
+  {
+   "la": "de",
+   "a": "Die Daten werden gemäss Datenschutzgesetz bearbeitet und nach Art. 5 DSG gelöscht.",
+   "lb": "fr",
+   "b": "Les données sont traitées conformément à la loi sur la protection des données et effacées selon l’art. 5 LPD.",
+   "flag": false,
+   "note": "title + abbr",
+   "id": "X12-015"
+  },
+  {
+   "la": "de",
+   "a": "Die Daten werden gemäss DSG bearbeitet, sofern das BGÖ nichts anderes bestimmt.",
+   "lb": "fr",
+   "b": "Les données sont traitées conformément à la LPD, sauf disposition contraire de la loi sur la transparence.",
+   "flag": false,
+   "note": "title instead of abbr",
+   "id": "X12-016"
+  },
+  {
+   "la": "de",
+   "a": "Die Daten werden gemäss DSG bearbeitet.",
+   "lb": "fr",
+   "b": "Les données sont traitées conformément à la loi sur la protection des données.",
+   "flag": false,
+   "note": "title instead of abbr (missing?)",
+   "id": "X12-017"
+  },
+  {
+   "la": "de",
+   "a": "Gemäss Art. 30 AIG kann das SEM Ausnahmen bewilligen.",
+   "lb": "fr",
+   "b": "Selon l’art. 30 AIG, le SEM peut accorder des dérogations.",
+   "flag": true,
+   "note": "DE abbr left in FR",
+   "r04": true,
+   "id": "X12-018"
+  },
+  {
+   "la": "de",
+   "a": "Gemäss Art. 30 AIG kann das SEM Ausnahmen bewilligen.",
+   "lb": "fr",
+   "b": "Selon l’art. 30 LStrI, le SEM peut accorder des dérogations.",
+   "flag": true,
+   "note": "IT abbr in FR",
+   "r04": true,
+   "id": "X12-019"
+  },
+  {
+   "la": "fr",
+   "a": "Selon l’art. 30 LEI, le SEM peut accorder des dérogations.",
+   "lb": "it",
+   "b": "Secondo l’art. 30 LEI, la SEM può concedere deroghe.",
+   "flag": true,
+   "note": "LEI left in IT",
+   "r04": true,
+   "id": "X12-020"
+  },
+  {
+   "la": "de",
+   "a": "Die AsylV 1 regelt das Verfahren.",
+   "lb": "fr",
+   "b": "L’OA 1 règle la procédure.",
+   "flag": false,
+   "note": "AsylV1 OA1",
+   "id": "X12-021"
+  },
+  {
+   "la": "de",
+   "a": "Die AsylV 1 regelt das Verfahren.",
+   "lb": "fr",
+   "b": "L’OA 2 règle la procédure.",
+   "flag": true,
+   "note": "AsylV1 vs OA2",
+   "id": "X12-022"
+  },
+  {
+   "la": "de",
+   "a": "Die AsylV 1 regelt das Verfahren.",
+   "lb": "it",
+   "b": "L’OAsi 1 disciplina la procedura.",
+   "flag": false,
+   "note": "AsylV1 OAsi1",
+   "id": "X12-023"
+  },
+  {
+   "la": "de",
+   "a": "Massgebend ist Art. 8 BV.",
+   "lb": "fr",
+   "b": "L’art. 8 Cst. est déterminant.",
+   "flag": false,
+   "note": "BV/Cst.",
+   "id": "X12-024"
+  },
+  {
+   "la": "de",
+   "a": "Massgebend ist Art. 8 BV.",
+   "lb": "it",
+   "b": "È determinante l’art. 8 Cost.",
+   "flag": false,
+   "note": "BV/Cost.",
+   "id": "X12-025"
+  },
+  {
+   "la": "de",
+   "a": "Massgebend ist Art. 8 BV.",
+   "lb": "it",
+   "b": "È determinante l’art. 8 CEDU.",
+   "flag": true,
+   "note": "BV vs CEDU",
+   "id": "X12-026"
+  },
+  {
+   "la": "de",
+   "a": "Massgebend ist Art. 8 EMRK.",
+   "lb": "fr",
+   "b": "L’art. 8 CEDH est déterminant.",
+   "flag": false,
+   "note": "EMRK/CEDH",
+   "id": "X12-027"
+  },
+  {
+   "la": "de",
+   "a": "Das FZA gilt auch für Grenzgänger.",
+   "lb": "fr",
+   "b": "L’ALCP s’applique aussi aux frontaliers.",
+   "flag": false,
+   "note": "FZA/ALCP",
+   "id": "X12-028"
+  },
+  {
+   "la": "de",
+   "a": "Das FZA gilt auch für Grenzgänger.",
+   "lb": "it",
+   "b": "L’ALC si applica anche ai frontalieri.",
+   "flag": false,
+   "note": "FZA/ALC",
+   "id": "X12-029"
+  },
+  {
+   "la": "de",
+   "a": "Das Ausländer- und Integrationsgesetz wird abgekürzt als AIG (deutsch), LEI (französisch) und LStrI (italienisch).",
+   "lb": "fr",
+   "b": "La loi fédérale sur les étrangers et l’intégration est abrégée AIG (allemand), LEI (français) et LStrI (italien).",
+   "flag": false,
+   "note": "Liste mit Sprachangaben",
+   "id": "X12-030"
+  },
+  {
+   "la": "de",
+   "a": "Für die Bearbeitung gelten Art. 5 AsylG und Art. 30 AIG.",
+   "lb": "it",
+   "b": "Per il trattamento si applica l’art. 30 LStrI.",
+   "flag": true,
+   "note": "ein Erlass fehlt teilweise",
+   "id": "X12-031"
+  },
+  {
+   "la": "de",
+   "a": "Es gelten Art. 5 AsylG und Art. 30 AIG.",
+   "lb": "fr",
+   "b": "Les art. 5 LAsi et 30 LEI s’appliquent.",
+   "flag": false,
+   "note": "beide Erlasse",
+   "id": "X12-032"
+  },
+  {
+   "la": "de",
+   "a": "Das Verfahren richtet sich nach Art. 3 DAA und Art. 5 AsylG.",
+   "lb": "fr",
+   "b": "La procédure est régie par l’art. 3 AAD et l’art. 5 LAsi.",
+   "flag": false,
+   "note": "Dublin DAA/AAD",
+   "id": "X12-033"
+  },
+  {
+   "la": "de",
+   "a": "Das Verfahren richtet sich nach Art. 3 DAA und Art. 5 AsylG.",
+   "lb": "fr",
+   "b": "La procédure est régie par l’art. 3 ALCP et l’art. 5 LAsi.",
+   "flag": true,
+   "note": "Dublin gegen Freizügigkeit",
+   "id": "X12-034"
+  }
+ ],
+ "R04": [
+  {
+   "lang": "de",
+   "text": "Gemäss Art. 30 AIG (SR 142.20) kann das SEM Ausnahmen bewilligen.",
+   "flag": false,
+   "note": "correct pair",
+   "id": "R04-001"
+  },
+  {
+   "lang": "de",
+   "text": "Gemäss Art. 30 AIG (SR 142.201) kann das SEM Ausnahmen bewilligen.",
+   "flag": true,
+   "note": "wrong SR (VZAE number)",
+   "id": "R04-002"
+  },
+  {
+   "lang": "de",
+   "text": "Gemäss Art. 31 VZAE (SR 142.20) gilt Folgendes.",
+   "flag": true,
+   "note": "VZAE with AIG number",
+   "id": "R04-003"
+  },
+  {
+   "lang": "fr",
+   "text": "Selon l’art. 30 LEI (RS 142.20), le SEM peut accorder des dérogations.",
+   "flag": false,
+   "note": "correct FR",
+   "id": "R04-004"
+  },
+  {
+   "lang": "fr",
+   "text": "Selon l’art. 30 LEI (RS 142.31), le SEM peut accorder des dérogations.",
+   "flag": true,
+   "note": "LEI with LAsi number",
+   "id": "R04-005"
+  },
+  {
+   "lang": "it",
+   "text": "Secondo l’art. 30 LStrI (RS 142.20), la SEM può concedere deroghe.",
+   "flag": false,
+   "note": "correct IT",
+   "id": "R04-006"
+  },
+  {
+   "lang": "it",
+   "text": "Secondo l’art. 30 LEI, la SEM può concedere deroghe.",
+   "flag": true,
+   "note": "FR abbr in IT",
+   "id": "R04-007"
+  },
+  {
+   "lang": "it",
+   "text": "Secondo l’art. 30 cpv. 1 lett. b LStrI la SEM può concedere deroghe.",
+   "flag": false,
+   "note": "IT with cpv/lett",
+   "id": "R04-008"
+  },
+  {
+   "lang": "de",
+   "text": "Die Erläuterungen zur LEI liegen bei.",
+   "flag": true,
+   "note": "FR abbr in DE running text, no art.",
+   "bekannt": "mehrdeutiges Kürzel ohne Zusammenhang",
+   "id": "R04-009"
+  },
+  {
+   "lang": "fr",
+   "text": "La LStrI est la version italienne de la LEI.",
+   "flag": false,
+   "note": "meta discussion of abbreviations",
+   "id": "R04-010"
+  },
+  {
+   "lang": "de",
+   "text": "Die Abkürzungen AIG/LEI/LStrI bezeichnen dasselbe Gesetz.",
+   "flag": false,
+   "note": "slash list",
+   "id": "R04-011"
+  },
+  {
+   "lang": "de",
+   "text": "Ausländer- und Integrationsgesetz (AIG; frz. LEI; ital. LStrI)",
+   "flag": false,
+   "note": "list with markers",
+   "id": "R04-012"
+  },
+  {
+   "lang": "fr",
+   "text": "loi sur les étrangers et l’intégration (LEI ; all. AIG)",
+   "flag": false,
+   "note": "all. marker",
+   "id": "R04-013"
+  },
+  {
+   "lang": "it",
+   "text": "legge federale sugli stranieri e la loro integrazione (LStrI; ted. AIG)",
+   "flag": false,
+   "note": "ted. marker",
+   "id": "R04-014"
+  },
+  {
+   "lang": "de",
+   "text": "Der Kanton Bern (BE) und die Stadt Bern bezahlen.",
+   "flag": false,
+   "note": "unrelated",
+   "id": "R04-015"
+  },
+  {
+   "lang": "fr",
+   "text": "Le dossier est envoyé en CC à la direction.",
+   "flag": false,
+   "note": "CC as copie conforme FR",
+   "id": "R04-016"
+  },
+  {
+   "lang": "it",
+   "text": "Il CC è stato modificato nel 2023.",
+   "flag": false,
+   "note": "CC = Codice civile in IT, valid",
+   "id": "R04-017"
+  },
+  {
+   "lang": "de",
+   "text": "Gemäss Art. 8 BV ist jede Person vor dem Gesetz gleich.",
+   "flag": false,
+   "note": "BV",
+   "id": "R04-018"
+  },
+  {
+   "lang": "fr",
+   "text": "Selon l’art. 8 Cst., tous les êtres humains sont égaux devant la loi.",
+   "flag": false,
+   "note": "Cst. with dot",
+   "id": "R04-019"
+  },
+  {
+   "lang": "it",
+   "text": "Secondo l’art. 8 Cost. tutti sono uguali davanti alla legge.",
+   "flag": false,
+   "note": "Cost.",
+   "id": "R04-020"
+  },
+  {
+   "lang": "de",
+   "text": "Gemäss Art. 8 Cst. ist jede Person vor dem Gesetz gleich.",
+   "flag": true,
+   "note": "Cst. in DE",
+   "id": "R04-021"
+  },
+  {
+   "lang": "de",
+   "text": "Die Gesuche werden nach VwVG behandelt; die Verfügung ist nach Art. 50 VwVG anfechtbar.",
+   "flag": false,
+   "note": "VwVG twice",
+   "id": "R04-022"
+  },
+  {
+   "lang": "de",
+   "text": "Die Verfügung ist nach Art. 50 PA anfechtbar.",
+   "flag": true,
+   "note": "PA in DE with Art.",
+   "id": "R04-023"
+  },
+  {
+   "lang": "fr",
+   "text": "La décision peut être attaquée selon l’art. 50 PA.",
+   "flag": false,
+   "note": "PA valid FR",
+   "id": "R04-024"
+  },
+  {
+   "lang": "de",
+   "text": "Das SEM bearbeitet die Daten im ZEMIS gemäss BGIAA (SR 142.51).",
+   "flag": false,
+   "note": "BGIAA",
+   "id": "R04-025"
+  },
+  {
+   "lang": "de",
+   "text": "Das SEM bearbeitet die Daten gemäss BGIAA (SR 142.513).",
+   "flag": true,
+   "note": "BGIAA with ZEMIS-V number",
+   "id": "R04-026"
+  },
+  {
+   "lang": "de",
+   "text": "Die Asylverordnung 1 (AsylV 1, SR 142.311) regelt das Verfahren.",
+   "flag": false,
+   "note": "AsylV 1",
+   "id": "R04-027"
+  },
+  {
+   "lang": "de",
+   "text": "Die Asylverordnung 1 (AsylV 1, SR 142.312) regelt das Verfahren.",
+   "flag": true,
+   "note": "AsylV 1 with AsylV 2 number",
+   "id": "R04-028"
+  },
+  {
+   "lang": "fr",
+   "text": "L’ordonnance 1 sur l’asile (OA 1) règle la procédure.",
+   "flag": false,
+   "note": "OA 1",
+   "id": "R04-029"
+  },
+  {
+   "lang": "it",
+   "text": "L’ordinanza 1 sull’asilo (OA 1) disciplina la procedura.",
+   "flag": true,
+   "note": "FR OA 1 in IT",
+   "id": "R04-030"
+  },
+  {
+   "lang": "de",
+   "text": "Das Datenschutzgesetz vom 25. September 2020 (DSG; SR 235.1) gilt.",
+   "flag": false,
+   "note": "DSG long",
+   "id": "R04-031"
+  },
+  {
+   "lang": "de",
+   "text": "Art. 5 DSG und Art. 6 DSV sind anwendbar.",
+   "flag": false,
+   "note": "two acts",
+   "id": "R04-032"
+  },
+  {
+   "lang": "fr",
+   "text": "Les art. 5 LPD et 6 OPDo s’appliquent.",
+   "flag": false,
+   "note": "two acts FR",
+   "id": "R04-033"
+  },
+  {
+   "lang": "it",
+   "text": "Gli art. 5 LPD e 6 OPDa si applicano.",
+   "flag": false,
+   "note": "two acts IT",
+   "id": "R04-034"
+  },
+  {
+   "lang": "it",
+   "text": "Gli art. 5 LPD e 6 OPDo si applicano.",
+   "flag": true,
+   "note": "OPDo (FR) in IT",
+   "id": "R04-035"
+  },
+  {
+   "lang": "de",
+   "text": "Gestützt auf Art. 182 Abs. 2 der Bundesverfassung (BV; SR 101) verordnet der Bundesrat:",
+   "flag": false,
+   "note": "Ingress",
+   "id": "R04-036"
+  },
+  {
+   "lang": "de",
+   "text": "Siehe SR 142.20 (AIG).",
+   "flag": false,
+   "note": "SR then abbr",
+   "id": "R04-037"
+  },
+  {
+   "lang": "de",
+   "text": "Siehe SR 142.31 (AIG).",
+   "flag": true,
+   "note": "SR then wrong abbr",
+   "id": "R04-038"
+  },
+  {
+   "lang": "fr",
+   "text": "Voir RS 142.20 (LEI).",
+   "flag": false,
+   "note": "RS then abbr FR",
+   "id": "R04-039"
+  },
+  {
+   "lang": "de",
+   "text": "Massgebend sind das OR und das ZGB.",
+   "flag": false,
+   "note": "OR ZGB",
+   "id": "R04-040"
+  },
+  {
+   "lang": "de",
+   "text": "Wir prüfen, ob die Lösung OR die Alternative besser ist.",
+   "flag": false,
+   "note": "OR as English or? rare",
+   "id": "R04-041"
+  },
+  {
+   "lang": "fr",
+   "text": "La LP (loi sur la poursuite) est applicable.",
+   "flag": false,
+   "note": "LP FR valid",
+   "id": "R04-042"
+  },
+  {
+   "lang": "de",
+   "text": "Die Anforderungen gelten für BöB-Beschaffungen.",
+   "flag": false,
+   "note": "compound hyphen",
+   "id": "R04-043"
+  },
+  {
+   "lang": "de",
+   "text": "Das NDG-Gesetz und die BWIS-Revision.",
+   "flag": false,
+   "note": "hyphen compounds",
+   "id": "R04-044"
+  },
+  {
+   "lang": "de",
+   "text": "Die Weisung gilt ab 1.1.2027 (SR 142.20, Art. 30).",
+   "flag": false,
+   "note": "SR without abbr",
+   "id": "R04-045"
+  },
+  {
+   "lang": "de",
+   "text": "Gemäss Art. 4 Abs. 2 SpG fördert der Bund die Mehrsprachigkeit.",
+   "flag": false,
+   "note": "SpG",
+   "id": "R04-046"
+  },
+  {
+   "lang": "fr",
+   "text": "Selon l’art. 4 LLC, la Confédération encourage le plurilinguisme.",
+   "flag": false,
+   "note": "LLC",
+   "id": "R04-047"
+  },
+  {
+   "lang": "de",
+   "text": "Selon l’article 4 LLC gilt...",
+   "flag": true,
+   "note": "LLC FR in DE",
+   "id": "R04-048"
+  },
+  {
+   "lang": "it",
+   "text": "La LAI disciplina l’assicurazione invalidità.",
+   "flag": false,
+   "note": "LAI IT valid",
+   "id": "R04-049"
+  },
+  {
+   "lang": "fr",
+   "text": "La LAI règle l’assurance-invalidité.",
+   "flag": false,
+   "note": "LAI FR valid",
+   "id": "R04-050"
+  },
+  {
+   "lang": "de",
+   "text": "Die Kantone wenden das IVG an, nicht die LAI.",
+   "flag": false,
+   "note": "contrast mention",
+   "id": "R04-051"
+  },
+  {
+   "lang": "de",
+   "text": "Erläuterungen zur LAsi",
+   "flag": true,
+   "note": "Überschrift, Kürzel der Fassung FR",
+   "kind": "h",
+   "id": "R04-052"
+  },
+  {
+   "lang": "fr",
+   "text": "Commentaire de l’AIG",
+   "flag": true,
+   "note": "Überschrift, Kürzel der Fassung DE",
+   "kind": "h",
+   "id": "R04-053"
+  },
+  {
+   "lang": "de",
+   "text": "Änderung des AIG",
+   "flag": false,
+   "note": "Überschrift, richtiges Kürzel",
+   "kind": "h",
+   "id": "R04-054"
+  },
+  {
+   "lang": "de",
+   "text": "Gemäss Art. 30 AuG kann das SEM Ausnahmen bewilligen.",
+   "flag": true,
+   "note": "abgelöst: AuG",
+   "id": "R04-055"
+  },
+  {
+   "lang": "fr",
+   "text": "Selon l’art. 30 LEtr, le SEM peut accorder des dérogations.",
+   "flag": true,
+   "note": "abgelöst: LEtr",
+   "id": "R04-056"
+  },
+  {
+   "lang": "it",
+   "text": "Secondo l’art. 30 LStr la SEM può concedere deroghe.",
+   "flag": true,
+   "note": "abgelöst: LStr",
+   "id": "R04-057"
+  },
+  {
+   "lang": "de",
+   "text": "Das ANAG wurde 2008 durch das AuG ersetzt, das seit 2019 AIG heisst.",
+   "flag": false,
+   "note": "Geschichte der Abkürzungen",
+   "id": "R04-058"
+  },
+  {
+   "lang": "de",
+   "text": "Nach dem bis Ende 2018 geltenden AuG und dem heutigen AIG gilt dasselbe.",
+   "flag": false,
+   "note": "altes und neues Kürzel im selben Absatz",
+   "id": "R04-059"
+  },
+  {
+   "lang": "de",
+   "text": "Der Antrag wurde im Aug. 2026 gestellt.",
+   "flag": false,
+   "note": "Monatsabkürzung",
+   "id": "R04-060"
+  },
+  {
+   "lang": "fr",
+   "text": "La procédure est régie par l’art. 3 DAA.",
+   "flag": true,
+   "note": "Dublin: deutsches Kürzel im französischen Text",
+   "id": "R04-061"
+  },
+  {
+   "lang": "it",
+   "text": "La procedura è retta dall’art. 3 AAD.",
+   "flag": false,
+   "note": "Dublin: AAD in italiano",
+   "id": "R04-062"
+  }
+ ],
+ "muster": [
+  {
+   "id": "M-001",
+   "de": "Die zuständige Behörde prüft das Gesuch innert 30 Tagen.",
+   "fr": "L’autorité compétente examine la demande dans les 30 jours.",
+   "it": "L’autorità competente esamina la domanda entro 30 giorni."
+  },
+  {
+   "id": "M-002",
+   "de": "Die gesuchstellende Person hat dem Gesuch eine Kopie des Reisepasses beizulegen.",
+   "fr": "Le requérant joint à sa demande une copie de son passeport.",
+   "it": "Il richiedente allega alla domanda una copia del passaporto."
+  },
+  {
+   "id": "M-003",
+   "de": "Das Staatssekretariat kann die Frist auf Gesuch hin um höchstens 30 Tage verlängern.",
+   "fr": "Le secrétariat d’État peut, sur demande, prolonger le délai de 30 jours au plus.",
+   "it": "Su richiesta, la Segreteria di Stato può prorogare il termine di 30 giorni al massimo."
+  },
+  {
+   "id": "M-004",
+   "de": "Die Daten dürfen nicht an Dritte bekannt gegeben werden.",
+   "fr": "Les données ne peuvent pas être communiquées à des tiers.",
+   "it": "I dati non possono essere comunicati a terzi."
+  },
+  {
+   "id": "M-005",
+   "de": "Die Kantone sind verpflichtet, dem Staatssekretariat jede Änderung zu melden.",
+   "fr": "Les cantons sont tenus d’annoncer toute modification au secrétariat d’État.",
+   "it": "I Cantoni sono tenuti a notificare ogni modifica alla Segreteria di Stato."
+  },
+  {
+   "id": "M-006",
+   "de": "Die Behörde ist nicht verpflichtet, eine mündliche Anhörung durchzuführen.",
+   "fr": "L’autorité n’est pas tenue de procéder à une audition orale.",
+   "it": "L’autorità non è tenuta a procedere a un’audizione orale."
+  },
+  {
+   "id": "M-007",
+   "de": "Niemand darf in einen Staat gezwungen werden, in dem ihm Folter droht.",
+   "fr": "Nul ne peut être contraint de se rendre dans un État où il risque la torture.",
+   "it": "Nessuno può essere costretto a recarsi in uno Stato in cui rischia la tortura."
+  },
+  {
+   "id": "M-008",
+   "de": "Die Bewilligung kann nur erteilt werden, wenn die Person über genügend finanzielle Mittel verfügt.",
+   "fr": "L’autorisation ne peut être octroyée que si la personne dispose de moyens financiers suffisants.",
+   "it": "Il permesso può essere rilasciato soltanto se la persona dispone di mezzi finanziari sufficienti."
+  },
+  {
+   "id": "M-009",
+   "de": "Die Verfügung kann innert 30 Tagen mit Beschwerde angefochten werden.",
+   "fr": "La décision peut faire l’objet d’un recours dans les 30 jours.",
+   "it": "La decisione può essere impugnata mediante ricorso entro 30 giorni."
+  },
+  {
+   "id": "M-010",
+   "de": "Die gesuchstellende Person muss die Gebühr nicht im Voraus bezahlen.",
+   "fr": "Le requérant n’est pas tenu de payer l’émolument à l’avance.",
+   "it": "Il richiedente non è tenuto a pagare l’emolumento anticipatamente."
+  },
+  {
+   "id": "M-011",
+   "de": "Der Bundesrat regelt die Einzelheiten.",
+   "fr": "Le Conseil fédéral règle les modalités.",
+   "it": "Il Consiglio federale disciplina i dettagli."
+  },
+  {
+   "id": "M-012",
+   "de": "Das Gesuch ist schriftlich einzureichen.",
+   "fr": "La demande doit être déposée par écrit.",
+   "it": "La domanda va presentata per iscritto."
+  },
+  {
+   "id": "M-013",
+   "de": "Die Behörde darf die Daten nur so lange aufbewahren, wie es für den Zweck erforderlich ist.",
+   "fr": "L’autorité ne peut conserver les données que pendant la durée nécessaire à leur finalité.",
+   "it": "L’autorità può conservare i dati soltanto finché è necessario per lo scopo."
+  },
+  {
+   "id": "M-014",
+   "de": "Es kann zu Verzögerungen bei der Bearbeitung kommen.",
+   "fr": "Des retards peuvent survenir lors du traitement.",
+   "it": "Possono verificarsi ritardi nel trattamento."
+  },
+  {
+   "id": "M-015",
+   "de": "Die Kantone können für ihre Leistungen Gebühren erheben.",
+   "fr": "Les cantons peuvent percevoir des émoluments pour leurs prestations.",
+   "it": "I Cantoni possono riscuotere emolumenti per le loro prestazioni."
+  },
+  {
+   "id": "M-016",
+   "de": "Wer ein Gesuch einreicht, muss seine Identität nachweisen.",
+   "fr": "Quiconque dépose une demande doit prouver son identité.",
+   "it": "Chi presenta una domanda deve comprovare la propria identità."
+  },
+  {
+   "id": "M-017",
+   "de": "Die Sektion soll die Gesuche in der Regel innert zehn Tagen bearbeiten.",
+   "fr": "La section traite en règle générale les demandes dans un délai de dix jours.",
+   "it": "Di regola la sezione tratta le domande entro dieci giorni."
+  },
+  {
+   "id": "M-018",
+   "de": "Personen ohne gültigen Ausweis dürfen nicht einreisen.",
+   "fr": "Les personnes sans document d’identité valable ne peuvent pas entrer en Suisse.",
+   "it": "Le persone senza documento d’identità valido non possono entrare in Svizzera."
+  },
+  {
+   "id": "M-019",
+   "de": "Die Behörde darf die Daten nicht ohne Einwilligung der betroffenen Person weitergeben.",
+   "fr": "L’autorité ne peut communiquer les données sans le consentement de la personne concernée.",
+   "it": "L’autorità non può comunicare i dati senza il consenso della persona interessata."
+  },
+  {
+   "id": "M-020",
+   "de": "In keinem Fall dürfen besonders schützenswerte Personendaten veröffentlicht werden.",
+   "fr": "En aucun cas des données sensibles ne peuvent être publiées.",
+   "it": "In nessun caso i dati personali degni di particolare protezione possono essere pubblicati."
+  },
+  {
+   "id": "M-021",
+   "de": "Kein Gesuch darf ohne vorgängige Prüfung abgewiesen werden.",
+   "fr": "Aucune demande ne peut être rejetée sans examen préalable.",
+   "it": "Nessuna domanda può essere respinta senza esame preliminare."
+  },
+  {
+   "id": "M-022",
+   "de": "Die Behörde muss nicht jedes Gesuch persönlich prüfen.",
+   "fr": "L’autorité n’est pas tenue d’examiner personnellement chaque demande.",
+   "it": "L’autorità non è tenuta a esaminare personalmente ogni domanda."
+  },
+  {
+   "id": "M-023",
+   "de": "Auch die Kantone dürfen keine zusätzlichen Gebühren erheben.",
+   "fr": "Les cantons ne peuvent pas non plus percevoir d’émoluments supplémentaires.",
+   "it": "Nemmeno i Cantoni possono riscuotere emolumenti supplementari."
+  },
+  {
+   "id": "M-024",
+   "de": "Sie müssen das Formular unterschreiben und dem Amt zurücksenden.",
+   "fr": "Vous devez signer le formulaire et le renvoyer à l’office.",
+   "it": "Deve firmare il modulo e rinviarlo all’ufficio."
+  },
+  {
+   "id": "M-025",
+   "de": "Sie können der Sektion jederzeit weitere Unterlagen zustellen.",
+   "fr": "Vous pouvez à tout moment transmettre d’autres documents à la section.",
+   "it": "Può trasmettere in qualsiasi momento altri documenti alla sezione."
+  },
+  {
+   "id": "M-026",
+   "de": "Sie müssen keine Gebühr bezahlen.",
+   "fr": "Vous n’avez pas à payer d’émolument.",
+   "it": "Non è tenuto a pagare un emolumento."
+  },
+  {
+   "id": "M-027",
+   "de": "Ist das Gesuch unvollständig, so setzt die Behörde eine Nachfrist.",
+   "fr": "Si la demande est incomplète, l’autorité impartit un délai supplémentaire.",
+   "it": "Se la domanda è incompleta, l’autorità assegna un termine suppletorio."
+  },
+  {
+   "id": "M-028",
+   "de": "Die Zustimmung des Kantons kann widerrufen werden.",
+   "fr": "L’approbation du canton peut être révoquée.",
+   "it": "Il nulla osta del Cantone può essere revocato."
+  },
+  {
+   "id": "M-029",
+   "de": "Die Behörde sollte die Kantone frühzeitig informieren.",
+   "fr": "L’autorité devrait informer les cantons suffisamment tôt.",
+   "it": "L’autorità dovrebbe informare tempestivamente i Cantoni."
+  },
+  {
+   "id": "M-030",
+   "de": "Es ist nicht auszuschliessen, dass weitere Kosten entstehen.",
+   "fr": "Il n’est pas exclu que des frais supplémentaires surviennent.",
+   "it": "Non si può escludere che sorgano costi supplementari."
+  },
+  {
+   "id": "M-031",
+   "de": "Im Übrigen gelten die Bestimmungen des Asylgesetzes vom 26. Juni 1998 (AsylG, SR 142.31).",
+   "fr": "Pour le reste, les dispositions de la loi du 26 juin 1998 sur l’asile (LAsi, RS 142.31) s’appliquent.",
+   "it": "Per il resto si applicano le disposizioni della legge del 26 giugno 1998 sull’asilo (LAsi, RS 142.31)."
+  },
+  {
+   "id": "M-032",
+   "de": "Die Datenbearbeitung richtet sich nach Art. 6 DSG und Art. 3 DSV.",
+   "fr": "Le traitement des données est régi par l’art. 6 LPD et l’art. 3 OPDo.",
+   "it": "Il trattamento dei dati è retto dall’art. 6 LPD e dall’art. 3 OPDa."
+  },
+  {
+   "id": "M-033",
+   "de": "Das Ausländer- und Integrationsgesetz (AIG; frz. LEI; ital. LStrI) gilt sinngemäss.",
+   "fr": "La loi sur les étrangers et l’intégration (LEI ; all. AIG ; it. LStrI) s’applique par analogie.",
+   "it": "La legge federale sugli stranieri e la loro integrazione (LStrI; ted. AIG; franc. LEI) si applica per analogia."
+  },
+  {
+   "id": "M-034",
+   "de": "Die Abkürzungen lauten AIG (deutsch), LEI (französisch) und LStrI (italienisch).",
+   "fr": "Les abréviations sont AIG (allemand), LEI (français) et LStrI (italien).",
+   "it": "Le abbreviazioni sono AIG (tedesco), LEI (francese) e LStrI (italiano)."
+  }
+ ]
+}

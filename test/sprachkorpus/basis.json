@@ -1,0 +1,17 @@
+{
+ "X11": {
+  "praezision": 1,
+  "trefferquote": 0.9354838709677419,
+  "faelle": 188
+ },
+ "X12": {
+  "praezision": 1,
+  "trefferquote": 1,
+  "faelle": 136
+ },
+ "R04": {
+  "praezision": 1,
+  "trefferquote": 0.9473684210526315,
+  "faelle": 164
+ }
+}

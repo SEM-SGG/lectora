@@ -1,0 +1,61 @@
+# GitHub Pages von Hand auf eine bestehende Version setzen (Zurückrollen): Actions → pages → Run workflow → Tag (z. B. v2.0.0).
+# Nimmt Lectora.html aus dem Release dieses Tags (Prüfsumme aus SHA256SUMS.txt desselben Release) und version.json vom Tag.
+# Ältere Offline-Ausgaben sehen danach diese Version als neuste. Siehe docs/release.md, Abschnitt «Zurückrollen».
+name: pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag einer veröffentlichten Version, z. B. v2.0.0'
+        required: true
+
+permissions: {}
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  pages:
+    name: GitHub Pages auf eine bestehende Version
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Tag prüfen
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          if ! printf '%s' "$TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then echo "::error::Kein Tag der Form vX.Y.Z: $TAG"; exit 1; fi
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          ref: refs/tags/${{ inputs.tag }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Tag liegt auf main, Release besteht, Datei unverändert
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          git fetch --no-tags origin +refs/heads/main:refs/remotes/origin/main
+          git merge-base --is-ancestor HEAD origin/main || { echo "::error::$TAG liegt nicht auf main"; exit 1; }
+          mkdir -p dl site
+          gh release download "$TAG" --dir dl --pattern Lectora.html --pattern SHA256SUMS.txt
+          (cd dl && grep ' Lectora.html$' SHA256SUMS.txt | sha256sum -c -)
+          python3 tools/release_check.py "$TAG"
+          cp dl/Lectora.html site/index.html
+          cp version.json site/version.json
+          touch site/.nojekyll
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5

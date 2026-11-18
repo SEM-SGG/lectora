@@ -1,0 +1,118 @@
+{
+ "fixture": "konzept_real_de.docx",
+ "beschreibung": "Echtes Konzept (anonymisiert), deutsche Fassung: sauber, keine Befunde erwartet.",
+ "must": [],
+ "mustNot": [
+  {
+   "crit": "F01",
+   "why": "Titel vorhanden"
+  },
+  {
+   "crit": "F02",
+   "why": "Datum im Kopf vorhanden"
+  },
+  {
+   "crit": "F03",
+   "why": "Stelle im Kopf genannt"
+  },
+  {
+   "crit": "F04",
+   "why": "alle Pflichtabschnitte vorhanden"
+  },
+  {
+   "crit": "F05",
+   "why": "Version im Kopf"
+  },
+  {
+   "crit": "T05",
+   "quote": "10 000",
+   "why": "Tausendergruppen mit geschütztem Leerzeichen, einheitlich"
+  },
+  {
+   "crit": "T05",
+   "quote": "85 000 Franken",
+   "why": "einheitlich"
+  },
+  {
+   "crit": "T07",
+   "quote": "BAB",
+   "why": "BAB ist eingeführt"
+  },
+  {
+   "crit": "T07",
+   "quote": "(IT)",
+   "why": "IT ist eingeführt"
+  },
+  {
+   "crit": "T07",
+   "quote": "BetrV-BAB",
+   "why": "Kürzel eines eigenen Erlasses, eingeführt"
+  },
+  {
+   "crit": "R01",
+   "quote": "Ziff. 2.1",
+   "why": "Ziffer 2.1 existiert"
+  },
+  {
+   "crit": "R01",
+   "quote": "Anhang 1",
+   "why": "Anhang 1 existiert"
+  },
+  {
+   "crit": "T03",
+   "quote": "d. h.",
+   "why": "Abkürzung mit Leerzeichen ist korrekt"
+  },
+  {
+   "crit": "T03",
+   "quote": "z. B.",
+   "why": "Abkürzung mit Leerzeichen ist korrekt"
+  },
+  {
+   "crit": "T04",
+   "quote": "8.30 Uhr",
+   "why": "Uhrzeit, kein Datum"
+  },
+  {
+   "crit": "R02",
+   "quote": "www.example.com/posteingang",
+   "why": "Adresse ohne Protokoll"
+  },
+  {
+   "crit": "T08",
+   "quote": "Art. 8 Abs. 1 Bst. a",
+   "why": "korrekte Zitierweise"
+  },
+  {
+   "crit": "R04",
+   "quote": "BetrV-BAB",
+   "why": "unbekannter Erlass: keine Paarung prüfbar"
+  },
+  {
+   "crit": "L05",
+   "quote": "Mitarbeiterinnen und Mitarbeiter",
+   "why": "Paarform"
+  },
+  {
+   "crit": "T02",
+   "quote": "«Digitales Amt»",
+   "why": "Guillemets"
+  },
+  {
+   "crit": "S02",
+   "why": "Anhang ohne Nummer ist zulässig"
+  },
+  {
+   "crit": "L06",
+   "why": "keine vagen Formulierungen"
+  },
+  {
+   "crit": "L01",
+   "why": "keine überlangen Sätze"
+  },
+  {
+   "crit": "T10",
+   "why": "einheitliche Schreibweisen"
+  }
+ ]
+}

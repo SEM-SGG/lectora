@@ -1,0 +1,12 @@
+{
+  "format": "lectora-rueckmeldung",
+  "schema": 1,
+  "lectora": "2.0.0",
+  "created": "2026-11-18",
+  "excerpts": true,
+  "entries": [
+    { "crit": "L06", "key": "f.L06", "source": "rule", "sev": "info", "lang": "de", "type": "weisung", "format": "docx", "params": {}, "note": "Empfehlung ist hier gewollt", "quote": "sollte", "sentence": "Sie sollte das Gesuch innert 2 Arbeitstagen an die zuständige Sektion weiterleiten.", "file": "weisung_de_demo.docx" },
+    { "crit": "L01", "key": "f.L01", "source": "rule", "sev": "info", "lang": "de", "type": "weisung", "format": "docx", "params": { "note": 20, "warn": 45 }, "quote": "Die zuständige Sektion beantwortet das Gesuch innert 30 Tagen.", "sentence": "Die zuständige Sektion beantwortet das Gesuch innert 30 Tagen.", "file": "weisung_de_demo.docx" },
+    { "crit": "T07", "key": "f.T07", "source": "rule", "sev": "info", "lang": "de", "type": "weisung", "format": "docx", "params": {}, "note": "DSB ist amtsbekannt" }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+ "fixture": "konzept_real_it.docx",
+ "beschreibung": "Echtes Konzept, italienische Fassung: keine Befunde erwartet.",
+ "must": [],
+ "mustNot": [
+  {
+   "crit": "F01",
+   "why": "Titel vorhanden"
+  },
+  {
+   "crit": "F02",
+   "why": "Datum im Kopf vorhanden"
+  },
+  {
+   "crit": "F03",
+   "why": "Stelle im Kopf genannt"
+  },
+  {
+   "crit": "F04",
+   "why": "alle Pflichtabschnitte vorhanden"
+  },
+  {
+   "crit": "F05",
+   "why": "Version im Kopf"
+  },
+  {
+   "crit": "T05",
+   "quote": "10 000",
+   "why": "Tausendergruppen einheitlich"
+  },
+  {
+   "crit": "T07",
+   "quote": "UFES",
+   "why": "UFES ist eingeführt"
+  },
+  {
+   "crit": "T07",
+   "quote": "(IT)",
+   "why": "IT ist eingeführt"
+  },
+  {
+   "crit": "T07",
+   "quote": "OEs-UFES",
+   "why": "Kürzel eines eigenen Erlasses"
+  },
+  {
+   "crit": "R01",
+   "quote": "n. 2.1",
+   "why": "Ziffer 2.1 existiert"
+  },
+  {
+   "crit": "R01",
+   "quote": "allegato 1",
+   "why": "Allegato 1 existiert"
+  },
+  {
+   "crit": "T08",
+   "quote": "art. 8 cpv. 1 lett. a",
+   "why": "italienische Zitierweise"
+  },
+  {
+   "crit": "R04",
+   "quote": "OEs-UFES",
+   "why": "unbekannter Erlass"
+  },
+  {
+   "crit": "L05",
+   "quote": "collaboratrici e i collaboratori",
+   "why": "Paarform"
+  },
+  {
+   "crit": "T04",
+   "quote": "ore 8.30",
+   "why": "Uhrzeit, kein Datum"
+  },
+  {
+   "crit": "T02",
+   "quote": "«Ufficio digitale»",
+   "why": "Guillemets"
+  },
+  {
+   "crit": "L06",
+   "why": "keine vagen Formulierungen"
+  },
+  {
+   "crit": "L01",
+   "why": "keine überlangen Sätze"
+  },
+  {
+   "crit": "S02",
+   "why": "Allegato ohne Nummer ist zulässig"
+  }
+ ]
+}

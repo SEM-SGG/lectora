@@ -1,0 +1,60 @@
+name: Fehler
+description: Lectora tut nicht, was es soll.
+labels: ["fehler"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Dieses Repository ist öffentlich.** Schreibe keinen Text aus einem Dokument in dieses Formular, auch nicht auszugsweise.
+        Füge keine Dokumente, keine Rückmeldedateien mit Textstellen und keine Bildschirmfotos von Dokumenten an.
+        Ein Bildschirmfoto der Oberfläche mit den Beispieldokumenten von Lectora ist in Ordnung.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Steht am Ende der Anleitung («Version … · Stand …») und in der Offline-Ausgabe oben links.
+      placeholder: "2.0.0 · 2026-11-18"
+    validations:
+      required: true
+  - type: dropdown
+    id: ausgabe
+    attributes:
+      label: Ausgabe
+      options:
+        - Offline-Ausgabe (Datei Lectora.html)
+        - Webseite (GitHub Pages)
+        - Artefakt auf claude.ai
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser und Betriebssystem
+      placeholder: "Edge 131, Windows 11"
+    validations:
+      required: true
+  - type: textarea
+    id: schritte
+    attributes:
+      label: Schritte
+      description: Was hast du getan? Möglichst mit den Beispieldokumenten («Beispieldokumente laden»), damit andere den Fehler nachvollziehen können.
+      placeholder: |
+        1. Beispieldokumente laden
+        2. Prüfung, deutsche Weisung
+        3. …
+    validations:
+      required: true
+  - type: textarea
+    id: erwartet
+    attributes:
+      label: Erwartet und tatsächlich
+      description: Was hast du erwartet, was ist passiert? Fehlermeldung im Wortlaut (ohne Dokumenttext).
+    validations:
+      required: true
+  - type: checkboxes
+    id: kein-text
+    attributes:
+      label: Bestätigung
+      options:
+        - label: Dieses Issue enthält keinen Text und keine Bilder aus echten Dokumenten.
+          required: true

@@ -1,0 +1,59 @@
+name: Regel meldet Fehlalarm
+description: Eine Regel schlägt an, obwohl der Text in Ordnung ist.
+labels: ["fehlalarm"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Dieses Repository ist öffentlich. Schreibe keinen Text aus einem Dokument in dieses Formular.**
+        Beschreibe das Muster in eigenen Worten oder mit einem selbst erfundenen Satz, der dasselbe zeigt.
+        Rückmeldedateien mit Textstellen gehören ins interne Repository der Sektion, nicht hierher (siehe docs/rueckmeldungen.md).
+  - type: input
+    id: kriterium
+    attributes:
+      label: Kriterium
+      description: Kennung, wie sie in der Prüfung und auf der Seite «Kriterien» steht.
+      placeholder: "L06"
+    validations:
+      required: true
+  - type: dropdown
+    id: sprache
+    attributes:
+      label: Sprache des Dokuments
+      options: [Deutsch, Französisch, Italienisch, andere]
+    validations:
+      required: true
+  - type: dropdown
+    id: typ
+    attributes:
+      label: Dokumenttyp
+      options: [Weisung, Konzept, Aktennotiz, Bericht oder anderes Dokument, Präsentation]
+    validations:
+      required: true
+  - type: dropdown
+    id: format
+    attributes:
+      label: Format
+      options: [Word (.docx), PDF, PowerPoint (.pptx)]
+    validations:
+      required: true
+  - type: textarea
+    id: muster
+    attributes:
+      label: Muster
+      description: Warum trifft der Befund nicht zu? Mit einem erfundenen Beispielsatz, nie mit Originaltext.
+      placeholder: "«grundsätzlich» bedeutet hier «mit Ausnahmen», die Ausnahme steht im nächsten Satz. Erfundenes Beispiel: «Die Auskunft ist grundsätzlich kostenlos. Ab acht Stunden Aufwand fällt eine Gebühr an.»"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: "2.0.0"
+  - type: checkboxes
+    id: kein-text
+    attributes:
+      label: Bestätigung
+      options:
+        - label: Dieses Issue enthält keinen Text aus echten Dokumenten; der Beispielsatz ist erfunden.
+          required: true

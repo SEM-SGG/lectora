@@ -1,0 +1,36 @@
+{
+  "name": "lectora",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Lectora: Prüfung von Verwaltungsdokumenten (Word, PDF, PowerPoint) in Deutsch, Französisch und Italienisch, im Browser",
+  "type": "module",
+  "repository": { "type": "git", "url": "https://github.com/SEM-SGG/lectora.git" },
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "node build.mjs --local && node build.mjs && node build.mjs --offline",
+    "build:artefakt": "node build.mjs",
+    "build:test": "node build.mjs --local",
+    "build:offline": "node build.mjs --offline",
+    "build:offline-ohne-pruefung": "node build.mjs --offline --no-update-check",
+    "test": "python3 test/run.py",
+    "test:schnell": "python3 test/run.py schnell",
+    "test:logik": "python3 test/run.py logik",
+    "test:export": "python3 test/run.py export",
+    "test:browser": "python3 test/run.py browser",
+    "test:offline": "python3 test/run.py offline",
+    "test:netz": "python3 test/run.py netz",
+    "hygiene": "python3 tools/hygiene.py",
+    "erlasse": "python3 tools/erlasse_abgleich.py",
+    "norm": "python3 tools/norm.py"
+  },
+  "devDependencies": {
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@fontsource/ibm-plex-sans": "5.3.0",
+    "@fontsource/ibm-plex-serif": "5.3.0",
+    "axe-core": "4.14.0",
+    "jszip": "3.10.1",
+    "lucide-static": "1.72.0",
+    "pdf-lib": "1.17.1",
+    "pdfjs-dist": "3.11.174"
+  }
+}

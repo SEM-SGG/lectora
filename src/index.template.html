@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lectora Dokumentenprüfung</title>
+<!-- Favicon: Zeichen der Wortmarke im Primärblau (--primary) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f62fe' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v16'/%3E%3Cpath d='m16 12 2 2 4-4'/%3E%3Cpath d='M22 6V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2h4.001A2 2 0 0022 17v-1.344'/%3E%3C/svg%3E">
+<style>
+/*__CSS__*/
+</style>
+</head>
+<body>
+<button class="skip" id="skip" type="button"></button>
+<div class="app" id="app">
+  <header class="topbar" id="topbar">
+    <div class="utility">
+      <div class="util-left">
+        <button class="util-btn" id="sessionChip" type="button"></button>
+        <button class="util-btn util-mark" id="offMark" type="button" data-fid="off-mark" hidden></button>
+        <a class="util-btn" id="webSave" data-fid="web-save" target="_blank" rel="noopener noreferrer" hidden></a>
+      </div>
+      <div class="util-right">
+        <div class="seg" id="langSeg" role="group"></div>
+        <button class="util-btn" id="clearBtn" type="button"></button>
+      </div>
+    </div>
+    <div class="upd-band" id="updBand" role="status" hidden></div>
+    <div class="topnav">
+      <button class="brand" id="brandBtn" type="button" data-fid="home"><svg class="ic brand-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v16"/><path d="m16 12 2 2 4-4"/><path d="M22 6V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2h4.001A2 2 0 0022 17v-1.344"/></svg><span class="brand-name">Lectora</span> <span class="brand-sub" id="brandSub"></span></button>
+      <nav class="nav" id="mainNav"></nav>
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mainNav"></button>
+    </div>
+    <div id="tip" class="tip" role="tooltip" hidden></div>
+  </header>
+  <main id="view" tabindex="-1"></main>
+</div>
+<div class="snack-host" id="snacks" role="status" aria-live="polite"></div>
+<dialog id="dlg" class="dlg"></dialog>
+<input type="file" id="file" multiple hidden accept=".docx,.pdf,.pptx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation">
+<input type="file" id="verFile" hidden accept=".docx,.pdf,.pptx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation">
+<input type="file" id="profFile" hidden accept=".json,application/json">
+<script src="vendor/jszip.min.js"></script>
+<script>
+/*__DATA__*/
+</script>
+<script>
+/*__JS__*/
+</script>
+</body>
+</html>

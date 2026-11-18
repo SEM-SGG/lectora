@@ -1,0 +1,96 @@
+{
+ "fixture": "weisung_fr_errors.docx",
+ "beschreibung": "Demo-Weisung FR mit Übersetzungsfehlern (fr_errors) und einem deutschen Absatz.",
+ "must": [
+  {
+   "crit": "L04",
+   "para": "Die Auskunft ist kostenlos",
+   "why": "Absatz auf Deutsch in der französischen Fassung"
+  },
+  {
+   "crit": "T02",
+   "quote": "\"guide\"",
+   "why": "gerade Anführungszeichen"
+  },
+  {
+   "crit": "T03",
+   "quote": "fait foi:",
+   "key": "f.T03.frnbsp",
+   "why": "fehlendes geschütztes Leerzeichen vor dem Doppelpunkt"
+  },
+  {
+   "crit": "T07",
+   "quote": "SMF",
+   "why": "SMF im (deutschen) Absatz nicht eingeführt; in der französischen Fassung ohnehin falsch"
+  }
+ ],
+ "mustNot": [
+  {
+   "crit": "F01",
+   "why": "Titel vorhanden"
+  },
+  {
+   "crit": "F02",
+   "why": "Datum im Kopf vorhanden"
+  },
+  {
+   "crit": "F03",
+   "why": "Stelle im Kopf genannt"
+  },
+  {
+   "crit": "F04",
+   "why": "alle Pflichtabschnitte vorhanden"
+  },
+  {
+   "crit": "F05",
+   "why": "Version im Kopf"
+  },
+  {
+   "crit": "R04",
+   "quote": "LPD, RS 235.1",
+   "why": "LPD gehört zu RS 235.1"
+  },
+  {
+   "crit": "R04",
+   "quote": "LTrans, RS 152.3",
+   "why": "LTrans gehört zu RS 152.3"
+  },
+  {
+   "crit": "T08",
+   "quote": "l’art. 25, al. 3, let. a",
+   "why": "französische Zitierweise korrekt"
+  },
+  {
+   "crit": "T07",
+   "quote": "SEQT",
+   "why": "SEQT ist eingeführt"
+  },
+  {
+   "crit": "T07",
+   "quote": "EJPD",
+   "why": "EJPD ist eine bekannte Bundesabkürzung; die falsche Sprache meldet X06 im Vergleich"
+  },
+  {
+   "crit": "T03",
+   "quote": "15 h 30",
+   "why": "Uhrzeit mit Leerzeichen ist französische Schreibweise"
+  },
+  {
+   "crit": "L05",
+   "quote": "collaborateurs et collaboratrices",
+   "why": "Paarform ist korrekt"
+  },
+  {
+   "crit": "L06",
+   "why": "keine vagen Formulierungen"
+  },
+  {
+   "crit": "T04",
+   "why": "Daten einheitlich ausgeschrieben"
+  },
+  {
+   "crit": "L01",
+   "why": "keine überlangen Sätze"
+  }
+ ]
+}

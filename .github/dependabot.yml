@@ -1,0 +1,25 @@
+# Versions-Updates als Pull Requests. Aktionen sind in den Workflows per Commit festgelegt (Version im Kommentar); Dependabot
+# aktualisiert Commit und Kommentar. npm: Eine neue Version einer Bibliothek (JSZip, pdf.js, pdf-lib) lässt den Build scheitern, bis
+# der neue SHA-512-Wert und die Adresse auf cdnjs in build.mjs stehen (docs/entwicklung.md); danach node tools/notices.mjs --write.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: "Aktionen"
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "npm"
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "pip"

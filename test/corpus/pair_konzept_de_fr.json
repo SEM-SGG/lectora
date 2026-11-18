@@ -1,0 +1,78 @@
+{
+ "ref": "konzept_real_de.docx",
+ "tgt": "konzept_real_fr.docx",
+ "beschreibung": "Echtes Konzept DE → FR: sauber.",
+ "must": [],
+ "mustNot": [
+  {
+   "crit": "X01",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X02",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X03",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X04",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X05",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X06",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X07",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X08",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X11",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X12",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X02",
+   "quote": "10 000",
+   "why": "gleiche Zahlen"
+  },
+  {
+   "crit": "X03",
+   "quote": "2027",
+   "why": "gleiches Datum"
+  },
+  {
+   "crit": "X05",
+   "quote": "www.example.com/posteingang",
+   "why": "gleiche Adresse"
+  },
+  {
+   "crit": "X02",
+   "quote": "8 h 30",
+   "why": "8.30 Uhr und 8 h 30 sind dieselbe Zeit"
+  },
+  {
+   "crit": "X04",
+   "quote": "art. 8, al. 1, let. a",
+   "why": "gleiche Bestimmung"
+  },
+  {
+   "crit": "X12",
+   "quote": "OExpl-OFEX",
+   "why": "eigener Erlass, Kürzel je Sprache"
+  }
+ ]
+}

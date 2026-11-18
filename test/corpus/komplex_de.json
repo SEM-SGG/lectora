@@ -1,0 +1,91 @@
+{
+ "fixture": "komplex_de.docx",
+ "beschreibung": "Aktennotiz mit Tabelle, Tabulator, Zeilenumbruch und nachverfolgter Änderung (komplex).",
+ "must": [
+  {
+   "crit": "F04",
+   "params": {
+    "sec": "sec.aktennotiz.adressat"
+   },
+   "why": "Aktennotiz ohne Adressat"
+  },
+  {
+   "crit": "F04",
+   "params": {
+    "sec": "sec.aktennotiz.vorgehen"
+   },
+   "why": "Aktennotiz ohne weiteres Vorgehen"
+  },
+  {
+   "crit": "T01",
+   "quote": "gemäß",
+   "why": "Eszett"
+  },
+  {
+   "crit": "T02",
+   "quote": "„Leitfaden“",
+   "why": "deutsche Anführungszeichen"
+  },
+  {
+   "crit": "T02",
+   "quote": "„pünktlich“",
+   "why": "deutsche Anführungszeichen in der Tabelle"
+  },
+  {
+   "crit": "T03",
+   "quote": "2025  über",
+   "why": "doppeltes Leerzeichen"
+  },
+  {
+   "crit": "T06",
+   "quote": "96%",
+   "kind": "p",
+   "why": "Prozent ohne geschütztes Leerzeichen (nach Tabulator)"
+  },
+  {
+   "crit": "T06",
+   "quote": "96%",
+   "kind": "cell",
+   "why": "Prozent ohne geschütztes Leerzeichen in der Tabelle"
+  },
+  {
+   "crit": "R02",
+   "quote": "http://www.example.com",
+   "why": "unverschlüsselter Link"
+  },
+  {
+   "crit": "D01",
+   "why": "eine nachverfolgte Änderung im Dokument"
+  }
+ ],
+ "mustNot": [
+  {
+   "crit": "F01",
+   "why": "Titel vorhanden"
+  },
+  {
+   "crit": "F02",
+   "why": "Datum im Kopf"
+  },
+  {
+   "crit": "F03",
+   "why": "Bundesamt im Kopf"
+  },
+  {
+   "crit": "T05",
+   "why": "keine Zahlengruppen"
+  },
+  {
+   "crit": "L01",
+   "why": "kurze Sätze"
+  },
+  {
+   "crit": "T07",
+   "why": "keine Abkürzungen"
+  },
+  {
+   "crit": "L04",
+   "why": "durchgehend Deutsch"
+  }
+ ]
+}

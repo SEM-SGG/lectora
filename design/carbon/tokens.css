@@ -1,0 +1,74 @@
+/* Carbon — Kopie der Design-Tokens des Design Systems «Carbon» (nach IBM Carbon), ohne @font-face und Typo-Klassen. Die gültigen Werte stehen in src/styles.css (:root). */
+:root, [data-theme="white"] {
+  --primary: #0f62fe;
+  --primary-hover: #0050e6;
+  --primary-active: #002d9c;
+  --link-hover: #0043ce;
+  --on-primary: #ffffff;
+  --focus: #0f62fe;
+  --highlight: #edf5ff;
+  --canvas: #ffffff;
+  --surface-1: #f4f4f4;
+  --surface-2: #e0e0e0;
+  --surface-hover: #e8e8e8;
+  --canvas-hover: #f4f4f4;
+  --inverse-canvas: #161616;
+  --inverse-surface-1: #262626;
+  --overlay: rgba(22, 22, 22, 0.5);
+  --ink: #161616;
+  --ink-muted: #525252;
+  --ink-subtle: #6f6f6f;
+  --ink-disabled: #8c8c8c;
+  --inverse-ink: #ffffff;
+  --inverse-ink-muted: #c6c6c6;
+  --hairline: #e0e0e0;
+  --border-strong: #8d8d8d;
+  --hairline-strong: #161616;
+  --success: #24a148;
+  --success-text: #0e6027;
+  --success-bg: #defbe6;
+  --warning: #f1c21b;
+  --warning-text: #3d3100;
+  --warning-bg: #fcf4d6;
+  --error: #da1e28;
+  --error-text: #a2191f;
+  --error-bg: #fff1f1;
+  --info-text: #002d9c;
+  --pending-text: #8a3800;
+  --pending-bg: #fff2e8;
+  --diff-ins-bg: #defbe6;
+  --diff-ins-text: #0e6027;
+  --diff-del-bg: #fff1f1;
+  --diff-del-text: #a2191f;
+  --shadow-overlay: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+:root {
+  --space-xxs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+  --space-section: 96px;
+  --radius-none: 0px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --size-control-sm: 32px;
+  --size-control-md: 40px;
+  --size-control-lg: 48px;
+  --size-utility-bar: 32px;
+  --size-top-nav: 48px;
+  --size-sidebar: 320px;
+  --size-sidebar-sm: 240px;
+  --size-measure: 680px;
+  --size-margin-gutter: 128px;
+  --size-content-max: 1584px;
+  --font-sans: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+/* Typostile (Grösse / Zeilenhöhe / Gewicht / Laufweite):
+   display-md 42px/1.2/300/0 · headline 32px/1.25/400 · card-title 24px/1.33/400 · subhead 20px/1.4/400 · body-lg 18px/1.5/400
+   body 16px/1.5/400/0.16px · body-sm 14px/1.29/400/0.16px · body-emphasis 14px/1.29/600/0.16px · button 14px/1.29/400/0.16px
+   label, caption 12px/1.33/400/0.32px · legal-body Serif 17px/1.7/400 · legal-compact Serif 15px/1.65 · code Mono 12px/1.5/400 */

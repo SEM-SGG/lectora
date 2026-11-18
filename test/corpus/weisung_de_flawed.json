@@ -1,0 +1,225 @@
+{
+ "fixture": "weisung_de_flawed.docx",
+ "beschreibung": "Demo-Weisung DE mit zusätzlichen Struktur-, Verweis-, Zahlen- und Leerzeichenfehlern sowie Kommentar, Hervorhebung und Bild (de_flawed).",
+ "must": [
+  {
+   "crit": "F01",
+   "why": "Titel als gewöhnlicher Absatz, kein Titel"
+  },
+  {
+   "crit": "F04",
+   "params": {
+    "sec": "sec.weisung.inkraft"
+   },
+   "why": "Inkrafttreten fehlt"
+  },
+  {
+   "crit": "S01",
+   "quote": "4.1 Eingang und Triage",
+   "why": "Ebene 3 direkt unter Ebene 1"
+  },
+  {
+   "crit": "S02",
+   "quote": "4 Rechtsgrundlagen",
+   "why": "3 übersprungen"
+  },
+  {
+   "crit": "S02",
+   "quote": "5 Auskunft und Kontakt",
+   "why": "5 doppelt vergeben"
+  },
+  {
+   "crit": "S03",
+   "quote": "6 Schlussbestimmungen",
+   "why": "Abschnitt ohne Inhalt"
+  },
+  {
+   "crit": "L01",
+   "quote": "Das Verfahren ist so auszugestalten",
+   "why": "Satz mit 46 Wörtern"
+  },
+  {
+   "crit": "L02",
+   "quote": "nicht nicht",
+   "why": "Wortdopplung"
+  },
+  {
+   "crit": "L03",
+   "quote": "TODO",
+   "why": "Entwurfsrest"
+  },
+  {
+   "crit": "L04",
+   "para": "The request is processed",
+   "why": "englischer Absatz"
+  },
+  {
+   "crit": "L05",
+   "quote": "Mitarbeiter*innen",
+   "why": "Gendermarkierung"
+  },
+  {
+   "crit": "L06",
+   "quote": "Sie sollte",
+   "why": "«sollte» in einer Weisung"
+  },
+  {
+   "crit": "T02",
+   "quote": "„Leitfaden Auskunft“",
+   "why": "deutsche Anführungszeichen"
+  },
+  {
+   "crit": "T03",
+   "key": "f.T03.double",
+   "quote": ";  sie",
+   "why": "doppeltes Leerzeichen"
+  },
+  {
+   "crit": "T03",
+   "key": "f.T03.before",
+   "quote": "Sektion ,die",
+   "why": "Leerzeichen vor Komma"
+  },
+  {
+   "crit": "T03",
+   "key": "f.T03.before",
+   "quote": "hat ;",
+   "why": "Leerzeichen vor Strichpunkt"
+  },
+  {
+   "crit": "T05",
+   "key": "f.T05.dot",
+   "quote": "10.000",
+   "why": "Punkt als Tausendertrennzeichen"
+  },
+  {
+   "crit": "T05",
+   "key": "f.T05",
+   "quote": "2’500",
+   "why": "Hochkomma und Leerzeichen gemischt"
+  },
+  {
+   "crit": "T06",
+   "quote": "96%",
+   "why": "Prozent ohne geschütztes Leerzeichen"
+  },
+  {
+   "crit": "T07",
+   "quote": "DSB",
+   "why": "DSB nicht eingeführt"
+  },
+  {
+   "crit": "T08",
+   "key": "f.T08.space",
+   "quote": "Art.5",
+   "why": "Leerzeichen nach «Art.» fehlt"
+  },
+  {
+   "crit": "T08",
+   "key": "f.T08.dot",
+   "quote": "Abs 2",
+   "why": "Punkt nach «Abs» fehlt"
+  },
+  {
+   "crit": "T08",
+   "key": "f.T08.lit",
+   "quote": "lit. a",
+   "why": "«lit.» statt «Bst.»"
+  },
+  {
+   "crit": "T10",
+   "quote": "Schengenraum",
+   "why": "Schengen-Raum und Schengenraum"
+  },
+  {
+   "crit": "R01",
+   "quote": "Kapitel 9",
+   "why": "Kapitel 9 gibt es nicht"
+  },
+  {
+   "crit": "R01",
+   "quote": "Anhang 2",
+   "why": "Anhang 2 gibt es nicht"
+  },
+  {
+   "crit": "R02",
+   "quote": "http://www.example.com",
+   "why": "unverschlüsselter Link"
+  },
+  {
+   "crit": "R03",
+   "quote": "Tabelle 3",
+   "why": "Tabelle 3 gibt es nicht"
+  },
+  {
+   "crit": "D01",
+   "why": "nachverfolgte Änderung"
+  },
+  {
+   "crit": "D02",
+   "why": "Kommentar"
+  },
+  {
+   "crit": "D03",
+   "why": "Hervorhebung"
+  },
+  {
+   "crit": "D04",
+   "why": "Bild ohne Alternativtext"
+  },
+  {
+   "crit": "D05",
+   "why": "kein Dokumenttitel in den Eigenschaften"
+  }
+ ],
+ "mustNot": [
+  {
+   "crit": "L06",
+   "quote": "grundsätzlich",
+   "why": "«grundsätzlich» heisst hier «mit Ausnahmen», und die Ausnahme steht im nächsten Satz (Gebühr ab 8 Stunden Aufwand)",
+   "known": "Der Befundtext «lässt offen, ob die Vorgabe gilt» trifft nicht zu, wenn der Absatz die Ausnahme nennt. Lokal lässt sich nicht zuverlässig erkennen, ob eine Ausnahme genannt ist (hier ohne Signalwort: «Verursacht ein Gesuch …, kann …»); der Befund bleibt ein Hinweis."
+  },
+  {
+   "crit": "F02",
+   "why": "Datum vorhanden"
+  },
+  {
+   "crit": "F03",
+   "why": "Stelle vorhanden"
+  },
+  {
+   "crit": "F05",
+   "why": "Version vorhanden"
+  },
+  {
+   "crit": "T04",
+   "quote": "14.30 Uhr",
+   "why": "Daten einheitlich bis auf die erlaubte Uhrzeit"
+  },
+  {
+   "crit": "R04",
+   "quote": "DSG, SR 235.1",
+   "why": "Kürzel und SR-Nummer gehören zusammen"
+  },
+  {
+   "crit": "T07",
+   "quote": "SMF",
+   "why": "SMF ist eingeführt"
+  },
+  {
+   "crit": "T05",
+   "quote": "1250",
+   "why": "vierstellige Zahl"
+  },
+  {
+   "crit": "R01",
+   "quote": "Art.5 Abs 2",
+   "why": "Ziffer im Erlass, kein interner Verweis"
+  },
+  {
+   "crit": "T01",
+   "quote": "Massgebend",
+   "why": "kein Eszett ausser im Erlasstext"
+  }
+ ]
+}

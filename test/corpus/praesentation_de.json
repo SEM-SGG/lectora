@@ -1,0 +1,77 @@
+{
+ "fixture": "praesentation_de.pptx",
+ "beschreibung": "Präsentation mit Folie ohne Titel, zu viel Text, kleiner Schrift und Bild ohne Alternativtext.",
+ "must": [
+  {
+   "crit": "S08",
+   "slide": 3,
+   "why": "Folie 3 ohne Titel"
+  },
+  {
+   "crit": "S09",
+   "slide": 3,
+   "why": "Folie 3 mit rund 100 Wörtern"
+  },
+  {
+   "crit": "L03",
+   "quote": "TODO",
+   "why": "Entwurfsrest"
+  },
+  {
+   "crit": "L05",
+   "quote": "Mitarbeiter*innen",
+   "why": "Gendermarkierung"
+  },
+  {
+   "crit": "T06",
+   "quote": "96%",
+   "why": "Prozent ohne geschütztes Leerzeichen"
+  },
+  {
+   "crit": "D04",
+   "why": "Bild ohne Alternativtext"
+  },
+  {
+   "crit": "D05",
+   "why": "kein Dokumenttitel in den Eigenschaften"
+  },
+  {
+   "crit": "D08",
+   "slide": 3,
+   "why": "Schrift unter 14 Punkt auf Folie 3"
+  }
+ ],
+ "mustNot": [
+  {
+   "crit": "S08",
+   "slide": 2,
+   "why": "Folie 2 hat einen Titel"
+  },
+  {
+   "crit": "S08",
+   "slide": 4,
+   "why": "Folie 4 hat einen Titel"
+  },
+  {
+   "crit": "S09",
+   "slide": 2,
+   "why": "Folie 2 kurz"
+  },
+  {
+   "crit": "F04",
+   "why": "Präsentation: keine Pflichtabschnitte"
+  },
+  {
+   "crit": "T07",
+   "why": "SMF steht nur im Titel"
+  },
+  {
+   "crit": "L02",
+   "why": "wiederholte Sätze sind keine Wortdopplung"
+  },
+  {
+   "crit": "T05",
+   "why": "keine Zahlengruppen"
+  }
+ ]
+}

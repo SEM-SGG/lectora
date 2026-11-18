@@ -1,0 +1,16 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>harness</title></head><body>
+<script src="../dist-local/vendor/jszip.min.js"></script>
+<script src="../dist-local/vendor/pdf.min.js"></script>
+<script src="../dist-local/vendor/pdf-lib.min.js"></script>
+<script>pdfjsLib.GlobalWorkerOptions.workerSrc = '../dist-local/vendor/pdf.worker.min.js';</script>
+<script src="../src/lang.js"></script>
+<script src="../src/erlasse.js"></script>
+<script src="../src/modal.js"></script>
+<script src="../src/parse.js"></script>
+<script src="../src/rules.js"></script>
+<script src="../src/align.js"></script>
+<script src="../src/docx-export.js"></script>
+<script src="../src/annot-export.js"></script>
+<script>
+window.loadDoc = async (name, b64) => { const bin = atob(b64); const u = new Uint8Array(bin.length); for (let i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i); const d = await DP.parse.parseFile(new File([u], name)); (window.docs = window.docs || {})[name] = d; return d.id; };
+</script></body></html>

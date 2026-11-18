@@ -1,0 +1,70 @@
+{
+ "fixture": "konzept_de.docx",
+ "beschreibung": "Kurzes Konzept ohne Abschnitte zu Ressourcen und Risiken.",
+ "must": [
+  {
+   "crit": "F04",
+   "params": {
+    "sec": "sec.konzept.ressourcen"
+   },
+   "why": "Ressourcen fehlen"
+  },
+  {
+   "crit": "F04",
+   "params": {
+    "sec": "sec.konzept.risiken"
+   },
+   "why": "Risiken fehlen"
+  }
+ ],
+ "mustNot": [
+  {
+   "crit": "F01",
+   "why": "Titel vorhanden"
+  },
+  {
+   "crit": "F02",
+   "why": "Datum vorhanden"
+  },
+  {
+   "crit": "F03",
+   "why": "Stelle vorhanden"
+  },
+  {
+   "crit": "F05",
+   "why": "Version vorhanden"
+  },
+  {
+   "crit": "S02",
+   "why": "Nummerierung lückenlos"
+  },
+  {
+   "crit": "F04",
+   "params": {
+    "sec": "sec.konzept.ausgangslage"
+   },
+   "why": "Ausgangslage vorhanden"
+  },
+  {
+   "crit": "F04",
+   "params": {
+    "sec": "sec.konzept.ziele"
+   },
+   "why": "Ziele vorhanden"
+  },
+  {
+   "crit": "F04",
+   "params": {
+    "sec": "sec.konzept.loesung"
+   },
+   "why": "Lösung vorhanden"
+  },
+  {
+   "crit": "F04",
+   "params": {
+    "sec": "sec.konzept.termine"
+   },
+   "why": "Termine vorhanden"
+  }
+ ]
+}

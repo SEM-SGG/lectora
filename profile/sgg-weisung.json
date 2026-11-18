@@ -1,0 +1,25 @@
+{
+  "format": "lectora-profil",
+  "schema": 1,
+  "name": "SGG Weisung",
+  "names": {
+    "de": "SGG Weisung",
+    "fr": "SGG Directive",
+    "it": "SGG Direttiva"
+  },
+  "created": "2026-11-18T00:00:00.000Z",
+  "lectora": "2.0.0",
+  "settings": {
+    "off": [],
+    "params": {
+      "L01.note": 25,
+      "L01.warn": 35,
+      "S06.maxWords": 120
+    },
+    "custom": "",
+    "terms": "",
+    "acts": "",
+    "author": "Lectora",
+    "comments": true
+  }
+}

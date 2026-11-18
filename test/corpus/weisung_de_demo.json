@@ -1,0 +1,138 @@
+{
+ "fixture": "weisung_de_demo.docx",
+ "beschreibung": "Demo-Weisung DE mit eingebauten Mängeln (test/make_fixtures.py de_demo). Jeder Befund von Hand beurteilt.",
+ "must": [
+  {
+   "crit": "L02",
+   "quote": "nicht nicht",
+   "why": "echte Wortdopplung"
+  },
+  {
+   "crit": "L03",
+   "quote": "TODO",
+   "why": "Entwurfsrest"
+  },
+  {
+   "crit": "L05",
+   "quote": "Mitarbeiter*innen",
+   "why": "typografische Gendermarkierung (Weisung BK: nicht zulässig)"
+  },
+  {
+   "crit": "L06",
+   "quote": "Sie sollte",
+   "why": "«sollte» in einer Weisung lässt die Verbindlichkeit offen"
+  },
+  {
+   "crit": "T01",
+   "quote": "gemäß",
+   "why": "Eszett in Schweizer Rechtschreibung"
+  },
+  {
+   "crit": "T02",
+   "quote": "„Leitfaden Auskunft“",
+   "why": "deutsche Anführungszeichen statt Guillemets"
+  },
+  {
+   "crit": "T04",
+   "quote": "03.03.2019",
+   "why": "Datum numerisch neben ausgeschriebenen Daten"
+  },
+  {
+   "crit": "T06",
+   "quote": "96%",
+   "why": "Prozentzeichen ohne geschütztes Leerzeichen"
+  },
+  {
+   "crit": "T07",
+   "quote": "DSB",
+   "why": "Abkürzung DSB nirgends eingeführt"
+  },
+  {
+   "crit": "R02",
+   "quote": "http://www.example.com",
+   "why": "unverschlüsselter Link"
+  }
+ ],
+ "mustNot": [
+  {
+   "crit": "L06",
+   "quote": "grundsätzlich",
+   "why": "«grundsätzlich» heisst hier «mit Ausnahmen», und die Ausnahme steht im nächsten Satz (Gebühr ab 8 Stunden Aufwand)",
+   "known": "Der Befundtext «lässt offen, ob die Vorgabe gilt» trifft nicht zu, wenn der Absatz die Ausnahme nennt. Lokal lässt sich nicht zuverlässig erkennen, ob eine Ausnahme genannt ist (hier ohne Signalwort: «Verursacht ein Gesuch …, kann …»); der Befund bleibt ein Hinweis."
+  },
+  {
+   "crit": "F01",
+   "why": "Titel vorhanden"
+  },
+  {
+   "crit": "F02",
+   "why": "Datum im Kopf vorhanden"
+  },
+  {
+   "crit": "F03",
+   "why": "Stelle im Kopf genannt"
+  },
+  {
+   "crit": "F04",
+   "why": "alle Pflichtabschnitte vorhanden"
+  },
+  {
+   "crit": "F05",
+   "why": "Version im Kopf"
+  },
+  {
+   "crit": "R04",
+   "quote": "DSG, SR 235.1",
+   "why": "Kürzel und SR-Nummer gehören zusammen"
+  },
+  {
+   "crit": "R04",
+   "quote": "BGÖ, SR 152.3",
+   "why": "Kürzel und SR-Nummer gehören zusammen"
+  },
+  {
+   "crit": "T08",
+   "quote": "Art. 25 Abs. 2 Bst. a",
+   "why": "korrekte Zitierweise"
+  },
+  {
+   "crit": "T07",
+   "quote": "SMF",
+   "why": "SMF ist im Text eingeführt («(SMF)»)"
+  },
+  {
+   "crit": "T05",
+   "quote": "1250",
+   "why": "vierstellige Zahl ohne Gruppierung ist zulässig"
+  },
+  {
+   "crit": "T04",
+   "quote": "12. November 2026",
+   "why": "ausgeschriebenes Datum"
+  },
+  {
+   "crit": "L01",
+   "why": "keine überlangen Sätze"
+  },
+  {
+   "crit": "T03",
+   "why": "keine Leerzeichenfehler"
+  },
+  {
+   "crit": "R01",
+   "why": "keine Querverweise"
+  },
+  {
+   "crit": "S02",
+   "why": "Nummerierung lückenlos"
+  },
+  {
+   "crit": "L04",
+   "why": "durchgehend Deutsch"
+  },
+  {
+   "crit": "T10",
+   "why": "einheitliche Schreibweisen"
+  }
+ ]
+}

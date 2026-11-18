@@ -1,0 +1,85 @@
+{
+ "ref": "weisung_de_demo.docx",
+ "tgt": "weisung_fr_errors.docx",
+ "beschreibung": "Demo DE → FR mit eingebauten Übersetzungsfehlern.",
+ "must": [
+  {
+   "crit": "X06",
+   "quote": "EJPD",
+   "why": "deutsche Abkürzung EJPD statt DFJP"
+  },
+  {
+   "crit": "X04",
+   "quote": "al. 3",
+   "why": "Absatz 2 statt 3"
+  },
+  {
+   "crit": "X11",
+   "key": "f.X11.absent",
+   "refPara": "Sie sollte das Gesuch",
+   "why": "Referenz «sollte», Zielfassung ohne Modalausdruck"
+  },
+  {
+   "crit": "X02",
+   "quote": "20 jours",
+   "why": "30 statt 20 Tage"
+  },
+  {
+   "crit": "X01",
+   "key": "f.X01.missing",
+   "refPara": "Sie klärt, ob überwiegende",
+   "why": "Aufzählungspunkt fehlt"
+  },
+  {
+   "crit": "X02",
+   "key": "f.X02.time",
+   "quote": "15 h 30",
+   "why": "14.30 statt 15 h 30"
+  },
+  {
+   "crit": "X05",
+   "quote": "bases@example.com",
+   "why": "andere E-Mail-Adresse"
+  },
+  {
+   "crit": "X03",
+   "quote": "1er février 2027",
+   "why": "Februar statt Januar"
+  },
+  {
+   "crit": "X07",
+   "para": "Die Auskunft ist kostenlos",
+   "why": "Absatz unübersetzt (ältere deutsche Fassung)"
+  }
+ ],
+ "mustNot": [
+  {
+   "crit": "X04",
+   "quote": "RS 235.1",
+   "why": "gleiche SR-Nummer"
+  },
+  {
+   "crit": "X02",
+   "quote": "2 jours ouvrables",
+   "why": "gleiche Frist"
+  },
+  {
+   "crit": "X03",
+   "quote": "12 novembre 2026",
+   "why": "gleiches Datum"
+  },
+  {
+   "crit": "X11",
+   "para": "Si elle ne peut pas respecter",
+   "why": "«Kann sie … nicht» und «ne peut pas» entsprechen sich"
+  },
+  {
+   "crit": "X12",
+   "why": "DSG/LPD und BGÖ/LTrans sind dieselben Erlasse in der richtigen Sprache"
+  },
+  {
+   "crit": "X08",
+   "why": "Längen im Rahmen"
+  }
+ ]
+}

@@ -1,0 +1,136 @@
+# Prüfungen bei jedem Push auf einen Zweig und jedem Pull Request: bauen (drei Ausgaben und die Ausgabe ohne Versionsabfrage), alle Tests,
+# Hygiene der Dateien und der Commits. Aktionen sind auf einen Commit festgelegt (Version im Kommentar; Dependabot hält sie aktuell).
+# Zwei Aufträge laufen parallel auf getrennten Maschinen; innerhalb eines Auftrags laufen die Browser-Tests nacheinander
+# (a11y_test.py misst Zeiten und scheitert, wenn andere Tests gleichzeitig laufen). Bei einem Fehler: Bildschirmfotos und
+# Protokolle als Artefakt «testausgabe-…» am Lauf.
+name: checks
+
+on:
+  # Nur Zweige: ein Versions-Tag startet den Workflow release (der dieselben Prüfungen enthält), nicht ein zweites Mal checks
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  logik-und-export:
+    name: Logik, Export, Hygiene
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          # Ganze Geschichte: die Hygiene prüft auch Autorinnen, Autoren und Nachrichten der Commits
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.13'
+          cache: pip
+      - name: Hygiene der Commits (Namen, Adressen, Pfade in Autor, Committer und Nachricht)
+        env:
+          # Optional: Sperrliste als Repository-Secret (docs/repo-einstellungen.md); ohne Secret bleibt die Variable leer
+          SPERRLISTE: ${{ secrets.LECTORA_HYGIENE_SPERRLISTE }}
+        run: |
+          if [ -n "$SPERRLISTE" ]; then printf '%s\n' "$SPERRLISTE" > "$RUNNER_TEMP/sperrliste.txt"; export LECTORA_HYGIENE_SPERRLISTE="$RUNNER_TEMP/sperrliste.txt"; fi
+          python3 tools/hygiene.py --commits
+      - name: Systempakete (LibreOffice, poppler-utils, qpdf)
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q --no-install-recommends libreoffice-writer libreoffice-impress poppler-utils qpdf
+      - name: Pakete installieren
+        run: |
+          npm ci
+          pip install -r requirements.txt
+      - name: Playwright-Browser aus dem Zwischenspeicher
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+      - name: Chromium für Playwright
+        run: python -m playwright install --with-deps chromium
+      - name: Bauen
+        run: |
+          node build.mjs --local
+          node build.mjs
+          node build.mjs --offline
+          node build.mjs --offline --no-update-check
+      - name: Tests ohne Browser, Hygiene, Lizenzhinweise
+        env:
+          SPERRLISTE: ${{ secrets.LECTORA_HYGIENE_SPERRLISTE }}
+        run: |
+          if [ -n "$SPERRLISTE" ]; then printf '%s\n' "$SPERRLISTE" > "$RUNNER_TEMP/sperrliste.txt"; export LECTORA_HYGIENE_SPERRLISTE="$RUNNER_TEMP/sperrliste.txt"; fi
+          python3 test/run.py --ohne-build schnell
+      - name: Regeln, Vergleich, Korpus, Export, Artefakt über cdnjs
+        run: python3 test/run.py --ohne-build logik export netz
+      - name: Testausgabe sichern
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: testausgabe-logik-und-export
+          path: |
+            test/out/
+            test/shots/
+          retention-days: 14
+          if-no-files-found: ignore
+
+  oberflaeche:
+    name: Oberfläche, Barrierefreiheit, Offline-Ausgabe
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.13'
+          cache: pip
+      - name: Systempaket qpdf (Strukturprüfung der PDF-Exporte)
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q --no-install-recommends qpdf
+      - name: Pakete installieren
+        run: |
+          npm ci
+          pip install -r requirements.txt
+      - name: Playwright-Browser aus dem Zwischenspeicher
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+      - name: Chromium für Playwright
+        run: python -m playwright install --with-deps chromium
+      - name: Bauen
+        run: |
+          node build.mjs --local
+          node build.mjs
+          node build.mjs --offline
+          node build.mjs --offline --no-update-check
+      - name: Oberfläche, KI-Funktionen (simuliert), Barrierefreiheit, Kontrast, Offline-Ausgabe, GitHub Pages
+        run: python3 test/run.py --ohne-build browser offline
+      - name: Testausgabe sichern
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: testausgabe-oberflaeche
+          path: |
+            test/out/
+            test/shots/
+          retention-days: 14
+          if-no-files-found: ignore

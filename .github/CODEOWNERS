@@ -1,0 +1,12 @@
+# Verantwortliche für Bereiche des Repositorys. GitHub fordert für Pull Requests, die diese Pfade ändern, eine Prüfung durch die
+# genannten Personen oder Teams an (wenn der Schutz des Hauptzweigs «Require review from Code Owners» verlangt).
+#
+# Platzhalter: Die Sektion trägt hier ihre Teams oder Personen ein und entfernt das Zeichen # vor den Zeilen.
+# Schreibweise: Muster, dann ein oder mehrere GitHub-Teams (Organisation/Team) oder Benutzernamen.
+#
+# *                         ORGANISATION/TEAM
+# src/ai.js                 ORGANISATION/TEAM
+# src/update.js             ORGANISATION/TEAM
+# build.mjs                 ORGANISATION/TEAM
+# .github/                  ORGANISATION/TEAM
+# profile/                  ORGANISATION/TEAM

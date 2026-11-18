@@ -1,0 +1,104 @@
+{
+ "fixture": "konzept_real_fr.docx",
+ "beschreibung": "Echtes Konzept, französische Fassung (mit geschützten Leerzeichen): keine Befunde erwartet.",
+ "must": [],
+ "mustNot": [
+  {
+   "crit": "F01",
+   "why": "Titel vorhanden"
+  },
+  {
+   "crit": "F02",
+   "why": "Datum im Kopf vorhanden"
+  },
+  {
+   "crit": "F03",
+   "why": "Stelle im Kopf genannt"
+  },
+  {
+   "crit": "F04",
+   "why": "alle Pflichtabschnitte vorhanden"
+  },
+  {
+   "crit": "F05",
+   "why": "Version im Kopf"
+  },
+  {
+   "crit": "T05",
+   "quote": "10 000",
+   "why": "Tausendergruppen einheitlich"
+  },
+  {
+   "crit": "T06",
+   "quote": "12,5 %",
+   "why": "Prozent mit geschütztem Leerzeichen"
+  },
+  {
+   "crit": "T07",
+   "quote": "OFEX",
+   "why": "OFEX ist eingeführt"
+  },
+  {
+   "crit": "T07",
+   "quote": "(IT)",
+   "why": "IT ist eingeführt"
+  },
+  {
+   "crit": "T07",
+   "quote": "OExpl-OFEX",
+   "why": "Kürzel eines eigenen Erlasses"
+  },
+  {
+   "crit": "R01",
+   "quote": "ch. 2.1",
+   "why": "Ziffer 2.1 existiert"
+  },
+  {
+   "crit": "R01",
+   "quote": "l’annexe 1",
+   "why": "Annexe 1 existiert"
+  },
+  {
+   "crit": "T03",
+   "quote": "Annexe 1 : Délais",
+   "why": "geschützte Leerzeichen vor Doppelpunkt vorhanden"
+  },
+  {
+   "crit": "T02",
+   "quote": "« Office numérique »",
+   "why": "Guillemets mit geschützten Leerzeichen"
+  },
+  {
+   "crit": "T08",
+   "quote": "L’art. 8, al. 1, let. a",
+   "why": "französische Zitierweise"
+  },
+  {
+   "crit": "R04",
+   "quote": "OExpl-OFEX",
+   "why": "unbekannter Erlass"
+  },
+  {
+   "crit": "L05",
+   "quote": "collaboratrices et collaborateurs",
+   "why": "Paarform"
+  },
+  {
+   "crit": "T04",
+   "quote": "8 h 30",
+   "why": "Uhrzeit, kein Datum"
+  },
+  {
+   "crit": "L06",
+   "why": "keine vagen Formulierungen"
+  },
+  {
+   "crit": "L01",
+   "why": "keine überlangen Sätze"
+  },
+  {
+   "crit": "S02",
+   "why": "Annexe ohne Nummer ist zulässig"
+  }
+ ]
+}

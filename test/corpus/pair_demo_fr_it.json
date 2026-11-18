@@ -1,0 +1,66 @@
+{
+ "ref": "weisung_fr_errors.docx",
+ "tgt": "weisung_it_clean.docx",
+ "beschreibung": "Demo FR (fehlerhaft) → IT: Abweichungen auf der Seite der Referenz erscheinen bei der Zielfassung.",
+ "must": [
+  {
+   "crit": "X04",
+   "quote": "cpv. 2",
+   "why": "Absatz 3 gegenüber 2"
+  },
+  {
+   "crit": "X02",
+   "quote": "30 giorni",
+   "why": "20 gegenüber 30 Tagen"
+  },
+  {
+   "crit": "X01",
+   "key": "f.X01.extra",
+   "para": "Determina se interessi",
+   "why": "zusätzlicher Aufzählungspunkt"
+  },
+  {
+   "crit": "X02",
+   "key": "f.X02.time",
+   "quote": "14.30",
+   "why": "Uhrzeit"
+  },
+  {
+   "crit": "X05",
+   "quote": "grundlagen@example.com",
+   "why": "andere E-Mail-Adresse"
+  },
+  {
+   "crit": "X03",
+   "quote": "1° gennaio 2027",
+   "why": "anderes Datum"
+  }
+ ],
+ "mustNot": [
+  {
+   "crit": "X06",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X07",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X08",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X11",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X12",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X02",
+   "para": "Le informazioni sono gratuite",
+   "why": "Zahlen im deutschen Absatz der Referenz entsprechen der Zielfassung"
+  }
+ ]
+}

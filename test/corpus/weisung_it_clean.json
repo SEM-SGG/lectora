@@ -1,0 +1,87 @@
+{
+ "fixture": "weisung_it_clean.docx",
+ "beschreibung": "Saubere italienische Fassung der Demo-Weisung: keine Befunde erwartet.",
+ "must": [],
+ "mustNot": [
+  {
+   "crit": "F01",
+   "why": "Titel vorhanden"
+  },
+  {
+   "crit": "F02",
+   "why": "Datum im Kopf vorhanden"
+  },
+  {
+   "crit": "F03",
+   "why": "Stelle im Kopf genannt"
+  },
+  {
+   "crit": "F04",
+   "why": "alle Pflichtabschnitte vorhanden"
+  },
+  {
+   "crit": "F05",
+   "why": "Version im Kopf"
+  },
+  {
+   "crit": "R04",
+   "quote": "LPD, RS 235.1",
+   "why": "LPD gehört zu RS 235.1"
+  },
+  {
+   "crit": "R04",
+   "quote": "LTras, RS 152.3",
+   "why": "LTras gehört zu RS 152.3"
+  },
+  {
+   "crit": "T08",
+   "quote": "art. 25 cpv. 2 lett. a",
+   "why": "italienische Zitierweise korrekt"
+  },
+  {
+   "crit": "T07",
+   "quote": "SEQT",
+   "why": "SEQT ist eingeführt"
+  },
+  {
+   "crit": "T07",
+   "quote": "DFGP",
+   "why": "DFGP ist eingeführt"
+  },
+  {
+   "crit": "T04",
+   "quote": "alle 14.30",
+   "why": "Uhrzeit, kein Datum"
+  },
+  {
+   "crit": "T05",
+   "quote": "1250",
+   "why": "vierstellige Zahl"
+  },
+  {
+   "crit": "L05",
+   "quote": "collaboratori e le collaboratrici",
+   "why": "Paarform ist korrekt"
+  },
+  {
+   "crit": "L06",
+   "why": "keine vagen Formulierungen"
+  },
+  {
+   "crit": "T02",
+   "why": "keine Anführungszeichen"
+  },
+  {
+   "crit": "T03",
+   "why": "keine Leerzeichenfehler"
+  },
+  {
+   "crit": "S02",
+   "why": "Nummerierung lückenlos"
+  },
+  {
+   "crit": "L01",
+   "why": "keine überlangen Sätze"
+  }
+ ]
+}

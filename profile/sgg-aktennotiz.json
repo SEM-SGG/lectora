@@ -1,0 +1,24 @@
+{
+  "format": "lectora-profil",
+  "schema": 1,
+  "name": "SGG Aktennotiz",
+  "names": {
+    "de": "SGG Aktennotiz",
+    "fr": "SGG Note au dossier",
+    "it": "SGG Nota agli atti"
+  },
+  "created": "2026-11-18T00:00:00.000Z",
+  "lectora": "2.0.0",
+  "settings": {
+    "off": [
+      "S04",
+      "S05"
+    ],
+    "params": {},
+    "custom": "",
+    "terms": "",
+    "acts": "",
+    "author": "Lectora",
+    "comments": true
+  }
+}

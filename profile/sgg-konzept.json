@@ -1,0 +1,27 @@
+{
+  "format": "lectora-profil",
+  "schema": 1,
+  "name": "SGG Konzept",
+  "names": {
+    "de": "SGG Konzept",
+    "fr": "SGG Concept",
+    "it": "SGG Concetto"
+  },
+  "created": "2026-11-18T00:00:00.000Z",
+  "lectora": "2.0.0",
+  "settings": {
+    "off": [],
+    "params": {
+      "L01.note": 30,
+      "L01.warn": 40,
+      "S04.minWords": 1000,
+      "S05.minHeads": 6,
+      "S05.minWords": 2000
+    },
+    "custom": "",
+    "terms": "",
+    "acts": "",
+    "author": "Lectora",
+    "comments": true
+  }
+}

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+dist-local/
+dist-offline/
+site/
+test/out/
+test/shots/
+__pycache__/
+*.pyc
+.venv/
+.DS_Store

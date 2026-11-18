@@ -1,0 +1,36 @@
+{
+ "fixture": "aktennotiz_de.docx",
+ "beschreibung": "Vollständige Aktennotiz: keine Befunde erwartet.",
+ "must": [],
+ "mustNot": [
+  {
+   "crit": "F01",
+   "why": "Titel vorhanden"
+  },
+  {
+   "crit": "F02",
+   "why": "Datum vorhanden"
+  },
+  {
+   "crit": "F03",
+   "why": "Stelle vorhanden"
+  },
+  {
+   "crit": "F04",
+   "why": "Adressat, Sachverhalt, Beurteilung und Vorgehen vorhanden"
+  },
+  {
+   "crit": "T04",
+   "why": "Daten einheitlich"
+  },
+  {
+   "crit": "T03",
+   "quote": "An:",
+   "why": "«An:» und «Von:» sind korrekt"
+  },
+  {
+   "crit": "L06",
+   "why": "keine vagen Formulierungen"
+  }
+ ]
+}

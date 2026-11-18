@@ -1,0 +1,71 @@
+{
+ "ref": "weisung_de_demo.docx",
+ "tgt": "weisung_it_clean.docx",
+ "beschreibung": "Demo DE → IT (IT sauber).",
+ "must": [
+  {
+   "crit": "X11",
+   "key": "f.X11.absent",
+   "refPara": "Sie sollte das Gesuch",
+   "why": "Referenz «sollte», Zielfassung ohne Modalausdruck"
+  }
+ ],
+ "mustNot": [
+  {
+   "crit": "X01",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X02",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X03",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X04",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X05",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X06",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X07",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X08",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X12",
+   "why": "keine Abweichung dieser Art im Paar"
+  },
+  {
+   "crit": "X04",
+   "quote": "art. 25 cpv. 2 lett. a",
+   "why": "gleiche Bestimmung"
+  },
+  {
+   "crit": "X02",
+   "quote": "alle 14.30",
+   "why": "gleiche Uhrzeit"
+  },
+  {
+   "crit": "X03",
+   "quote": "1° gennaio 2027",
+   "why": "gleiches Datum"
+  },
+  {
+   "crit": "X05",
+   "quote": "https://www.example.com/it/informazioni",
+   "why": "http und https gelten als dieselbe Adresse (das Protokoll prüft R02)"
+  }
+ ]
+}
