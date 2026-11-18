@@ -97,7 +97,7 @@ const VERSION = JSON.parse(rd('package.json')).version;
 // Stand: Datum des Builds; SOURCE_DATE_EPOCH (Sekunden) setzt ihn fest, für nachvollziehbare Builds
 const BUILD_DATE = (process.env.SOURCE_DATE_EPOCH ? new Date(Number(process.env.SOURCE_DATE_EPOCH) * 1000) : new Date()).toISOString().slice(0, 10);
 const vj = JSON.parse(rd('version.json'));
-if (vj.version !== VERSION) { console.error('version.json (' + vj.version + ') und package.json (' + VERSION + ') stimmen nicht überein'); process.exit(1); }
+if (vj.version !== VERSION) { console.error('version.json nennt die Version ' + vj.version + ', package.json die Version ' + VERSION + '. Trage in beiden Dateien dieselbe Version ein (docs/release.md, Schritt 1).'); process.exit(1); }
 // Versionsabfrage der Offline-Ausgabe: feste Adresse, im Code von src/update.js als Konstante; die CSP erlaubt genau diese Adresse
 const UPDATE_CHECK = OFFLINE && !NO_UPDATE;
 const VERSION_URL = 'https://sem-sgg.github.io/lectora/version.json';

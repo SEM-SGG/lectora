@@ -80,7 +80,7 @@ Auf GitHub Pages gilt dieselbe Richtlinie (dieselbe Datei). GitHub setzt keine e
 
 `src/update.js`, nur in der Offline-Ausgabe:
 
-0. Der Workflow `release` legt `version.json` (aus dem Repository, vom Tag) zusammen mit der Webseite auf GitHub Pages ab, und zwar erst nach den Tests und nach dem Anlegen des Release. Vorher sieht keine verteilte Ausgabe die neue Version.
+0. Der Workflow `release` legt `version.json` (aus dem Repository, vom veröffentlichten Commit) zusammen mit der Webseite auf GitHub Pages ab, und zwar erst nach den Tests und nach dem Anlegen des Release. Vorher sieht keine verteilte Ausgabe die neue Version.
 1. 600 Millisekunden nach dem Start, wenn die Seite bedienbar ist: eine Anfrage an `https://sem-sgg.github.io/lectora/version.json` (`GET`, ohne Abfrageteil, ohne Cookies, ohne Referrer, ohne eigene Kopfzeilen, ohne Zwischenspeicher, Weiterleitungen verboten), höchstens 8 Sekunden. Was GitHub dabei erfährt, steht in [datenschutz.md](datenschutz.md).
 2. Antwort höchstens 4 KiB, JSON-Objekt mit höchstens 8 Feldern; `version` im Muster X.Y.Z, `date` als gültiges Datum, `note` mit Texten in de, fr, it (je höchstens 200 Zeichen, ohne `<`, `>`, Steuerzeichen und ohne alles, was wie eine Adresse aussieht: `://`, `www.`, ein Hostname, `@`). Sonst: nichts. `tools/release_check.py` prüft dieselben Regeln vor der Veröffentlichung.
 3. Ist die Version neuer (Vergleich Zahl für Zahl), zeigt `ui.js` einen Hinweis unter der Utility-Leiste. Der Link führt immer zur festen Adresse `https://github.com/SEM-SGG/lectora/releases/latest` (Konstante `RELEASE_URL` in `ui.js`), nie zu einer Adresse aus der Antwort. Auf GitHub Pages lautet die Aktion «Seite neu laden».

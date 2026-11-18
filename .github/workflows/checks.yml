@@ -23,13 +23,17 @@ jobs:
   logik-und-export:
     name: Logik, Export, Hygiene
     runs-on: ubuntu-24.04
-    timeout-minutes: 40
+    # 60 statt 40: Ein Lauf brauchte 38 Minuten, weil die Systempakete (apt) an dem Tag langsam kamen
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           # Ganze Geschichte: die Hygiene prüft auch Autorinnen, Autoren und Nachrichten der Commits
           fetch-depth: 0
           persist-credentials: false
+      # Zuerst und ohne Installation: Wer die Version vorbereitet, sieht in einer Minute, welche Datei noch nicht stimmt
+      - name: Versionsnummern stimmen überein (package.json, version.json, CHANGELOG.md)
+        run: python3 tools/release_check.py --aktuell
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: .nvmrc
