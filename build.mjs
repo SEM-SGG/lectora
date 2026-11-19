@@ -28,7 +28,7 @@ if (LOCAL && OFFLINE) { console.error('--local und --offline schliessen sich aus
    Dateien der npm-Pakete (test/cdn_test.py lädt sie über cdnjs). Ändert sich eine Version, schlägt der Build fehl, bis der neue
    Hashwert hier steht (und die Adresse auf cdnjs in CDN_PATH). */
 const LIBFILES = {
-  'jszip.min.js': { npm: 'jszip/dist/jszip.min.js', cdn: 'jszip/3.10.1/jszip.min.js', sha512: 'XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==' },
+  'jszip.min.js': { npm: 'jszip/dist/jszip.min.js', cdn: 'jszip/3.10.2/jszip.min.js', sha512: '/ICos1xr6gGjsbC2d7Z6D0hmKAnNbkCv5Pp803Q75xgHowbEcgI4CVOHMHUux/ZorCuod6dzuJOjfNoCKV0tRw==' },
   'pdf.min.js': { npm: 'pdfjs-dist/build/pdf.min.js', cdn: 'pdf.js/3.11.174/pdf.min.js', sha512: 'q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==' },
   'pdf.worker.min.js': { npm: 'pdfjs-dist/build/pdf.worker.min.js', cdn: 'pdf.js/3.11.174/pdf.worker.min.js', sha512: 'BbrZ76UNZq5BhH7LL7pn9A4TKQpQeNCHOo65/akfelcIBbcVvYWOFQKPXIrykE3qZxYjmDX573oa4Ywsc7rpTw==' },
   'pdf-lib.min.js': { npm: 'pdf-lib/dist/pdf-lib.min.js', cdn: 'pdf-lib/1.17.1/pdf-lib.min.js', sha512: 'z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ==' }
@@ -97,7 +97,7 @@ const VERSION = JSON.parse(rd('package.json')).version;
 // Stand: Datum des Builds; SOURCE_DATE_EPOCH (Sekunden) setzt ihn fest, für nachvollziehbare Builds
 const BUILD_DATE = (process.env.SOURCE_DATE_EPOCH ? new Date(Number(process.env.SOURCE_DATE_EPOCH) * 1000) : new Date()).toISOString().slice(0, 10);
 const vj = JSON.parse(rd('version.json'));
-if (vj.version !== VERSION) { console.error('version.json (' + vj.version + ') und package.json (' + VERSION + ') stimmen nicht überein'); process.exit(1); }
+if (vj.version !== VERSION) { console.error('version.json nennt die Version ' + vj.version + ', package.json die Version ' + VERSION + '. Trage in beiden Dateien dieselbe Version ein (docs/release.md, Schritt 1).'); process.exit(1); }
 // Versionsabfrage der Offline-Ausgabe: feste Adresse, im Code von src/update.js als Konstante; die CSP erlaubt genau diese Adresse
 const UPDATE_CHECK = OFFLINE && !NO_UPDATE;
 const VERSION_URL = 'https://sem-sgg.github.io/lectora/version.json';

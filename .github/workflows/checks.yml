@@ -23,13 +23,17 @@ jobs:
   logik-und-export:
     name: Logik, Export, Hygiene
     runs-on: ubuntu-24.04
-    timeout-minutes: 40
+    # 60 statt 40: Ein Lauf brauchte 38 Minuten, weil die Systempakete (apt) an dem Tag langsam kamen
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           # Ganze Geschichte: die Hygiene prüft auch Autorinnen, Autoren und Nachrichten der Commits
           fetch-depth: 0
           persist-credentials: false
+      # Zuerst und ohne Installation: Wer die Version vorbereitet, sieht in einer Minute, welche Datei noch nicht stimmt
+      - name: Versionsnummern stimmen überein (package.json, version.json, CHANGELOG.md)
+        run: python3 tools/release_check.py --aktuell
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: .nvmrc
@@ -54,7 +58,7 @@ jobs:
           npm ci
           pip install -r requirements.txt
       - name: Playwright-Browser aus dem Zwischenspeicher
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
@@ -101,16 +105,16 @@ jobs:
         with:
           python-version: '3.13'
           cache: pip
-      - name: Systempaket qpdf (Strukturprüfung der PDF-Exporte)
+      - name: Systempakete (LibreOffice für das PDF/A-Testdokument und den Rundlauf der Exporte, poppler-utils, qpdf)
         run: |
           sudo apt-get update -q
-          sudo apt-get install -y -q --no-install-recommends qpdf
+          sudo apt-get install -y -q --no-install-recommends libreoffice-writer libreoffice-impress poppler-utils qpdf
       - name: Pakete installieren
         run: |
           npm ci
           pip install -r requirements.txt
       - name: Playwright-Browser aus dem Zwischenspeicher
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('requirements.txt') }}

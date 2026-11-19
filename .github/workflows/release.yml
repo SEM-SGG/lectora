@@ -1,19 +1,36 @@
-# Veröffentlichung bei einem Versions-Tag vX.Y.Z:
-#   1. pruefen: Tag, package.json, version.json und CHANGELOG.md stimmen überein; bauen; alle Tests
-#   2. release: GitHub Release mit Lectora.html (fester Name), Lectora-X.Y.Z.html, SHA256SUMS.txt; Text aus CHANGELOG.md
-#   3. pages: dieselbe Offline-Ausgabe als index.html und version.json auf GitHub Pages (https://sem-sgg.github.io/lectora/);
-#      erst damit sehen die Offline-Ausgaben die neue Version (Versionsabfrage)
-# Nur ein Tag auf einem Commit von main wird veröffentlicht. Die Umgebung github-pages muss Tags v* zulassen (docs/repo-einstellungen.md).
-# Die Ausgabe ohne Versionsabfrage wird gebaut und getestet, aber nicht veröffentlicht.
+# Veröffentlichung einer Version X.Y.Z, auf zwei Wegen:
+#   - von Hand (üblich): Actions → release → Run workflow → Branch: main → Version X.Y.Z. Der Lauf prüft, baut und testet den
+#     Stand von main und legt erst danach den Tag vX.Y.Z auf genau diesen Commit an. Ein Tag, den der eingebaute Token anlegt,
+#     startet keine weiteren Workflows; deshalb erledigt dieser eine Lauf alles.
+#   - mit einem Tag (Alternative): git push origin vX.Y.Z startet denselben Ablauf für den Commit des Tags.
+# Aufträge:
+#   1. pruefen: Version der Form X.Y.Z; von Hand nur von main; gleich wie package.json, version.json und CHANGELOG.md
+#      (tools/release_check.py); von Hand: Tag und Release vX.Y.Z bestehen noch nicht (tools/release_stand.py); Commit liegt auf main;
+#      bauen; alle Tests
+#   2. release: von Hand zuerst der Tag (in einem Schritt, scheitert, wenn er schon besteht); dann GitHub Release mit Lectora.html
+#      (fester Name), Lectora-X.Y.Z.html, SHA256SUMS.txt; Text aus CHANGELOG.md
+#   3. pages: dieselbe geprüfte Datei als index.html und die version.json dieser Version auf GitHub Pages
+#      (https://sem-sgg.github.io/lectora/); erst damit sehen die Offline-Ausgaben die neue Version (Versionsabfrage)
+# Wiederholen («Re-run failed jobs»): Besteht der Tag oder das Release aus einem früheren Versuch desselben Laufs, auf demselben
+# Commit und mit denselben Dateien, geht der Lauf weiter bis GitHub Pages. Der Auftrag pages lässt sich allein wiederholen.
+# Umgebung github-pages: von Hand läuft pages für den Zweig main (Standardregel), mit einem Tag für vX.Y.Z (Regel für Tags v*,
+# docs/repo-einstellungen.md). Die Ausgabe ohne Versionsabfrage wird gebaut und getestet, aber nicht veröffentlicht.
 name: release
 
 on:
   push:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version ohne «v», zum Beispiel 2.1.0 (dieselbe wie in package.json, version.json und CHANGELOG.md)'
+        required: true
+        type: string
 
 permissions: {}
 
+# Nie zwei Veröffentlichungen gleichzeitig (auch nicht mit dem Workflow pages): ein zweiter Lauf wartet, bis der erste fertig ist
 concurrency:
   group: release
   cancel-in-progress: false
@@ -22,21 +39,59 @@ jobs:
   pruefen:
     name: Prüfen und bauen
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    # Alle Tests nacheinander, dazu Systempakete: an einem langsamen Tag braucht allein apt eine Viertelstunde
+    timeout-minutes: 120
     permissions:
       contents: read
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
+      - name: Auslöser und Version
+        id: version
+        env:
+          # Die Eingabe gelangt nur über die Umgebung in die Shell, nie als Text in den Befehl
+          EINGABE: ${{ inputs.version }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = workflow_dispatch ]; then
+            if [ "$GITHUB_REF" != refs/heads/main ]; then
+              echo "::error::Du hast den Workflow vom Zweig «$GITHUB_REF_NAME» gestartet. Veröffentlicht wird nur von main. Starte ihn neu und wähle im Fenster «Run workflow» im Menü «Branch» den Zweig main."
+              exit 1
+            fi
+            V="$EINGABE"
+          else
+            V="${GITHUB_REF_NAME#v}"
+          fi
+          if ! [[ "$V" =~ ^(0|[1-9][0-9]{0,3})\.(0|[1-9][0-9]{0,3})\.(0|[1-9][0-9]{0,3})$ ]]; then
+            ZEIGEN="${V//[^0-9A-Za-z.]/_}"
+            if [[ "$V" == v* ]]; then
+              echo "::error::Gib die Version ohne «v» ein, zum Beispiel 2.1.0 statt v2.1.0."
+            else
+              echo "::error::Die Version «${ZEIGEN:0:40}» hat nicht die Form X.Y.Z. Gib drei Zahlen mit Punkten ein, ohne Leerzeichen, zum Beispiel 2.1.0."
+            fi
+            exit 1
+          fi
+          echo "version=$V" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: Der Tag zeigt auf einen Commit von main
+      - name: Der Commit liegt auf main
         run: |
           git fetch --no-tags origin +refs/heads/main:refs/remotes/origin/main
           if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
-            echo "::error::Der Tag $GITHUB_REF_NAME zeigt auf einen Commit, der nicht auf main liegt. Veröffentlicht wird nur, was auf main zusammengeführt ist."
+            echo "::error::$GITHUB_REF_NAME zeigt auf einen Commit, der nicht auf main liegt. Veröffentlicht wird nur, was auf main zusammengeführt ist."
             exit 1
           fi
+      - name: Versionen stimmen überein
+        env:
+          V: ${{ steps.version.outputs.version }}
+        run: python3 tools/release_check.py --version "$V" --notes notizen.md
+      - name: Tag und Release dieser Version
+        env:
+          V: ${{ steps.version.outputs.version }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: python3 tools/release_stand.py vorab --version "$V" --commit "$GITHUB_SHA" --ereignis "$GITHUB_EVENT_NAME" --versuch "$GITHUB_RUN_ATTEMPT"
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: .nvmrc
@@ -45,8 +100,6 @@ jobs:
         with:
           python-version: '3.13'
           cache: pip
-      - name: Versionen stimmen überein
-        run: python3 tools/release_check.py "$GITHUB_REF_NAME" --notes notizen.md
       - name: Systempakete (LibreOffice, poppler-utils, qpdf)
         run: |
           sudo apt-get update -q
@@ -56,9 +109,10 @@ jobs:
           npm ci
           pip install -r requirements.txt
           python -m playwright install --with-deps chromium
-      - name: Bauen (Stand = Datum des Tags)
+      - name: Bauen (Stand = Datum des Commits)
         run: |
-          export SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
+          SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
+          export SOURCE_DATE_EPOCH
           node build.mjs --local
           node build.mjs
           node build.mjs --offline
@@ -66,8 +120,9 @@ jobs:
       - name: Alle Tests
         run: python3 test/run.py --ohne-build
       - name: Dateien für die Veröffentlichung
+        env:
+          V: ${{ steps.version.outputs.version }}
         run: |
-          V="${GITHUB_REF_NAME#v}"
           mkdir -p veroeffentlichung
           cp "dist-offline/Lectora-$V.html" "veroeffentlichung/Lectora-$V.html"
           cp "dist-offline/Lectora-$V.html" veroeffentlichung/Lectora.html
@@ -95,36 +150,46 @@ jobs:
     name: GitHub Release
     needs: pruefen
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     permissions:
       contents: write
+    env:
+      V: ${{ needs.pruefen.outputs.version }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
     steps:
+      # Nur für tools/release_stand.py, vom geprüften Commit; kein Token im Arbeitsverzeichnis
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: veroeffentlichung
           path: veroeffentlichung
-      - name: Release anlegen
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
+      - name: Prüfsummen der geprüften Dateien
         run: |
-          V="${GITHUB_REF_NAME#v}"
           cd veroeffentlichung
           sha256sum -c SHA256SUMS.txt
-          gh release create "$GITHUB_REF_NAME" --verify-tag --title "Lectora $V" --notes-file notizen.md \
-            "Lectora.html" "Lectora-$V.html" "SHA256SUMS.txt"
+      - name: Tag auf den geprüften Commit (nur beim Start von Hand)
+        if: github.event_name == 'workflow_dispatch'
+        run: python3 tools/release_stand.py tag --version "$V" --commit "$GITHUB_SHA" --versuch "$GITHUB_RUN_ATTEMPT"
+      - name: Release anlegen
+        run: python3 tools/release_stand.py release --version "$V" --dateien veroeffentlichung
 
   pages:
     name: GitHub Pages
-    needs: release
+    needs: [pruefen, release]
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    # deploy-pages wartet selbst bis zu 10 Minuten auf die Bereitstellung
+    timeout-minutes: 20
     permissions:
       pages: write
       id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
+    env:
+      V: ${{ needs.pruefen.outputs.version }}
     steps:
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
@@ -132,6 +197,11 @@ jobs:
           path: veroeffentlichung
       - name: Seite zusammenstellen
         run: |
+          # Genau die geprüften Dateien dieser Version: Prüfsummen und Versionsnummer
+          (cd veroeffentlichung && sha256sum -c SHA256SUMS.txt)
+          [[ "$V" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "::error::Keine Version vom Auftrag pruefen erhalten."; exit 1; }
+          python3 -c 'import json, sys; v = json.load(open(sys.argv[1]))["version"]; sys.exit(0 if v == sys.argv[2] else "version.json nennt " + v + ", erwartet " + sys.argv[2])' veroeffentlichung/version.json "$V"
+          cmp veroeffentlichung/Lectora.html "veroeffentlichung/Lectora-$V.html"
           mkdir -p site
           cp veroeffentlichung/Lectora.html site/index.html
           # Erst jetzt (Tests bestanden, Release angelegt) erfahren die Offline-Ausgaben von der neuen Version

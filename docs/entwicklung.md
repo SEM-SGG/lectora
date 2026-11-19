@@ -56,7 +56,7 @@ python3 test/run.py ui_test.py # eine Datei
 
 | Gruppe | Tests | braucht |
 | --- | --- | --- |
-| schnell | `i18n_test.mjs`, `ausbau_test.mjs`, `sprachkorpus_test.mjs` (Sprachkorpus X11, X12, R04: Präzision und Trefferquote gegen eine Basis, siehe `test/sprachkorpus/README.md`), `werkzeug_test.mjs`, `ki_test.mjs`, `profile_test.mjs`, `erlasse_test.py`, `statik_test.mjs` (Schnittstellen im gebauten Code), `release_test.py` (Workflows, Hinweistext), Hygiene der Dateien und Commits, `hygiene_test.py`, Lizenzhinweise, Versionen (`tools/release_check.py --aktuell`) | Node, Python, gebaute Ausgaben |
+| schnell | `i18n_test.mjs`, `ausbau_test.mjs`, `sprachkorpus_test.mjs` (Sprachkorpus X11, X12, R04: Präzision und Trefferquote gegen eine Basis, siehe `test/sprachkorpus/README.md`), `werkzeug_test.mjs`, `ki_test.mjs`, `profile_test.mjs`, `erlasse_test.py`, `statik_test.mjs` (Schnittstellen im gebauten Code), `release_test.py` (Workflows, Start von Hand und Tag-Push mit nachgebildetem `gh`, Versionsprüfung, Hinweistext), Hygiene der Dateien und Commits, `hygiene_test.py`, Lizenzhinweise, Versionen (`tools/release_check.py --aktuell`) | Node, Python, gebaute Ausgaben |
 | logik | `engine_test.py`, `compare_test.py`, `corpus_test.py` | Browser |
 | export | `export_test.py`, `annot_test.py` | Browser, LibreOffice, poppler-utils, qpdf |
 | browser | `ui_test.py`, `feinschliff_test.py`, `ki_ui_test.py`, `sprachfassungen_ui_test.py`, `review_test.py` (unlesbare Dateien, Klassifizierung, Zustimmung, KI-Kennzeichnung in Exporten, Speicher und Zurück-Cache, PDF/A), `a11y_test.py`, `contrast_test.py` | Browser, LibreOffice (PDF/A) |
