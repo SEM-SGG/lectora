@@ -76,6 +76,15 @@ form-action 'none'
 
 Auf GitHub Pages gilt dieselbe Richtlinie (dieselbe Datei). GitHub setzt keine eigene CSP. Downloads über `blob:` und der Worker funktionieren auch über https; `offline_test.py` prüft das mit einem lokalen Webserver.
 
+### Klassifizierte Dokumente auf GitHub Pages
+
+Die Offline-Ausgabe läuft als geöffnete Datei (`file://`) und als Webseite auf GitHub Pages. `ui.js` unterscheidet die beiden mit `WEB = DP.offline && /^https?:$/.test(location.protocol)` (das gilt für jeden `http(s)`-Server; die Hinweistexte gehen von der veröffentlichten Adresse auf GitHub Pages aus). Nur wenn `WEB` gilt:
+
+- Die Startseite sagt, dass die Webseite für unklassifizierte Dokumente gedacht ist, und verweist auf «Als Datei speichern» (Seite der neusten Ausgabe, feste Adresse `RELEASE_URL`).
+- `readFiles` liest den Vermerk direkt nach `DP.parse.parseFile` aus `doc.meta.classification` (ermittelt von `DP.lang.findClassification`, derselben Erkennung wie für die Sperre der KI-Funktionen). Das geschieht vor der Rückfrage nach einer neuen Fassung und vor der Prüfung; Beispieldokumente sind ausgenommen. VERTRAULICH und GEHEIM (Stufe 2 und 3): kein Laden, keine Prüfung, eine Erklärung verweist auf die Datei `Lectora.html`. INTERN (Stufe 1): ein Warndialog mit Kontrollkästchen; ohne Bestätigung lädt Lectora das Dokument nicht.
+
+Unter `file://` und in der Artefakt-Ausgabe (`DP.offline` ist `false`) greift diese Prüfung nicht. Gründe und Grenzen der Erkennung: [datenschutz.md](datenschutz.md#github-pages).
+
 ### Versionsabfrage
 
 `src/update.js`, nur in der Offline-Ausgabe:

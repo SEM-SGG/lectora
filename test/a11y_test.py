@@ -1,5 +1,6 @@
 """Barrierefreiheit (axe-core, WCAG 2.1 A/AA und Best Practice) in allen Ansichten und Zuständen der Testausgabe, der KI-Funktionen
-(simuliert), der Offline-Ausgabe (mit Hinweis auf eine neue Version) und auf GitHub Pages; zum Schluss die Leistung bei einem grossen
+(simuliert), der Offline-Ausgabe (mit Hinweis auf eine neue Version) und auf GitHub Pages (Hinweis, Sperrdialog und Rückfrage zu
+Dokumenten mit Klassifizierungsvermerk); zum Schluss die Leistung bei einem grossen
 Dokument (ein Entscheid < 300 ms im Median). Jede Zeile «… Verstösse: …» muss leer sein; Exit-Code 1 sonst."""
 import sys, os, json, time, builtins
 sys.path.insert(0, os.path.dirname(__file__))
@@ -162,6 +163,17 @@ with sync_playwright() as pw:
                     pg = br.new_page(viewport={'width': vw, 'height': vh}, locale=lang + '-CH'); mock_version(pg, '9.9.9')
                     pg.goto('file://' + OFFLINE_FILE if where == 'file' else pages + '/' + os.path.basename(OFFLINE_FILE)); pg.wait_for_selector('#updBand:not([hidden])', timeout=10000); pg.evaluate(AXE)
                     print(f'  offline Versionshinweis {where} {lang} {vw}px Verstösse:', pg.evaluate(AXE_RUN))
+                    if where == 'pages':
+                        # Dokumente mit Klassifizierungsvermerk (Startseite mit Hinweis oben geprüft): Sperrdialog (VERTRAULICH), Rückfrage (INTERN) offen und angehakt
+                        idle = '!document.getElementById("dlg").open && !DP.state.busy'
+                        pg.set_input_files('#file', [os.path.join(FX, 'klassif_vertraulich_fuss.docx')]); pg.wait_for_selector('#dlg[open] [data-fid="web-classif-blocked"]', timeout=30000); pg.wait_for_timeout(300)
+                        print(f'  Pages Sperrdialog VERTRAULICH {lang} {vw}px Verstösse:', pg.evaluate(AXE_RUN)); pg.keyboard.press('Escape'); pg.wait_for_function(idle); pg.wait_for_timeout(300)
+                        pg.set_input_files('#file', [os.path.join(FX, 'klassif_intern_kopf.docx')]); pg.wait_for_selector('#dlg[open] [data-fid="web-intern-dlg"]', timeout=30000); pg.wait_for_timeout(300)
+                        print(f'  Pages Rückfrage INTERN {lang} {vw}px Verstösse:', pg.evaluate(AXE_RUN))
+                        # Nach dem Farbübergang von «Trotzdem prüfen» (--motion-fast) messen
+                        pg.check('#webInternAck'); pg.wait_for_timeout(400); print(f'  Pages Rückfrage INTERN angehakt {lang} {vw}px Verstösse:', pg.evaluate(AXE_RUN))
+                        pg.click('[data-fid="webintern-cancel"]'); pg.wait_for_function(idle); pg.wait_for_timeout(300)
+                        if pg.evaluate('DP.state.docs.length'): VIOL.append(f'Pages {lang} {vw}px: Dokument mit Vermerk trotz Sperre bzw. Abbrechen geladen')
                     pg.evaluate('DP.ui.go("criteria")'); pg.wait_for_timeout(500); print(f'  offline Kriterien mit Standardprofil {where} {lang} {vw}px Verstösse:', pg.evaluate(AXE_RUN))
                     pg.close()
             pg = br.new_page(viewport={'width': vw, 'height': vh}, locale='de-CH'); pg.route(VERSION_URL, lambda r: r.abort())

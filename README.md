@@ -29,7 +29,9 @@ Die KI-Funktionen laufen nur in der Artefakt-Ausgabe. Wie du ein eigenes Artefak
 ## Herunterladen und öffnen
 
 - **Datei:** Lade [`Lectora.html`](https://github.com/SEM-SGG/lectora/releases/latest/download/Lectora.html) direkt herunter (oder von der [Seite der neusten Ausgabe](https://github.com/SEM-SGG/lectora/releases/latest)). Öffne die Datei mit einem Doppelklick. Sie läuft ohne Installation und ohne Internet. Die Prüfsummen stehen in `SHA256SUMS.txt` daneben.
-- **Webseite:** Öffne [sem-sgg.github.io/lectora](https://sem-sgg.github.io/lectora/). Dort liegt immer die neuste Ausgabe. Es ist dieselbe Datei; deine Dokumente bleiben auch dort im Browser. Mit «Als Datei speichern» holst du dir eine eigene Kopie.
+- **Webseite:** Öffne [sem-sgg.github.io/lectora](https://sem-sgg.github.io/lectora/). Dort liegt immer die neuste Ausgabe. Es ist dieselbe Datei; deine Dokumente bleiben auch dort im Browser. Die Webseite ist für unklassifizierte Dokumente und zum Ausprobieren gedacht. Mit «Als Datei speichern» holst du dir eine eigene Kopie.
+
+**Klassifizierte Dokumente (INTERN, VERTRAULICH, GEHEIM) prüfst du mit der heruntergeladenen Datei `Lectora.html`.** Erkennt Lectora auf der Webseite den Vermerk VERTRAULICH oder GEHEIM, prüft es das Dokument dort nicht; bei erkanntem INTERN verlangt es eine Bestätigung (die Erkennung ist eine Näherung). Den Grund erklärt [docs/datenschutz.md](docs/datenschutz.md#github-pages).
 
 Gibt es eine neuere Version, zeigt Lectora oben einen Hinweis mit «Neue Version herunterladen».
 
@@ -37,6 +39,7 @@ Gibt es eine neuere Version, zeigt Lectora oben einen Hinweis mit «Neue Version
 
 - **Deine Dokumente bleiben auf deinem Computer.** Der Browser liest die Dateien direkt. Dokumente, Befunde und Einstellungen liegen nur im Arbeitsspeicher des Tabs. Lectora speichert nichts: kein Server, keine Datenbank, kein Browser-Speicher, keine Cookies. Schliesst du den Tab, ist alles weg.
 - **Eine Anfrage beim Start (Offline-Ausgabe).** Die Datei liest auf GitHub Pages die Nummer der neusten Version (`sem-sgg.github.io/lectora/version.json`). Die Anfrage enthält keine Dokumentdaten und keine Kennung. GitHub sieht dabei wie bei jedem Webzugriff die IP-Adresse deines Computers, den Browser, seine Sprache und die Uhrzeit. Eine Sicherheitsrichtlinie in der Datei erlaubt nur diese eine Adresse. Wer auch diese Anfrage nicht will, baut eine Ausgabe ohne Versionsabfrage (siehe [docs/datenschutz.md](docs/datenschutz.md)).
+- **Webseite auf GitHub Pages:** GitHub liefert den Programmcode bei jedem Aufruf neu aus; eine gespeicherte `Lectora.html` ändert sich dagegen nicht unbemerkt. Deshalb ist die Webseite für unklassifizierte Dokumente gedacht. Klassifizierte Dokumente prüfst du mit der gespeicherten Datei, die alle Dokumente ohne Einschränkung lokal prüft. Die Webseite erkennt den Vermerk nach Muster; die Erkennung ist eine Näherung.
 - **Artefakt-Ausgabe:** Sie lädt vier Dateien von Programmbibliotheken von cdnjs, jede mit Integritätsprüfung. Text an Claude geht nur, wenn du eine KI-Funktion startest. Lectora sagt vorher, was gesendet wird, und fragt nach; nur bei Formulierungsvorschlägen (einzelne Sätze) kannst du die Rückfrage für die Sitzung abschalten. Dokumente mit dem Vermerk VERTRAULICH oder GEHEIM sendet Lectora nie an Claude; die Erkennung des Vermerks ist eine Näherung. Welche Bedingungen für den gesendeten Text gelten, hängt vom Claude-Konto ab: Klärt das vor dem Einsatz mit echten Dokumenten (siehe [docs/datenschutz.md](docs/datenschutz.md)).
 
 Ausführlich: [docs/datenschutz.md](docs/datenschutz.md).
