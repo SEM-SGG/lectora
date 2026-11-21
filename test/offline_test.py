@@ -4,6 +4,8 @@ Browsers (Office-Prüfung), kein KI-Zugang, axe auf den Zuständen der Offline-A
 Versionsabfrage: neuere, gleiche und ältere Version, fehlerhafte, feindliche, langsame und scheiternde Antworten, genau eine Anfrage
 ohne Abfrageteil, Cookies und Referrer, CSP sperrt jede andere Adresse; Altershinweis; Ausgabe ohne Versionsabfrage (keine Anfrage);
 GitHub Pages (Auslieferung über einen lokalen Webserver): «Seite neu laden», «Als Datei speichern», Downloads, PDF-Worker.
+Dokumente mit Klassifizierungsvermerk: auf GitHub Pages Hinweis auf der Startseite, Sperre (VERTRAULICH, GEHEIM) und Rückfrage (INTERN)
+über Dateiauswahl, Ablegen, mehrere Dateien und «Neue Fassung laden»; als lokale Datei (file://) ohne Hinweis, Sperre und Rückfrage.
 Standardprofile im Profilband. Umgekehrt für die Artefakt-Ausgabe: kein erreichbarer Download-Link, keine Offline-Kennzeichnung, nur cdnjs.
 Vorher: node build.mjs --offline && node build.mjs --offline --no-update-check && node build.mjs --local && node build.mjs.
 Schluss: «FEHLER: keine»."""
@@ -235,6 +237,15 @@ def update_tests(pw):
         ov = pg.evaluate('(() => { const u = document.querySelector(".utility"), b = document.getElementById("updBand"); return [u.scrollWidth <= u.clientWidth + 1, b.scrollWidth <= b.clientWidth + 1, document.documentElement.scrollWidth <= innerWidth + 1]; })()')
         check(ov == [True, True, True], f'Pages {lang} {w}px: Utility-Leiste und Hinweis ohne Überlauf {ov}')
         check(wsv == [False, RELEASE_URL, '_blank', {'de': 'Als Datei speichern', 'fr': 'Enregistrer comme fichier'}[lang]], f'Pages {lang} {w}px: «Als Datei speichern» verweist auf die neuste Ausgabe {wsv}')
+        # Startseite: Hinweis zu klassifizierten Dokumenten, sichtbar, ohne Überlauf, Link auf die neuste Ausgabe
+        nt = pg.evaluate('''(() => { const n = document.querySelector("[data-fid=web-classif-note]"), a = n && n.querySelector("[data-fid=web-note-dl]"); if (!n || !a) return null;
+          const r = n.getBoundingClientRect(), d = document.getElementById("drop");
+          return [getComputedStyle(n).display !== "none" && r.width > 0 && r.height > 0, n.scrollWidth <= n.clientWidth + 1, document.documentElement.scrollWidth <= innerWidth + 1,
+            !!d && !!(n.compareDocumentPosition(d) & Node.DOCUMENT_POSITION_FOLLOWING), a.getAttribute("href"), a.target, a.rel, Math.round(a.getBoundingClientRect().height), a.innerText.trim(), n.innerText]; })()''')
+        kw = {'de': ('VERTRAULICH', 'GEHEIM', 'INTERN', 'Näherung', 'als Datei'), 'fr': ('CONFIDENTIEL', 'SECRET', 'INTERNE', 'approximation', 'comme fichier')}[lang]
+        check(bool(nt) and nt[:4] == [True, True, True, True] and nt[4:7] == [RELEASE_URL, '_blank', 'noopener noreferrer'] and nt[7] >= (40 if w < 672 else 32)
+              and nt[8] == {'de': 'Als Datei speichern', 'fr': 'Enregistrer comme fichier'}[lang] and all(k in nt[9] for k in kw),
+              f'Pages {lang} {w}px: Hinweis zu klassifizierten Dokumenten über der Ablage, ohne Überlauf, Link «{nt and nt[8]}» auf die neuste Ausgabe, {nt and nt[7]} px hoch')
         if w == 1440 and lang == 'de':
             check(seen[0].all_headers().get('origin') == base, f'Pages: Versionsabfrage mit Origin der Seite ({seen[0].all_headers().get("origin")})')
             pg.screenshot(path=os.path.join(SHOTS, '73_pages_de_1440.png'))
@@ -257,8 +268,121 @@ def update_tests(pw):
         ctx.close()
     ctx, pg, seen, ev = start(vbody(version=VERSION), target=base + '/'); pg.wait_for_timeout(1500)
     check(band(pg) is None and pg.is_visible('#webSave'), 'Pages: aktuelle Version → kein Hinweis, «Als Datei speichern» sichtbar'); ctx.close()
+    web_classif_tests(start, base)
     shutil.rmtree(site, ignore_errors=True)
     br.close()
+
+# ===== GitHub Pages: Dokumente mit Klassifizierungsvermerk =====
+# VERTRAULICH und GEHEIM (und Entsprechungen) werden nicht geladen (Sperrdialog), INTERN erst nach angehakter Bestätigung.
+# Wege: Dateiauswahl (#file), Ablegen auf der Ablagefläche, «Neue Fassung laden» (#verFile), mehrere Dateien auf einmal.
+LINK = [RELEASE_URL, '_blank', 'noopener noreferrer']
+link = lambda pg, fid: pg.evaluate(f'''(() => {{ const a = document.querySelector('[data-fid="{fid}"]'); return a && [a.getAttribute("href"), a.target, a.rel]; }})()''')
+ndocs = lambda pg: pg.evaluate('DP.state.docs.length')
+def put(pg, names): pg.set_input_files('#file', [os.path.join(FX, n) for n in names])
+def wait_dlg(pg, fid): pg.wait_for_selector(f'#dlg[open] [data-fid="{fid}"]', timeout=30000); pg.wait_for_timeout(300)
+def settle(pg): waitf(pg, '!DP.state.busy && !document.getElementById("dlg").open'); pg.wait_for_timeout(400)
+def axe(pg):
+    if pg.evaluate('typeof axe') == 'undefined': pg.evaluate(AXE)
+    return pg.evaluate(AXE_RUN)
+def dlg_layout(pg, w):
+    """Dialog ohne Überlauf (Dialog und Seite), Schaltflächen der Aktionsleiste mindestens 40 px (unter 672 px) bzw. 32 px hoch."""
+    return pg.evaluate('''(min) => { const d = document.getElementById("dlg");
+      return [d.scrollWidth <= d.clientWidth + 1, document.documentElement.scrollWidth <= innerWidth + 1, [...d.querySelectorAll(".dlg-actions .btn")].every(e => e.getBoundingClientRect().height >= min)]; }''', 40 if w < 672 else 32)
+def web_classif_tests(start, base):
+    print('\n== GitHub Pages: Dokumente mit Klassifizierungsvermerk')
+    # Sperre: je Format und Vermerk; Schliessen per Schaltfläche und per Escape
+    ctx, pg, seen, ev = start(vbody(version=VERSION), target=base + '/'); pg.wait_for_timeout(500)
+    for name, label, how in (('klassif_vertraulich_fuss.docx', 'VERTRAULICH', 'click'), ('klassif_vertraulich_fuss.pdf', 'VERTRAULICH', 'Escape'),
+                             ('klassif_secret_kopf_fr.docx', 'SECRET', 'click'), ('klassif_confidenziale_folie.pptx', 'CONFIDENZIALE', 'Escape')):
+        put(pg, [name]); wait_dlg(pg, 'web-classif-blocked')
+        dt = pg.inner_text('#dlg'); ax = axe(pg); fc = focus(pg)
+        check(ndocs(pg) == 0 and fc == 'webblock-close' and link(pg, 'webblock-dl') == LINK and f'«{name}»' in dt and f'«{label}»' in dt and 'nicht geladen' in dt
+              and pg.query_selector('#dlg [data-fid="webintern-ok"]') is None and not ax,
+              f'Pages: {name} ({label}) → Sperrdialog, nicht geladen, Fokus auf «Schliessen» ({fc}), Link auf die neuste Ausgabe, axe {ax}')
+        if how == 'click': pg.click('[data-fid="webblock-close"]')
+        else: pg.keyboard.press('Escape')
+        settle(pg); fc = focus(pg)
+        check(ndocs(pg) == 0 and pg.evaluate('Object.keys(DP.state.res).length === 0 && !DP.state.cur') and fc == 'pick',
+              f'Pages: {name} nach {"Schliessen" if how == "click" else "Escape"}: kein Dokument, kein Ergebnis, Fokus auf «Dateien auswählen» ({fc})')
+    # Ablegen auf der Ablagefläche: gleiche Sperre
+    pg.evaluate('''([b64, name]) => { const bin = atob(b64), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+      const dt = new DataTransfer(); dt.items.add(new File([u], name, {type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"}));
+      document.getElementById("drop").dispatchEvent(new DragEvent("drop", {bubbles: true, cancelable: true, dataTransfer: dt})); }''', [b64('klassif_secret_kopf_fr.docx'), 'klassif_secret_kopf_fr.docx'])
+    wait_dlg(pg, 'web-classif-blocked'); dt = pg.inner_text('#dlg')
+    check(ndocs(pg) == 0 and '«SECRET»' in dt, 'Pages: abgelegte Datei mit Vermerk SECRET → Sperrdialog, nicht geladen')
+    pg.keyboard.press('Escape'); settle(pg); check(ndocs(pg) == 0, 'Pages: nach dem Ablegen kein Dokument geladen')
+    # Rückfrage INTERN: Bestätigen erst nach Anhaken; Abbrechen und Escape verwerfen das Dokument
+    name = 'klassif_intern_kopf.docx'
+    put(pg, [name]); wait_dlg(pg, 'web-intern-dlg')
+    dt = pg.inner_text('#dlg'); ax = axe(pg); fc = focus(pg)
+    check(ndocs(pg) == 0 and pg.is_disabled('[data-fid="webintern-ok"]') and not pg.is_checked('#webInternAck') and fc == 'webintern-cancel' and link(pg, 'webintern-dl') == LINK
+          and '«INTERN»' in dt and f'«{name}»' in dt and pg.query_selector('#dlg [data-fid="webblock-close"]') is None and not ax,
+          f'Pages: {name} → Rückfrage, «Trotzdem prüfen» gesperrt, Fokus auf «Abbrechen» ({fc}), Link auf die neuste Ausgabe, axe {ax}')
+    pg.evaluate('document.querySelector("[data-fid=webintern-ok]").click()'); pg.wait_for_timeout(300)
+    check(pg.evaluate('document.getElementById("dlg").open') and ndocs(pg) == 0, 'Pages: Klick auf das gesperrte «Trotzdem prüfen» ohne Wirkung')
+    pg.click('[data-fid="webintern-cancel"]'); settle(pg); fc = focus(pg)
+    check(ndocs(pg) == 0 and pg.evaluate('Object.keys(DP.state.res).length') == 0 and fc == 'pick', f'Pages: INTERN abgebrochen → nicht geladen, Fokus auf «Dateien auswählen» ({fc})')
+    put(pg, [name]); wait_dlg(pg, 'web-intern-dlg'); pg.check('#webInternAck'); pg.keyboard.press('Escape'); settle(pg)
+    check(ndocs(pg) == 0 and focus(pg) == 'pick', 'Pages: INTERN mit Escape geschlossen (auch angehakt) → nicht geladen')
+    put(pg, [name]); wait_dlg(pg, 'web-intern-dlg')
+    pg.check('#webInternAck'); on = pg.is_enabled('[data-fid="webintern-ok"]')
+    pg.uncheck('#webInternAck'); off = pg.is_disabled('[data-fid="webintern-ok"]')
+    # axe erst nach dem Farbübergang der Schaltfläche (--motion-fast), sonst misst es eine Zwischenfarbe
+    pg.check('#webInternAck'); pg.wait_for_timeout(400); ax = axe(pg)
+    check(on and off and pg.is_enabled('[data-fid="webintern-ok"]') and not ax, f'Pages: Anhaken gibt «Trotzdem prüfen» frei, Abhaken sperrt wieder; axe angehakt {ax}')
+    pg.click('[data-fid="webintern-ok"]'); waitf(pg, 'DP.state.docs.length === 1 && !DP.state.busy'); pg.wait_for_timeout(300)
+    st = pg.evaluate('(() => { const d = DP.state.docs[0], r = DP.state.res[d.id]; return [d.name, d.meta.classification && d.meta.classification.level, !!r && Array.isArray(r.rule), DP.state.cur === d.id]; })()')
+    check(st == [name, 1, True, True], f'Pages: INTERN bestätigt → geladen und geprüft {st}')
+    check(not ev['err'] and not pg.evaluate('window.__csp'), 'Pages (Vermerke): keine Fehler, keine CSP-Verstösse ' + repr(ev['err'][:2]))
+    ctx.close()
+
+    # Mehrere Dateien auf einmal: VERTRAULICH schliessen, INTERN abbrechen → nur das Dokument ohne Vermerk
+    ctx, pg, seen, ev = start(vbody(version=VERSION), target=base + '/'); pg.wait_for_timeout(500)
+    put(pg, ['klassif_vertraulich_fuss.docx', 'klassif_intern_kopf.docx', 'klassif_keine.docx'])
+    wait_dlg(pg, 'web-classif-blocked'); first = ndocs(pg); pg.click('[data-fid="webblock-close"]')
+    wait_dlg(pg, 'web-intern-dlg'); second = ndocs(pg); pg.click('[data-fid="webintern-cancel"]')
+    waitf(pg, 'DP.state.docs.length === 1 && !DP.state.busy && !document.getElementById("dlg").open'); pg.wait_for_timeout(300)
+    names = pg.evaluate('DP.state.docs.map(d => d.name)')
+    check(first == 0 and second == 0 and names == ['klassif_keine.docx'] and pg.evaluate('Object.keys(DP.state.res).length') == 1, f'Pages: drei Dateien (VERTRAULICH, INTERN, ohne Vermerk) → nacheinander Sperre und Rückfrage, geladen nur {names}')
+
+    # «Neue Fassung laden»: eine Fassung mit Vermerk ersetzt das geladene Dokument nicht (Sperre bzw. Rückfrage abgebrochen)
+    did, n0 = pg.evaluate('[DP.state.docs[0].id, DP.state.docs[0].paras.length]')
+    def new_version(fname):
+        with pg.expect_file_chooser() as fc: pg.click(f'[data-fid="ver-{did}"]')
+        fc.value.set_files(os.path.join(FX, fname))
+    unchanged = lambda: pg.evaluate(f'DP.state.docs.length === 1 && DP.state.docs[0].id === "{did}" && DP.state.docs[0].name === "klassif_keine.docx" && DP.state.docs[0].paras.length === {n0} && Object.keys(DP.state.versions).length === 0')
+    new_version('klassif_vertraulich_fuss.docx'); wait_dlg(pg, 'web-classif-blocked'); fc = focus(pg)
+    check(unchanged() and fc == 'webblock-close', f'Pages: neue Fassung mit VERTRAULICH → Sperrdialog, Fokus auf «Schliessen» ({fc})')
+    pg.click('[data-fid="webblock-close"]'); settle(pg); fc = focus(pg)
+    check(unchanged() and fc == f'ver-{did}', f'Pages: neue Fassung mit VERTRAULICH → alte Fassung bleibt, Fokus zurück auf «Neue Fassung laden» ({fc})')
+    new_version('klassif_intern_kopf.docx'); wait_dlg(pg, 'web-intern-dlg'); pg.click('[data-fid="webintern-cancel"]'); settle(pg); fc = focus(pg)
+    check(unchanged() and fc == f'ver-{did}', f'Pages: neue Fassung mit INTERN abgebrochen → alte Fassung bleibt, Fokus zurück ({fc})')
+    new_version('klassif_intern_kopf.docx'); wait_dlg(pg, 'web-intern-dlg'); pg.check('#webInternAck'); pg.click('[data-fid="webintern-ok"]')
+    waitf(pg, '!DP.state.busy && Object.keys(DP.state.versions).length === 1'); pg.wait_for_timeout(300)
+    st = pg.evaluate('[DP.state.docs.length, DP.state.docs[0].name, DP.state.docs[0].meta.classification && DP.state.docs[0].meta.classification.level]')
+    check(st == [1, 'klassif_intern_kopf.docx', 1], f'Pages: neue Fassung mit INTERN bestätigt → ersetzt die alte Fassung {st}')
+    check(not ev['err'] and not pg.evaluate('window.__csp'), 'Pages (Mehrfach, neue Fassung): keine Fehler, keine CSP-Verstösse ' + repr(ev['err'][:2]))
+    ctx.close()
+
+    # Bildschirmfotos und Gestaltung: Startseite mit Hinweis, Sperrdialog, Rückfrage; 1440 und 375 px, DE und FR
+    for w, h, lang in ((1440, 900, 'de'), (1440, 900, 'fr'), (375, 812, 'de'), (375, 812, 'fr')):
+        ctx, pg, seen, ev = start(vbody(version=VERSION), w=w, h=h, locale=lang + '-CH', target=base + '/'); pg.wait_for_timeout(500)
+        pg.evaluate('document.querySelector("[data-fid=web-classif-note]").scrollIntoView({block: "nearest"})'); pg.wait_for_timeout(150)
+        pg.screenshot(path=os.path.join(SHOTS, f'73_pages_note_{lang}_{w}.png'))
+        put(pg, ['klassif_vertraulich_fuss.docx']); wait_dlg(pg, 'web-classif-blocked')
+        title = pg.inner_text('#dlg h2'); lay = dlg_layout(pg, w); ax = axe(pg)
+        check(title == {'de': 'Dokument wird auf der Webseite nicht geprüft', 'fr': 'Document non contrôlé sur la page web'}[lang] and lay == [True, True, True] and not ax,
+              f'Pages {lang} {w}px: Sperrdialog «{title}», ohne Überlauf, Schaltflächen hoch genug {lay}, axe {ax}')
+        pg.screenshot(path=os.path.join(SHOTS, f'74_pages_web_block_{lang}_{w}.png'))
+        pg.keyboard.press('Escape'); settle(pg)
+        put(pg, ['klassif_intern_kopf.docx']); wait_dlg(pg, 'web-intern-dlg')
+        title = pg.inner_text('#dlg h2'); lay = dlg_layout(pg, w); ax = axe(pg)
+        check(title.startswith({'de': 'Dokument mit Vermerk «INTERN»', 'fr': 'Contrôler sur la page web un document'}[lang]) and 'INTERN' in title and lay == [True, True, True] and not ax,
+              f'Pages {lang} {w}px: Rückfrage «{title}», ohne Überlauf, Schaltflächen hoch genug {lay}, axe {ax}')
+        pg.screenshot(path=os.path.join(SHOTS, f'75_pages_web_intern_{lang}_{w}.png'))
+        pg.click('[data-fid="webintern-cancel"]'); settle(pg)
+        check(ndocs(pg) == 0 and not ev['err'], f'Pages {lang} {w}px: nichts geladen, keine Fehler')
+        ctx.close()
 
 with sync_playwright() as pw:
     br = launch(pw)
@@ -400,9 +524,28 @@ with sync_playwright() as pw:
         csp_v += pg.evaluate('window.__csp')
         pg.context.close()
 
+    # ===== Klassifizierungsvermerke als lokale Datei (file://): kein Hinweis, keine Sperre, keine Rückfrage =====
+    # Eigener Kontext, damit die Indizes von DP.state.docs oben unberührt bleiben
+    pg = page()
+    check(pg.evaluate('location.protocol') == 'file:' and pg.query_selector('[data-fid="web-classif-note"]') is None and pg.query_selector('[data-fid="web-note-dl"]') is None,
+          'file://: Startseite ohne Hinweis zu klassifizierten Dokumenten')
+    pg.evaluate('window.__dlgOpened = 0; new MutationObserver(() => { if (document.getElementById("dlg").open) window.__dlgOpened++; }).observe(document.getElementById("dlg"), {attributes: true, attributeFilter: ["open"]})')
+    KL = (('klassif_intern_kopf.docx', 1), ('klassif_vertraulich_fuss.docx', 2), ('klassif_secret_kopf_fr.docx', 3))
+    pg.set_input_files('#file', [os.path.join(FX, n) for n, _ in KL])
+    waitf(pg, '(DP.state.docs.length === 3 && !DP.state.busy) || document.getElementById("dlg").open'); pg.wait_for_timeout(400)
+    st = pg.evaluate('DP.state.docs.map(d => [d.name, d.meta.classification && d.meta.classification.level, !!DP.state.res[d.id] && Array.isArray(DP.state.res[d.id].rule)])')
+    nd = pg.evaluate('window.__dlgOpened')
+    check(nd == 0 and pg.query_selector('#dlg[open]') is None and st == [[n, lv, True] for n, lv in KL],
+          f'file://: INTERN, VERTRAULICH und SECRET ohne Dialog geladen und geprüft ({nd} Dialoge) {st}')
+    check(pg.query_selector('[data-fid="web-classif-blocked"]') is None and pg.query_selector('[data-fid="web-intern-dlg"]') is None, 'file://: weder Sperrdialog noch Rückfrage im Dokument')
+    pg.evaluate('DP.ui.setLang("fr"); DP.ui.go("docs")'); pg.wait_for_timeout(300)
+    check(pg.query_selector('[data-fid="web-classif-note"]') is None, 'file://: auch auf Französisch und mit Dokumenten kein Hinweis')
+    pg.evaluate('DP.ui.setLang("de")'); csp_v += pg.evaluate('window.__csp')
+    pg.context.close()
+
     other = sorted(set(u for u in reqs if not (u.startswith('file://') and u.split('#')[0].split('?')[0] == 'file://' + OFF) and not u.startswith(('blob:', 'data:')) and u != VERSION_URL))
     check(not other, 'Netzwerk: keine Anfrage ausser der Datei selbst, blob:, data: und der Versionsdatei ' + (repr(other[:5]) if other else f'({len(reqs)} Anfragen)'))
-    check(all(len(v) == 1 for v in vreqs) and len(vreqs) == 4, f'je Start genau eine Versionsabfrage ({[len(v) for v in vreqs]})')
+    check(all(len(v) == 1 for v in vreqs) and len(vreqs) == 5, f'je Start genau eine Versionsabfrage ({[len(v) for v in vreqs]})')
     check(not csp_v, 'keine CSP-Verstösse ' + (repr(csp_v[:5]) if csp_v else ''))
     check(not msgs, 'Konsole ohne Fehler und Warnungen ' + (repr(msgs[:5]) if msgs else ''))
     br.close()

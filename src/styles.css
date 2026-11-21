@@ -362,6 +362,10 @@ textarea { min-height: 120px; padding-top: var(--space-sm); padding-bottom: var(
 .notice.ok { border-left-color: var(--success); background: var(--success-bg); color: var(--success-text); }
 .notice.ok > svg { color: var(--success-text); }
 .notice .btn { margin-top: var(--space-xs); }
+/* GitHub Pages: Hinweis zu klassifizierten Dokumenten über der Ablagefläche; Link-Schaltfläche bündig mit dem Text */
+.web-note > div { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+.web-note p { max-width: 90ch; }
+.web-note .btn { margin-left: calc(-1 * var(--space-sm)); }
 
 /* ===== Ergebnis: Ring und Urteil, Kennzahlen (KpiTile, kompakt), erfüllte Kriterien ===== */
 .summary { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); align-items: start; padding: var(--space-md) var(--space-lg); }

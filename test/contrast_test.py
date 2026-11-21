@@ -195,10 +195,39 @@ def main():
                         if r: total.append(f'{w} offline {lang} {where} Fokus {fid}: {r}')
                     pg.evaluate('DP.ui.go("criteria")'); pg.wait_for_timeout(300); check(f'{lang} {where} Kriterien mit Standardprofil')
                     pg.close()
+            # GitHub Pages: Hinweis zu klassifizierten Dokumenten, Sperrdialog (VERTRAULICH), Rückfrage (INTERN) offen und angehakt;
+            # Fokusrahmen auf jedem Bedienelement (mit der Tastatur erreicht, damit :focus-visible gilt)
+            def kfocus(lang, fid):
+                sel = f'[data-fid="{fid}"]'
+                for keys in (('Shift+Tab', 'Tab'), ('Tab', 'Shift+Tab')):
+                    pg.focus(sel)
+                    for k in keys: pg.keyboard.press(k)
+                    pg.wait_for_timeout(150)
+                    if pg.evaluate('(s) => document.activeElement === document.querySelector(s)', sel): break
+                else:
+                    total.append(f'{w} pages {lang} Fokus {fid}: mit der Tastatur nicht erreichbar'); return
+                r = pg.evaluate(FOCUS)
+                if r: total.append(f'{w} pages {lang} Fokus {fid}: {r}')
+            idle = '!document.getElementById("dlg").open && !DP.state.busy'
+            for lang in ('de', 'fr', 'it'):
+                pg = br.new_page(viewport={'width': w, 'height': h}, locale=lang + '-CH', reduced_motion='reduce'); mock_version(pg)
+                pg.goto(pages + '/' + os.path.basename(OFFLINE_FILE)); pg.wait_for_selector('[data-fid="web-classif-note"]', timeout=10000); pg.wait_for_timeout(300)
+                check(f'{lang} pages Hinweis Vermerke'); kfocus(lang, 'web-note-dl')
+                pg.set_input_files('#file', [os.path.join(FX, 'klassif_vertraulich_fuss.docx')]); pg.wait_for_selector('#dlg[open] [data-fid="web-classif-blocked"]', timeout=30000); pg.wait_for_timeout(300)
+                check(f'{lang} pages Sperrdialog')
+                for fid in ('webblock-dl', 'webblock-close'): kfocus(lang, fid)
+                pg.keyboard.press('Escape'); pg.wait_for_function(idle); pg.wait_for_timeout(200)
+                pg.set_input_files('#file', [os.path.join(FX, 'klassif_intern_kopf.docx')]); pg.wait_for_selector('#dlg[open] [data-fid="web-intern-dlg"]', timeout=30000); pg.wait_for_timeout(300)
+                check(f'{lang} pages Rückfrage INTERN')
+                for fid in ('webintern-dl', 'webInternAck', 'webintern-cancel'): kfocus(lang, fid)
+                pg.check('#webInternAck'); pg.wait_for_timeout(200); check(f'{lang} pages Rückfrage INTERN angehakt'); kfocus(lang, 'webintern-ok')
+                pg.click('[data-fid="webintern-cancel"]'); pg.wait_for_function(idle)
+                if pg.evaluate('DP.state.docs.length'): total.append(f'{w} pages {lang}: Dokument mit Vermerk trotz Sperre bzw. Abbrechen geladen')
+                pg.close()
             pg = br.new_page(viewport={'width': w, 'height': h}, locale='de-CH', reduced_motion='reduce'); pg.route(VERSION_URL, lambda r: r.abort())
             pg.add_init_script('Date.now = ((n) => () => n() + 200 * 86400000)(Date.now)')
             pg.goto('file://' + OFFLINE_FILE); pg.wait_for_selector('#updBand:not([hidden])', timeout=15000); check('Altershinweis')
-            print(f'{w}px Offline-Ausgabe: Versionshinweis, GitHub Pages und Altershinweis geprüft')
+            print(f'{w}px Offline-Ausgabe: Versionshinweis, GitHub Pages (mit Hinweis, Sperrdialog und Rückfrage zu Vermerken) und Altershinweis geprüft')
             pg.close()
         br.close()
     print('Kontrast: gesamt', len(total), 'Unterschreitungen')

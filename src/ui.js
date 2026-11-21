@@ -9,6 +9,11 @@
   const SVGNS = 'http://www.w3.org/2000/svg';
   const SVG_TAGS = new Set(['svg', 'path', 'circle']);
   const MAX_BYTES = 60 * 1024 * 1024;
+  /** Feste Adresse der neusten Ausgabe (Hinweis auf eine neue Version, «Als Datei speichern», Hinweise zu klassifizierten Dokumenten). */
+  const RELEASE_URL = 'https://github.com/SEM-SGG/lectora/releases/latest';
+  /** Offline-Ausgabe über http(s) geöffnet, also auf GitHub Pages oder einem Webserver: Dokumente mit Klassifizierungsvermerk werden dort
+      nicht oder erst nach Rückfrage geprüft (readFiles). Als lokale Datei (file:) und in der Artefakt-Ausgabe gilt WEB nicht. */
+  const WEB = !!DP.offline && /^https?:$/.test(location.protocol);
 
   /** Einstellungen und Ansichtszustände mit ihren Ausgangswerten; «Sitzung leeren» setzt alle darauf zurück. */
   const DEFAULTS = () => ({
@@ -507,6 +512,11 @@
         await nextPaint();
         const doc = await DP.parse.parseFile(file);
         doc.demo = !!demo;
+        // Auf GitHub Pages: VERTRAULICH und GEHEIM (und Entsprechungen) nie prüfen, INTERN erst nach ausdrücklicher Bestätigung.
+        // Vor der Fassungsrückfrage, damit auch «Neue Fassung laden» geschützt ist; ein verworfenes Dokument bleibt nirgends liegen.
+        const cl = WEB && !demo ? doc.meta.classification : null;
+        if (cl && cl.level >= 2) { S.busy = null; render(); await webClassifBlocked(doc.name, cl.label, opts.focus || 'pick'); continue; }
+        if (cl && cl.level >= 1) { S.busy = null; render(); if (!await askWebIntern(doc.name, cl.label, opts.focus || 'pick')) continue; }
         let target = opts.versionOf ? docById(opts.versionOf) : null;
         if (!target && !demo) {
           const m = versionCandidate(doc, before);
@@ -582,6 +592,42 @@
             h('button', { type: 'button', class: 'btn', 'data-fid': 'ver-version', onclick: () => { ans = 'version'; close(); } }, icon('file_diff', 'sm'), t('ver.dlg.version'))));
         d.addEventListener('close', () => done(ans), { once: true });
       });
+    });
+  }
+  /** Auf GitHub Pages (WEB): Dokument mit Vermerk VERTRAULICH oder GEHEIM. Erklärung statt Prüfung; das Dokument wird nicht geladen.
+      Erhält nur Dateiname und Vermerk (keinen Verweis auf das Dokumentobjekt). Löst auf, sobald der Dialog schliesst. */
+  function webClassifBlocked(name, label, back) {
+    return new Promise((done) => {
+      dialog((d, close) => {
+        d.setAttribute('aria-labelledby', 'dlgTitle');
+        app(d, h('div', { class: 'dlg-body', 'data-fid': 'web-classif-blocked' }, h('h2', { id: 'dlgTitle' }, t('web.block.t')),
+          h('div', { class: 'notice err' }, icon('gpp_maybe'), h('span', null, t('web.block.p', { name, label }))),
+          h('p', null, t('web.block.p2')), h('p', { class: 'help' }, t('web.heur'))),
+          h('div', { class: 'dlg-actions' },
+            h('a', { class: 'btn text', href: RELEASE_URL, target: '_blank', rel: 'noopener noreferrer', 'data-fid': 'webblock-dl' }, icon('download', 'sm'), t('web.save')),
+            h('button', { type: 'button', class: 'btn', 'data-fid': 'webblock-close', 'data-autofocus': true, onclick: close }, t('btn.close'))));
+        d.addEventListener('close', () => done(), { once: true });
+      }, back);
+    });
+  }
+  /** Auf GitHub Pages (WEB): Dokument mit Vermerk INTERN (und Entsprechungen). Prüfen erst nach angehakter Bestätigung; Abbrechen,
+      Escape und Schliessen gelten als «nicht prüfen». Erhält nur Dateiname und Vermerk, damit ein verworfenes Dokument nicht im DOM hängt. */
+  function askWebIntern(name, label, back) {
+    return new Promise((done) => {
+      let ans = false;
+      dialog((d, close) => {
+        d.setAttribute('aria-labelledby', 'dlgTitle');
+        const okBtn = btn(t('web.intern.ok'), { icon: 'fact_check', fid: 'webintern-ok', disabled: true, onclick: () => { ans = true; close(); } });
+        app(d, h('div', { class: 'dlg-body', 'data-fid': 'web-intern-dlg' }, h('h2', { id: 'dlgTitle' }, t('web.intern.t', { label })),
+          h('p', null, t('web.intern.p', { name })),
+          h('div', { class: 'notice' }, icon('gpp_maybe'), h('span', null, t('web.intern.classif', { label }))),
+          h('p', null, h('a', { class: 'linkish', href: RELEASE_URL, target: '_blank', rel: 'noopener noreferrer', 'data-fid': 'webintern-dl' }, t('web.intern.dl'))),
+          h('label', { class: 'check', for: 'webInternAck' }, h('input', { type: 'checkbox', id: 'webInternAck', 'data-fid': 'webInternAck', onchange: (e) => { okBtn.disabled = !e.target.checked; } }), h('span', null, t('web.intern.check'))),
+          h('p', { class: 'help' }, t('web.heur'))),
+          h('div', { class: 'dlg-actions' },
+            h('button', { type: 'button', class: 'btn text', 'data-fid': 'webintern-cancel', 'data-autofocus': true, onclick: () => { ans = false; close(); } }, t('btn.cancel')), okBtn));
+        d.addEventListener('close', () => done(ans), { once: true });
+      }, back);
     });
   }
   /** «Neue Fassung laden»: Dateiauswahl für genau dieses Dokument. */
@@ -1355,6 +1401,10 @@
     drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('over'); });
     drop.addEventListener('dragleave', (e) => { if (!drop.contains(e.relatedTarget)) drop.classList.remove('over'); });
     drop.addEventListener('drop', (e) => { e.preventDefault(); drop.classList.remove('over'); addFiles(e.dataTransfer.files); });
+    // GitHub Pages: dauerhaft sichtbar, wofür diese Webseite gedacht ist und wie klassifizierte Dokumente geprüft werden (readFiles)
+    if (WEB) app(page, h('div', { class: 'notice web-note', 'data-fid': 'web-classif-note' }, icon('gpp_maybe'),
+      h('div', null, h('p', null, t('web.note')),
+        h('a', { class: 'btn text sm', href: RELEASE_URL, target: '_blank', rel: 'noopener noreferrer', 'data-fid': 'web-note-dl', 'data-tip': t('tip.webSave') }, icon('download', 'sm'), t('web.save')))));
     app(page, drop);
     if (S.docs.length) {
       const list = h('div', { class: 'docs' });
@@ -2414,8 +2464,6 @@
      immer an die feste Adresse der neusten Ausgabe. Auf GitHub Pages (WEB) ist dieselbe Datei über https geöffnet: dort lädt man die
      Seite neu, statt herunterzuladen. Ohne Antwort und bei einem Stand älter als 90 Tage: ruhiger Hinweis, im Repository nachzusehen.
      «Ausblenden» gilt bis zum Neuladen (nichts wird gespeichert). */
-  const RELEASE_URL = 'https://github.com/SEM-SGG/lectora/releases/latest';
-  const WEB = !!DP.offline && /^https?:$/.test(location.protocol);
   const AGE_DAYS = 90;
   let UPD = null, updHidden = false;
   /** Datum JJJJ-MM-TT in der Schreibweise der Oberfläche («18. November 2026»); sonst unverändert. */
