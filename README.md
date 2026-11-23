@@ -35,6 +35,10 @@ Die KI-Funktionen laufen nur in der Artefakt-Ausgabe. Wie du ein eigenes Artefak
 
 Gibt es eine neuere Version, zeigt Lectora oben einen Hinweis mit «Neue Version herunterladen».
 
+## Produktdokumentation
+
+Die Produktdokumentation erklärt auf Deutsch, Französisch und Italienisch, was Lectora tut, wie der Arbeitsablauf aussieht, welche Ausgaben es gibt und wie Lectora mit deinen Dokumenten umgeht: [`docs/lectora-dokumentation.html`](docs/lectora-dokumentation.html). GitHub zeigt eine HTML-Datei dieser Grösse nicht als Seite an. Lade die Datei über «Download raw file» herunter und öffne sie mit einem Doppelklick im Browser.
+
 ## Datenschutz in Kürze
 
 - **Deine Dokumente bleiben auf deinem Computer.** Der Browser liest die Dateien direkt. Dokumente, Befunde und Einstellungen liegen nur im Arbeitsspeicher des Tabs. Lectora speichert nichts: kein Server, keine Datenbank, kein Browser-Speicher, keine Cookies. Schliesst du den Tab, ist alles weg.
