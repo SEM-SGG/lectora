@@ -7,8 +7,9 @@ Datei bestimmt ihr Inhalt (Signatur), nicht die Endung: Eine umbenannte Word-Dat
   - keine internen Adressen: Hosts unter admin.ch ausser den öffentlichen (Liste PUBLIC_HOSTS), Intranet, SharePoint, .local, .intra
   - keine E-Mail-Adressen ausser unter example.com (example.org, example.net), users.noreply.github.com, noreply@anthropic.com und den
     Adressen von GitHub selbst (noreply@github.com, support@github.com),
-    auch nicht verschleiert («name [at] domain»); Ausnahmen: die unverändert übernommenen Lizenztexte in THIRD-PARTY-NOTICES.md und
-    die Paketangaben Dritter in package-lock.json
+    auch nicht verschleiert («name [at] domain»); Ausnahmen: die unverändert übernommenen Lizenztexte in THIRD-PARTY-NOTICES.md,
+    die Paketangaben Dritter in package-lock.json und genau eine Funktionsadresse der Sektion für Rückmeldungen (FUNCTION_ADDR, keine
+    Adresse einer Person; nur im Inhalt von Dateien und Commit-Nachrichten, nie als Autor oder Committer)
   - keine Zugangsdaten (Token von GitHub, Anthropic, AWS, Slack, private Schlüssel) und keine Dateien wie .env oder settings.local.json
   - Office-Dateien (ZIP mit [Content_Types].xml) und PDF-Dateien: nur in test/fixtures, mit passender Endung, vom Generator
     test/make_fixtures.py erzeugt (Dateiname steht im Generator); Personen in den Metadaten nur erfundene Namen (Liste FICTIONAL):
@@ -36,6 +37,9 @@ PUBLIC_HOSTS = {'fedlex.admin.ch', 'www.fedlex.admin.ch', 'fedlex.data.admin.ch'
 ALLOWED_MAIL = re.compile(r'(?:^|\.)example\.(?:com|org|net)$|^users\.noreply\.github\.com$', re.I)
 # GitHub selbst schreibt Commits als «GitHub <noreply@github.com>» (Zusammenführen im Web) und Dependabot zeichnet mit support@github.com.
 ALLOWED_ADDR = {'noreply@anthropic.com', 'noreply@github.com', 'support@github.com'}
+# Funktionsadresse der Sektion für Rückmeldungen ohne GitHub-Konto (README, Anleitung in Lectora, docs/rueckmeldungen.md). Vom Auftraggeber
+# so vorgegeben; keine Adresse einer Person. Zugelassen ist genau diese Zeichenfolge, nicht die Domain und keine andere Adresse darunter.
+FUNCTION_ADDR = re.compile(r'(?<![\w.%+-])sektion-grenze@sem\.admin\.ch(?![\w-]|\.[\w-])', re.I)
 
 PATTERNS = [
     ('absoluter Pfad', re.compile(r'(?<![\w.~-])/(?:home/[a-z_][\w-]*|root)/|(?<![\w])/Users/[A-Za-z][\w.-]+/|(?<![\w])/mnt/(?:user-data|c/Users|data|uploads)\b|(?<![\w])/var/folder[s]/'
@@ -58,6 +62,7 @@ def files(root):
 
 
 def scan_text(name, text, deny, findings, emails_ok=False):
+    text = FUNCTION_ADDR.sub(' ', text)
     for label, rx in PATTERNS:
         for m in rx.finditer(text):
             findings.append(f'{name}: {label}: «{m.group(0)[:60]}»')

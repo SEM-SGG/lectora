@@ -55,7 +55,8 @@ const ICON_MAP = {
   science: 'flask-conical', computer: 'monitor', edit_document: 'file-pen-line', summarize: 'clipboard-list', gpp_maybe: 'shield-alert', south: 'arrow-down',
   menu: 'menu', arrow_back: 'arrow-left', tune: 'sliders-horizontal', help: 'circle-help', unfold_more: 'chevrons-up-down', unfold_less: 'chevrons-down-up', view_column: 'columns-3',
   flag: 'flag', flag_off: 'flag-off', history: 'history', save: 'save', folder_open: 'folder-open', file_diff: 'file-diff', file_json: 'file-json',
-  table: 'table', sort: 'arrow-down-wide-narrow', refresh: 'refresh-cw', wand: 'wand-sparkles', filter: 'list-filter', pin: 'pin', remove: 'circle-x'
+  table: 'table', sort: 'arrow-down-wide-narrow', refresh: 'refresh-cw', wand: 'wand-sparkles', filter: 'list-filter', pin: 'pin', remove: 'circle-x',
+  menu_book: 'book-open', mail: 'mail', bug: 'bug'
 };
 // Frühere gefüllte Varianten zeigen auf dieselbe Strichzeichnung
 for (const n of ['error', 'warning', 'info', 'check_circle', 'lock', 'verified']) ICON_MAP[n + '_fill'] = ICON_MAP[n];

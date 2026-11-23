@@ -9,10 +9,17 @@
   const SVGNS = 'http://www.w3.org/2000/svg';
   const SVG_TAGS = new Set(['svg', 'path', 'circle']);
   const MAX_BYTES = 60 * 1024 * 1024;
-  /** Feste Adresse der neusten Ausgabe (Hinweis auf eine neue Version, «Als Datei speichern», Hinweise zu klassifizierten Dokumenten). */
+  /** Feste Adressen, nie aus einer Antwort. RELEASE_URL: Seite der neusten Ausgabe («Auf GitHub nachsehen» im Altershinweis).
+      DOWNLOAD_URL: die Datei Lectora.html der neusten Ausgabe direkt («Neue Version herunterladen», «Als Datei speichern»); der Name
+      Lectora.html ist deshalb fest (Workflow release). DOC_URL: Produktdokumentation auf GitHub Pages. ISSUE_URL: Fehler melden.
+      CONTACT: Funktionsadresse der Sektion für Rückmeldungen ohne GitHub-Konto. */
   const RELEASE_URL = 'https://github.com/SEM-SGG/lectora/releases/latest';
-  /** Offline-Ausgabe über http(s) geöffnet, also auf GitHub Pages oder einem Webserver: Dokumente mit Klassifizierungsvermerk werden dort
-      nicht oder erst nach Rückfrage geprüft (readFiles). Als lokale Datei (file:) und in der Artefakt-Ausgabe gilt WEB nicht. */
+  const DOWNLOAD_URL = RELEASE_URL + '/download/Lectora.html';
+  const DOC_URL = 'https://sem-sgg.github.io/lectora/dokumentation.html';
+  const ISSUE_URL = 'https://github.com/SEM-SGG/lectora/issues/new/choose';
+  const CONTACT = 'sektion-grenze@sem.admin.ch';
+  /** Offline-Ausgabe über http(s) geöffnet, also auf GitHub Pages oder einem Webserver: Dokumente mit Klassifizierungsvermerk (INTERN,
+      VERTRAULICH, GEHEIM) prüft Lectora dort nicht (readFiles, Datenregel der SGG). Als lokale Datei (file:) und in der Artefakt-Ausgabe gilt WEB nicht. */
   const WEB = !!DP.offline && /^https?:$/.test(location.protocol);
 
   /** Einstellungen und Ansichtszustände mit ihren Ausgangswerten; «Sitzung leeren» setzt alle darauf zurück. */
@@ -160,6 +167,14 @@
     return out;
   }
   const cmpShown = (c) => !c.stats.mismatch || !!S.cmpForce[c.id];
+  /* ---------- Warnung vor dem Verlassen: Entscheide, die seit dem letzten Export nicht exportiert sind ----------
+     Ein Entscheid ist jeder Befund, der nicht offen ist (angenommen, abgelehnt, ignoriert, Fehlalarm) oder einen bearbeiteten Vorschlag
+     trägt. EXPORTED hält je Dokument den Stand beim letzten Export (Word, bereinigte Fassung, Prüfbericht, PDF oder PowerPoint mit
+     Kommentaren). Nur im Arbeitsspeicher; «Sitzung leeren» und das Entfernen eines Dokuments nehmen seine Entscheide mit. */
+  const EXPORTED = new WeakMap();
+  const decSig = (doc) => findingsOf(doc).filter(f => stOf(f) !== 'open' || f.fa || (f.fix && f.fix.orig != null))
+    .map(f => f.id + ':' + stOf(f) + (f.fa ? ':fa' : '') + (f.fix && f.fix.orig != null ? ':' + f.fix.repl : '')).sort().join('|');
+  const unexported = () => S.docs.some(d => { const sig = decSig(d); return sig !== '' && sig !== EXPORTED.get(d); });
   /** Hinweis über dem Vergleich: die Dokumente entsprechen einander offensichtlich nicht (DP.align: Zuordnung und Anker schwach). */
   function mismatchNote(c) {
     const ref = docById(c.ref), tgt = docById(c.tgt);
@@ -512,11 +527,10 @@
         await nextPaint();
         const doc = await DP.parse.parseFile(file);
         doc.demo = !!demo;
-        // Auf GitHub Pages: VERTRAULICH und GEHEIM (und Entsprechungen) nie prüfen, INTERN erst nach ausdrücklicher Bestätigung.
-        // Vor der Fassungsrückfrage, damit auch «Neue Fassung laden» geschützt ist; ein verworfenes Dokument bleibt nirgends liegen.
+        // Auf GitHub Pages: INTERN, VERTRAULICH und GEHEIM (und Entsprechungen) nie prüfen (Datenregel der SGG: INTERN oder höher geht
+        // nicht ins Internet). Vor der Fassungsrückfrage, damit auch «Neue Fassung laden» geschützt ist; ein verworfenes Dokument bleibt nirgends liegen.
         const cl = WEB && !demo ? doc.meta.classification : null;
-        if (cl && cl.level >= 2) { S.busy = null; render(); await webClassifBlocked(doc.name, cl.label, opts.focus || 'pick'); continue; }
-        if (cl && cl.level >= 1) { S.busy = null; render(); if (!await askWebIntern(doc.name, cl.label, opts.focus || 'pick')) continue; }
+        if (cl && cl.level >= 1) { S.busy = null; render(); await webClassifBlocked(doc.name, cl.label, opts.focus || 'pick'); continue; }
         let target = opts.versionOf ? docById(opts.versionOf) : null;
         if (!target && !demo) {
           const m = versionCandidate(doc, before);
@@ -594,7 +608,7 @@
       });
     });
   }
-  /** Auf GitHub Pages (WEB): Dokument mit Vermerk VERTRAULICH oder GEHEIM. Erklärung statt Prüfung; das Dokument wird nicht geladen.
+  /** Auf GitHub Pages (WEB): Dokument mit Vermerk INTERN, VERTRAULICH oder GEHEIM. Erklärung statt Prüfung; das Dokument wird nicht geladen.
       Erhält nur Dateiname und Vermerk (keinen Verweis auf das Dokumentobjekt). Löst auf, sobald der Dialog schliesst. */
   function webClassifBlocked(name, label, back) {
     return new Promise((done) => {
@@ -604,29 +618,9 @@
           h('div', { class: 'notice err' }, icon('gpp_maybe'), h('span', null, t('web.block.p', { name, label }))),
           h('p', null, t('web.block.p2')), h('p', { class: 'help' }, t('web.heur'))),
           h('div', { class: 'dlg-actions' },
-            h('a', { class: 'btn text', href: RELEASE_URL, target: '_blank', rel: 'noopener noreferrer', 'data-fid': 'webblock-dl' }, icon('download', 'sm'), t('web.save')),
+            h('a', { class: 'btn text', href: DOWNLOAD_URL, target: '_blank', rel: 'noopener noreferrer', 'data-fid': 'webblock-dl', 'data-tip': t('tip.webSave') }, icon('download', 'sm'), t('web.save')),
             h('button', { type: 'button', class: 'btn', 'data-fid': 'webblock-close', 'data-autofocus': true, onclick: close }, t('btn.close'))));
         d.addEventListener('close', () => done(), { once: true });
-      }, back);
-    });
-  }
-  /** Auf GitHub Pages (WEB): Dokument mit Vermerk INTERN (und Entsprechungen). Prüfen erst nach angehakter Bestätigung; Abbrechen,
-      Escape und Schliessen gelten als «nicht prüfen». Erhält nur Dateiname und Vermerk, damit ein verworfenes Dokument nicht im DOM hängt. */
-  function askWebIntern(name, label, back) {
-    return new Promise((done) => {
-      let ans = false;
-      dialog((d, close) => {
-        d.setAttribute('aria-labelledby', 'dlgTitle');
-        const okBtn = btn(t('web.intern.ok'), { icon: 'fact_check', fid: 'webintern-ok', disabled: true, onclick: () => { ans = true; close(); } });
-        app(d, h('div', { class: 'dlg-body', 'data-fid': 'web-intern-dlg' }, h('h2', { id: 'dlgTitle' }, t('web.intern.t', { label })),
-          h('p', null, t('web.intern.p', { name })),
-          h('div', { class: 'notice' }, icon('gpp_maybe'), h('span', null, t('web.intern.classif', { label }))),
-          h('p', null, h('a', { class: 'linkish', href: RELEASE_URL, target: '_blank', rel: 'noopener noreferrer', 'data-fid': 'webintern-dl' }, t('web.intern.dl'))),
-          h('label', { class: 'check', for: 'webInternAck' }, h('input', { type: 'checkbox', id: 'webInternAck', 'data-fid': 'webInternAck', onchange: (e) => { okBtn.disabled = !e.target.checked; } }), h('span', null, t('web.intern.check'))),
-          h('p', { class: 'help' }, t('web.heur'))),
-          h('div', { class: 'dlg-actions' },
-            h('button', { type: 'button', class: 'btn text', 'data-fid': 'webintern-cancel', 'data-autofocus': true, onclick: () => { ans = false; close(); } }, t('btn.cancel')), okBtn));
-        d.addEventListener('close', () => done(ans), { once: true });
       }, back);
     });
   }
@@ -855,28 +849,27 @@
 
   /* ---------- KI ---------- */
   /** Zustimmung vor dem Senden. o: intro (was geschieht), items (was genau gesendet wird), quotes ([{label, text, lang}]: der Wortlaut,
-      der gesendet wird), classif (Klassifizierungsvermerk: zusätzliche Bestätigung), remember (Beschriftung: «in dieser Sitzung nicht
-      mehr fragen», nur ohne Vermerk), title, ok (Beschriftung), back (Fokusziel beim Abbrechen). onOk(remember). */
+      der gesendet wird), classif (Klassifizierungsvermerk: sperrt), remember (Beschriftung: «in dieser Sitzung nicht mehr fragen»),
+      title, ok (Beschriftung), back (Fokusziel beim Abbrechen). onOk(remember). */
   function aiAsk(o, onOk) {
-    // VERTRAULICH, GEHEIM (und die Entsprechungen): nie an Claude; ruhige Erklärung, keine Möglichkeit, trotzdem zu senden
-    if (o.classif && o.classif.level >= 2) return aiBlocked(o.classif, o.back);
+    // INTERN, VERTRAULICH, GEHEIM (und die Entsprechungen): nie an Claude (Datenregel der SGG); ruhige Erklärung, keine Möglichkeit,
+    // trotzdem zu senden
+    if (o.classif && o.classif.level >= 1) return aiBlocked(o.classif, o.back);
     dialog((d, close) => {
-      let okBtn; const need = !!(o.classif && o.classif.level >= 1);
+      let okBtn;
       const body = h('div', { class: 'dlg-body ai-dlg' }, h('h2', { id: 'dlgTitle' }, o.title || t('ai.dlg.t')), h('p', null, o.intro));
       if (o.items && o.items.length) app(body, h('h3', { class: 'ai-send-h' }, t('ai.dlg.what')), h('ul', { class: 'ai-send', 'data-fid': 'ai-send' }, o.items.map(x => h('li', null, icon('check', 'sm'), h('span', null, x)))));
       for (const q of o.quotes || []) app(body, h('figure', { class: 'ai-quote' }, h('figcaption', null, q.label), h('blockquote', { class: 'quote', lang: q.lang, tabindex: '0', 'data-fid': q.fid || null }, q.text)));
-      app(body, h('p', null, t('ai.dlg.p2')));
-      if (need) {
-        app(body, h('div', { class: 'notice err' }, icon('gpp_maybe'), h('span', null, t('ai.dlg.classif', { label: o.classif.label }))));
-        app(body, h('label', { class: 'check', for: 'aiAck' }, h('input', { type: 'checkbox', id: 'aiAck', 'data-fid': 'aiAck', onchange: (e) => { okBtn.disabled = !e.target.checked; } }), h('span', null, t('ai.dlg.check'))));
-      } else if (o.remember) app(body, h('label', { class: 'check', for: 'aiRemember' }, h('input', { type: 'checkbox', id: 'aiRemember', 'data-fid': 'aiRemember' }), h('span', null, o.remember)));
+      // Datenregel der SGG: nur unklassifizierte Dokumente, nie besonders schützenswerte Personendaten oder Falldaten zu Personen
+      app(body, h('p', { 'data-fid': 'ai-rule' }, t('ai.dlg.p2')));
+      if (o.remember) app(body, h('label', { class: 'check', for: 'aiRemember' }, h('input', { type: 'checkbox', id: 'aiRemember', 'data-fid': 'aiRemember' }), h('span', null, o.remember)));
       app(body, h('p', { class: 'help' }, t('ai.dlg.heur')));
-      okBtn = btn(o.ok || t('ai.dlg.ok'), { icon: 'auto_awesome', disabled: need, fid: 'aiask-ok', onclick: () => { const rem = !need && !!o.remember && !!($('aiRemember') && $('aiRemember').checked); close(); onOk(rem); } });
+      okBtn = btn(o.ok || t('ai.dlg.ok'), { icon: 'auto_awesome', fid: 'aiask-ok', onclick: () => { const rem = !!o.remember && !!($('aiRemember') && $('aiRemember').checked); close(); onOk(rem); } });
       d.setAttribute('aria-labelledby', 'dlgTitle');
       app(d, body, h('div', { class: 'dlg-actions' }, h('button', { type: 'button', class: 'btn text', 'data-fid': 'aiask-cancel', onclick: () => { close(); if (o.back) applyFocus([o.back], false); }, 'data-autofocus': true }, t('btn.cancel')), okBtn));
     });
   }
-  /** Dokument mit Vermerk VERTRAULICH oder GEHEIM: Erklärung statt Zustimmung; nichts wird gesendet. */
+  /** Dokument mit Vermerk INTERN, VERTRAULICH oder GEHEIM: Erklärung statt Zustimmung; nichts wird gesendet. */
   function aiBlocked(cl, back) {
     dialog((d, close) => {
       d.setAttribute('aria-labelledby', 'dlgTitle');
@@ -1404,7 +1397,9 @@
     // GitHub Pages: dauerhaft sichtbar, wofür diese Webseite gedacht ist und wie klassifizierte Dokumente geprüft werden (readFiles)
     if (WEB) app(page, h('div', { class: 'notice web-note', 'data-fid': 'web-classif-note' }, icon('gpp_maybe'),
       h('div', null, h('p', null, t('web.note')),
-        h('a', { class: 'btn text sm', href: RELEASE_URL, target: '_blank', rel: 'noopener noreferrer', 'data-fid': 'web-note-dl', 'data-tip': t('tip.webSave') }, icon('download', 'sm'), t('web.save')))));
+        h('div', { class: 'web-note-acts' },
+          h('a', { class: 'btn text sm', href: DOWNLOAD_URL, target: '_blank', rel: 'noopener noreferrer', 'data-fid': 'web-note-dl', 'data-tip': t('tip.webSave') }, icon('download', 'sm'), t('web.save')),
+          h('a', { class: 'btn text sm', href: DOC_URL, target: '_blank', rel: 'noopener noreferrer', 'data-fid': 'web-note-doc', 'data-tip': t('tip.doc') }, icon('menu_book', 'sm'), t('help.doc'))))));
     app(page, drop);
     if (S.docs.length) {
       const list = h('div', { class: 'docs' });
@@ -2021,10 +2016,13 @@
     const rest = all.filter(f => !changes.includes(f) && f.crit !== 'D01' && f.crit !== 'D02');
     return { all, changes, comments: S.expComments ? rest : [] };
   }
-  /** Exportdatei speichern; ohne Downloads (ausserhalb von Claude und nicht offline) meldet die Seite das und bietet den Text an. */
-  async function save(blob, filename) {
+  /** Exportdatei eines Dokuments speichern; ohne Downloads (ausserhalb von Claude und nicht offline) meldet die Seite das und bietet den
+      Text an. Gespeichert: Die Entscheide dieses Dokuments gelten als exportiert (Warnung beim Verlassen, unexported). */
+  async function save(blob, filename, doc) {
+    const sig = doc ? decSig(doc) : null;
     const r = await saveFile(blob, filename);
     if (r === 'na') { S.dlAvail = false; snack(t('exp.na')); render(); }
+    if (r === 'saved' && doc) EXPORTED.set(doc, sig);
     return r;
   }
   const baseName = (d) => d.name.replace(/\.[^.]+$/, '').replace(/[^\p{L}\p{N}._-]+/gu, '_').slice(0, 80);
@@ -2047,7 +2045,7 @@
       const res = await DP.exporter.exportTracked(doc, args.changes, args.comments,
         { mode, author, initials: initialsOf(author), generalLabel: args.general });
       if (res.failed.length) snack(t('exp.partial', { n: res.failed.length }));
-      await save(res.blob, baseName(doc) + '_' + args.file + '.docx');
+      await save(res.blob, baseName(doc) + '_' + args.file + '.docx', doc);
     } catch (e) { snack(t('exp.fail')); }
   }
   /** Inhalt der Kopie mit Kommentaren (PDF, PowerPoint), nach den Regeln des Word-Exports: angenommene Vorschläge immer (in Word
@@ -2097,14 +2095,14 @@
         if (opened.signed && !(await confirmSigned())) { applyFocus(['dl-annot'], false); return; }
         const res = await DP.annot.exportPdf(doc, opened, items, { author });
         if (res.fallback) snack(tn('exp.ann.fallback', res.fallback));
-        const r2 = await save(res.blob, baseName(doc) + '_' + file + '.pdf');
+        const r2 = await save(res.blob, baseName(doc) + '_' + file + '.pdf', doc);
         // Vorlage im Format PDF/A: Die Kopie trägt die Kennung nicht mehr (Anmerkungen sind nicht als PDF/A geprüft)
         if (res.pdfa && r2 === 'saved') snack(t('exp.ann.pdfa'));
       } else {
         let res;
         try { res = await DP.annot.exportPptx(doc, items, { author, initials: initialsOf(author) }); }
         catch (e) { doc.annErr = 'unreadable'; S.focus = ['dl-rep']; render(); snack(t('exp.ann.err.unreadable')); return; }
-        await save(res.blob, baseName(doc) + '_' + file + '.pptx');
+        await save(res.blob, baseName(doc) + '_' + file + '.pptx', doc);
       }
       applyFocus(['dl-annot'], false);
     } catch (e) { snack(t('exp.fail')); }
@@ -2181,7 +2179,7 @@
       const L2 = expLangOf(doc);
       const a = inLang(L2, () => ({ blocks: reportBlocks(doc), title: t('rep.title') + ' ' + doc.name, footer: t('rep.title') + ' · ' + doc.name, file: t('exp.file.rep') }));
       const blob = await DP.exporter.exportReport(a.blocks, { lang: L2, title: a.title, footer: a.footer, author: S.author.trim() || 'Lectora' });
-      await save(blob, baseName(doc) + '_' + a.file + '.docx');
+      await save(blob, baseName(doc) + '_' + a.file + '.docx', doc);
     }
     catch (e) { snack(t('exp.fail')); }
   }
@@ -2397,7 +2395,7 @@
   }
 
   /* ---------- Ansicht: Anleitung ---------- */
-  const GUIDE = ['steps', 'data', 'ai', 'check', 'cmp', 'exp', 'crit', 'lim', 'keys'];
+  const GUIDE = ['steps', 'data', 'ai', 'rule', 'check', 'cmp', 'exp', 'crit', 'lim', 'keys', 'help'];
   const range = (n) => Array.from({ length: n }, (_, i) => i + 1);
   function jumpTo(id) { const hd = $('gh-' + id); if (!hd) return; hd.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); hd.focus({ preventScroll: true }); }
   function viewHelp() {
@@ -2417,7 +2415,7 @@
       if (!DP.updateCheck && (k + '.off.nc') in D) return k + '.off.nc';
       return (k + '.off') in D ? k + '.off' : k;
     };
-    const list = (id, n) => h('ul', { class: 'g-list' }, range(n).map(k => h('li', null, t(off('g.' + id + '.' + k)))));
+    const list = (id, n, ...more) => h('ul', { class: 'g-list' }, range(n).map(k => h('li', null, t(off('g.' + id + '.' + k)))), more.map(k => h('li', null, t(off(k)))));
     const head = (id, lead) => h('div', { class: 'g-side' }, h('h2', { id: 'gh-' + id, tabindex: '-1' }, t('g.' + id + '.h')), lead ? h('p', { class: 'g-lead' }, t('g.' + id + '.lead')) : null);
     const sec = (id, lead, ...body) => h('section', { class: 'g-sec', id: 'g-' + id, 'aria-labelledby': 'gh-' + id }, head(id, lead), h('div', { class: 'g-main' }, body));
     // In fünf Schritten
@@ -2426,9 +2424,13 @@
       h('span', { class: 'g-num', 'aria-hidden': 'true' }, String(k + 1)),
       h('div', null, h('h3', null, t(off('g.steps.' + (k + 1) + '.t'))), h('p', null, t(off('g.steps.' + (k + 1) + '.d'))), route ? goBtn(route) : null))))));
     // Datenhaltung und KI: hervorgehoben, nebeneinander
-    const key = (id, icn, n) => h('section', { class: 'card g-key' + (id === 'ai' && !DP.offline ? ' acc-ai' : ''), id: 'g-' + id, 'aria-labelledby': 'gh-' + id },
-      h('span', { class: 'ico', 'aria-hidden': 'true' }, icon(icn)), h('h2', { id: 'gh-' + id, tabindex: '-1' }, t(off('g.' + id + '.h'))), h('p', { class: 'g-lead' }, t(off('g.' + id + '.lead'))), list(id, n));
-    app(body, h('div', { class: 'g-keys' }, key('data', 'lock', DP.offline ? 8 : 7), DP.offline ? key('ai', 'cloud_off', 5) : key('ai', 'auto_awesome', 9)));
+    const key = (id, icn, n, ...more) => h('section', { class: 'card g-key' + (id === 'ai' && !DP.offline ? ' acc-ai' : ''), id: 'g-' + id, 'aria-labelledby': 'gh-' + id },
+      h('span', { class: 'ico', 'aria-hidden': 'true' }, icon(icn)), h('h2', { id: 'gh-' + id, tabindex: '-1' }, t(off('g.' + id + '.h'))), h('p', { class: 'g-lead' }, t(off('g.' + id + '.lead'))), list(id, n, ...more));
+    // Datenhaltung: zum Schluss der Hinweis auf Tabs, die der Browser im Hintergrund verwirft (vor Pausen exportieren)
+    app(body, h('div', { class: 'g-keys' }, key('data', 'lock', DP.offline ? 8 : 7, 'g.data.tab'), DP.offline ? key('ai', 'cloud_off', 5) : key('ai', 'auto_awesome', 9)));
+    // Datenregel der SGG, in der Anrede der Oberfläche; dazu, was sie für Lectora heisst
+    app(body, sec('rule', true, h('ol', { class: 'g-list g-rule', 'data-fid': 'g-rule' }, range(4).map(k => h('li', null, h('b', null, t('g.rule.' + k + '.t')), ' ', t('g.rule.' + k)))),
+      h('p', { class: 'g-p' }, t('g.rule.note')), h('h3', null, t('g.rule.lt')), list('rule.l', 3)));
     app(body, sec('check', true,
       h('h3', null, t('g.check.vt')),
       h('dl', { class: 'g-defs' }, ['fail', 'warn', 'pass'].map(v => [h('dt', null, verdictChip(v)), h('dd', null, t('g.check.v.' + v))])),
@@ -2441,11 +2443,18 @@
       list('exp', 5), goBtn('export')));
     app(body, sec('crit', false, list('crit', 4), h('h3', null, t('g.prof.t')), list('prof', 4), goBtn('criteria')));
     app(body, sec('lim', false, list('lim', 6)));
+    const extLink = (href, fid, icn, label) => h('a', { class: 'btn text sm', href, target: '_blank', rel: 'noopener noreferrer', 'data-fid': fid }, icon(icn, 'sm'), label);
+    const helpBody = () => [
+      h('div', { class: 'g-go g-links' }, extLink(DOC_URL, 'g-doc', 'menu_book', t('help.doc')), extLink(ISSUE_URL, 'g-issue', 'bug', t('help.issue'))),
+      h('ul', { class: 'g-list' }, h('li', null, t('g.help.1')),
+        h('li', null, t('g.help.2'), ' ', h('a', { class: 'linkish g-mail', href: 'mailto:' + CONTACT, 'data-fid': 'g-mail' }, CONTACT), '.'),
+        h('li', null, t('g.help.3')), h('li', null, t('g.help.4')))];
     app(body, sec('keys', true, h('table', { class: 'g-keytab' },
       h('thead', null, h('tr', null, h('th', { scope: 'col' }, t('g.keys.col.k')), h('th', { scope: 'col' }, t('g.keys.col.a')))),
       h('tbody', null, range(6).map(k => h('tr', null, h('td', null, kbdNodes(t('g.keys.' + k + '.k'))), h('td', null, t('g.keys.' + k + '.a')))))),
       // Einzeltasten-Kürzel der Prüfung: gleiche Tabelle wie im Dialog «Tastenkürzel»
       h('h3', { id: 'gKbRv' }, t('g.keys.rv.h')), h('p', { class: 'g-p' }, t('g.keys.rv.p')), kbTable('g-kbtab')));
+    app(body, sec('help', true, ...helpBody()));
     app(page, h('div', { class: 'g-layout' }, toc, body));
     app(page, h('footer', { class: 'g-foot', id: 'gFoot' }, t('g.version', { v: DP.version || 'dev', d: isoDate(DP.buildDate) })));
     // Aktueller Abschnitt im Inhaltsverzeichnis (aria-current); der Beobachter endet, sobald die Ansicht ersetzt ist
@@ -2482,7 +2491,7 @@
       const info = UPD.info;
       text = [h('b', null, t('upd.new', { v: info.version })), ' ', h('span', { class: 'upd-date' }, t('upd.date', { d: isoDate(info.date) })), ' ', h('span', { class: 'upd-note', lang: S.lang }, info.note[S.lang] || info.note.de)];
       act = WEB ? h('button', { type: 'button', class: 'btn text sm', 'data-fid': 'upd-reload', onclick: () => location.reload() }, icon('refresh', 'sm'), t('upd.reload'))
-        : h('a', { class: 'btn text sm', 'data-fid': 'upd-dl', href: RELEASE_URL, target: '_blank', rel: 'noopener noreferrer' }, icon('download', 'sm'), t('upd.dl'));
+        : h('a', { class: 'btn text sm', 'data-fid': 'upd-dl', href: DOWNLOAD_URL, target: '_blank', rel: 'noopener noreferrer' }, icon('download', 'sm'), t('upd.dl'));
     } else {
       text = [h('span', null, t('upd.old', { d: isoDate(DP.buildDate) }))];
       act = h('a', { class: 'btn text sm', 'data-fid': 'upd-repo', href: RELEASE_URL, target: '_blank', rel: 'noopener noreferrer' }, icon('arrow_forward', 'sm'), t('upd.old.link'));
@@ -2528,8 +2537,8 @@
       const ws = $('webSave');
       if (ws && WEB) {
         document.documentElement.classList.add('is-web');
-        // Auf GitHub Pages: eigene Kopie als Datei über die Seite der neusten Ausgabe (feste Adresse, nie aus einer Antwort)
-        ws.hidden = false; ws.href = RELEASE_URL;
+        // Auf GitHub Pages: eigene Kopie als Datei, direkt die Datei Lectora.html der neusten Ausgabe (feste Adresse, nie aus einer Antwort)
+        ws.hidden = false; ws.href = DOWNLOAD_URL;
         ws.replaceChildren(icon('download', 'sm'), h('span', { class: 'lbl' }, t('web.save')));
         ws.setAttribute('aria-label', t('web.save')); ws.dataset.tip = t('tip.webSave');
       }
@@ -3182,6 +3191,9 @@
     // Zurück-Cache des Browsers (bfcache): Wer die Seite verlässt und mit «Zurück» wiederkommt, findet keine Dokumente mehr vor.
     // Beim Verlassen wird geleert; kommt die Seite trotzdem aus dem Cache zurück, lädt sie neu.
     window.addEventListener('pagehide', (e) => { if (e.persisted) dropAll(); });
+    // Schliessen, Neuladen, Verlassen: Der Browser fragt nach, solange Entscheide nicht exportiert sind (Text des Browsers, nicht gestaltbar).
+    // Verwirft der Browser einen Tab im Hintergrund (schlafende Tabs), fragt er nicht; die Anleitung rät, vor Pausen zu exportieren.
+    window.addEventListener('beforeunload', (e) => { if (!unexported()) return; e.preventDefault(); e.returnValue = ''; });
     window.addEventListener('pageshow', (e) => { if (e.persisted) location.reload(); });
     // Offline-Ausgabe: keine KI, Speichern immer über den Browser; die Schnittstelle zu Claude wird gar nicht erst abgefragt
     if (DP.offline) { S.aiAvail = false; S.dlAvail = true; startUpdateCheck(); return; }

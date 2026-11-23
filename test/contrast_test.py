@@ -195,7 +195,7 @@ def main():
                         if r: total.append(f'{w} offline {lang} {where} Fokus {fid}: {r}')
                     pg.evaluate('DP.ui.go("criteria")'); pg.wait_for_timeout(300); check(f'{lang} {where} Kriterien mit Standardprofil')
                     pg.close()
-            # GitHub Pages: Hinweis zu klassifizierten Dokumenten, Sperrdialog (VERTRAULICH), Rückfrage (INTERN) offen und angehakt;
+            # GitHub Pages: Hinweis zu klassifizierten Dokumenten, Sperrdialog (VERTRAULICH, INTERN), Links der Anleitung (Dokumentation, Fehler melden, Mail);
             # Fokusrahmen auf jedem Bedienelement (mit der Tastatur erreicht, damit :focus-visible gilt)
             def kfocus(lang, fid):
                 sel = f'[data-fid="{fid}"]'
@@ -212,17 +212,17 @@ def main():
             for lang in ('de', 'fr', 'it'):
                 pg = br.new_page(viewport={'width': w, 'height': h}, locale=lang + '-CH', reduced_motion='reduce'); mock_version(pg)
                 pg.goto(pages + '/' + os.path.basename(OFFLINE_FILE)); pg.wait_for_selector('[data-fid="web-classif-note"]', timeout=10000); pg.wait_for_timeout(300)
-                check(f'{lang} pages Hinweis Vermerke'); kfocus(lang, 'web-note-dl')
+                check(f'{lang} pages Hinweis Vermerke'); kfocus(lang, 'web-note-dl'); kfocus(lang, 'web-note-doc')
                 pg.set_input_files('#file', [os.path.join(FX, 'klassif_vertraulich_fuss.docx')]); pg.wait_for_selector('#dlg[open] [data-fid="web-classif-blocked"]', timeout=30000); pg.wait_for_timeout(300)
                 check(f'{lang} pages Sperrdialog')
                 for fid in ('webblock-dl', 'webblock-close'): kfocus(lang, fid)
                 pg.keyboard.press('Escape'); pg.wait_for_function(idle); pg.wait_for_timeout(200)
-                pg.set_input_files('#file', [os.path.join(FX, 'klassif_intern_kopf.docx')]); pg.wait_for_selector('#dlg[open] [data-fid="web-intern-dlg"]', timeout=30000); pg.wait_for_timeout(300)
-                check(f'{lang} pages Rückfrage INTERN')
-                for fid in ('webintern-dl', 'webInternAck', 'webintern-cancel'): kfocus(lang, fid)
-                pg.check('#webInternAck'); pg.wait_for_timeout(200); check(f'{lang} pages Rückfrage INTERN angehakt'); kfocus(lang, 'webintern-ok')
-                pg.click('[data-fid="webintern-cancel"]'); pg.wait_for_function(idle)
-                if pg.evaluate('DP.state.docs.length'): total.append(f'{w} pages {lang}: Dokument mit Vermerk trotz Sperre bzw. Abbrechen geladen')
+                pg.set_input_files('#file', [os.path.join(FX, 'klassif_intern_kopf.docx')]); pg.wait_for_selector('#dlg[open] [data-fid="web-classif-blocked"]', timeout=30000); pg.wait_for_timeout(300)
+                check(f'{lang} pages Sperrdialog INTERN')
+                pg.click('[data-fid="webblock-close"]'); pg.wait_for_function(idle)
+                if pg.evaluate('DP.state.docs.length'): total.append(f'{w} pages {lang}: Dokument mit Vermerk trotz Sperre geladen')
+                pg.evaluate('DP.ui.go("help")'); pg.wait_for_timeout(300)
+                for fid in ('g-doc', 'g-issue', 'g-mail'): kfocus(lang, fid)
                 pg.close()
             pg = br.new_page(viewport={'width': w, 'height': h}, locale='de-CH', reduced_motion='reduce'); pg.route(VERSION_URL, lambda r: r.abort())
             pg.add_init_script('Date.now = ((n) => () => n() + 200 * 86400000)(Date.now)')

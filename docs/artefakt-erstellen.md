@@ -59,7 +59,7 @@ Wenn ein Schritt nicht geht, brich ab und sag mir genau, woran es liegt. Veröff
 - [ ] «Beispieldokumente laden» lädt drei Dokumente (JSZip ist geladen).
 - [ ] Eine PDF-Datei lässt sich öffnen (pdf.js und seine Hilfsdatei sind geladen).
 - [ ] Prüfung → «KI-Prüfung starten»: Lectora zeigt unter «Gesendet wird», was gesendet wird, und fragt nach. Beim ersten Mal fragt claude.ai zusätzlich um Zustimmung. Ohne Zustimmung geht nichts weg.
-- [ ] Ein Beispieldokument mit dem Vermerk «VERTRAULICH» in der Fusszeile: Jede KI-Funktion zeigt «Nicht an Claude senden» und sendet nichts.
+- [ ] Ein Dokument mit dem Vermerk «VERTRAULICH» oder «INTERN» in der Fusszeile: Jede KI-Funktion zeigt «Nicht an Claude senden» und sendet nichts. Der Dialog vor dem Senden eines Dokuments ohne Vermerk nennt die Datenregel (Personendaten).
 - [ ] Export einer Word-Datei → «Mit Korrekturmodus herunterladen»: claude.ai fragt vor dem Herunterladen nach.
 - [ ] Export einer PDF-Datei → «Mit Kommentaren herunterladen» funktioniert (pdf-lib ist geladen).
 - [ ] Anleitung → Abschnitt «Datenhaltung» nennt cdnjs und die Integritätsprüfung aller vier Dateien; Abschnitt «KI-Prüfung ist freiwillig» beschreibt Claude.
@@ -90,6 +90,6 @@ Wer das Artefakt schon geöffnet hat, sieht die neue Version nach dem Neuladen.
 
 **Warum nicht einfach die Offline-Datei hochladen?** Die Offline-Ausgabe schaltet die KI-Funktionen ab und speichert über den Download des Browsers, den das Artefakt nicht erlaubt.
 
-**Kann ich das Artefakt der Sektion öffentlich teilen?** Technisch ja. Jede Person braucht aber ein eigenes Claude-Konto für die KI-Funktionen, und ihre Nutzung zählt zu ihrem Kontingent. Kläre vorher mit der Informationssicherheit, welche Dokumente an Claude gehen dürfen.
+**Kann ich das Artefakt der Sektion öffentlich teilen?** Technisch ja. Jede Person braucht aber ein eigenes Claude-Konto für die KI-Funktionen, und ihre Nutzung zählt zu ihrem Kontingent. Welche Dokumente an Claude gehen dürfen, regelt die Datenregel der SGG ([datenschutz.md](datenschutz.md#datenregel)): nur unklassifizierte, ohne besonders schützenswerte Personendaten und ohne Falldaten zu Personen aus Verfahren.
 
 **Was sieht Claude von den Dokumenten?** Nur, was eine KI-Funktion nach deinem Klick sendet. Siehe [datenschutz.md](datenschutz.md).

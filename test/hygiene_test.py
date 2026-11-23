@@ -76,6 +76,19 @@ for word, what in (('Sperrliste', 'Name aus der Sperrliste'), ('absoluter Pfad: 
     check(has(found, 'notizen.md', word), f'Text: {what} erkannt')
 os.remove(os.path.join(repo, 'notizen.md'))
 
+# ---------- Funktionsadresse der Sektion: genau diese eine Adresse ist erlaubt, keine andere unter derselben Domain ----------
+FA = J('sektion-grenze', '@sem.', ADMIN)
+put('kontakt.md', f'Ohne GitHub-Konto: {FA}. Als Link: <mailto:{FA}>. In Klammern ({FA}).\n')
+found = run()
+check(found == [], f'Funktionsadresse der Sektion ohne Befund {found[:3]}')
+put('kontakt.md', '\n'.join([J('Person: erika.beispielhaft', '@sem.', ADMIN), J('Andere: sektion-grenze2', '@sem.', ADMIN), J('Unterdomain: sektion-grenze', '@in', 'tra.sem.', ADMIN),
+                              J('Verlängert: ', FA, '.beispiel.net'), J('Vorne: x.', FA)]) + '\n')
+found = run()
+for word, what in ((J('erika.beispielhaft', '@sem.'), 'Adresse einer Person unter derselben Domain'), (J('sektion-grenze2', '@'), 'ähnliche Adresse'),
+                   (J('in', 'tra.sem.', ADMIN), 'Unterdomain'), ('.beispiel.net', 'verlängerte Domain'), (J('x.sektion-grenze', '@'), 'Adresse mit Vorsatz')):
+    check(has(found, 'kontakt.md', word), f'Funktionsadresse: {what} erkannt')
+os.remove(os.path.join(repo, 'kontakt.md'))
+
 # ---------- Dokumente unter falschem Namen und Metadaten ----------
 real = open(os.path.join(FX, 'weisung_de_demo.docx'), 'rb').read()
 put('test/fixtures/echt.zip', real)

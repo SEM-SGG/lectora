@@ -10,15 +10,17 @@ Eine Regel, die zu Unrecht anschlägt (Fehlalarm), kostet Vertrauen. Lectora sam
 
 ## Wohin damit
 
-**Rückmeldedateien mit Textstellen und jede Sammlung aus echten Dokumenten gehören nie in dieses öffentliche Repository.** Auch ein einzelner Satz aus einem internen Dokument kann vertraulich sein.
+**Rückmeldedateien mit Textstellen und jede Sammlung aus echten Dokumenten gehören nie in dieses öffentliche Repository und nie in ein Issue.** Auch ein einzelner Satz aus einem internen Dokument kann vertraulich sein. Es gilt die [Datenregel der SGG](datenschutz.md#datenregel): Dokumentinhalte gehen nicht ins Internet und nicht in externe Cloud-Dienste, auch nicht zu GitHub.
 
-- Lege Rückmeldungen mit Textstellen im **internen Repository der Sektion** ab (privat, nur für die Sektion zugänglich).
+- **Wer die Datei bekommt:** die Person, die die Regeln von Lectora pflegt. Erreichbar ist die Sektion über die Funktionsadresse `sektion-grenze@sem.admin.ch`, auch ohne GitHub-Konto.
+- **Per Mail nur innerhalb der Arbeitsumgebung des Bundes.** Eine Rückmeldedatei ohne Textstellen enthält nur Kriterium, Sprache, Typ, Format, Parameter und deine Notiz; mit Textstellen enthält sie Auszüge aus Dokumenten und ist entsprechend dem Dokument zu behandeln.
+- Gesammelte Rückmeldungen mit Textstellen liegen im **internen Repository der Sektion** (privat, nur für die Sektion zugänglich). Liegt es auf GitHub, gilt die Datenregel auch dort: nur Textstellen aus unklassifizierten Dokumenten, ohne besonders schützenswerte Personendaten und ohne Falldaten zu Personen aus Verfahren.
 - Ein Korpus aus echten Dokumenten (Beispiele, an denen Regeln anschlagen müssen oder nicht anschlagen dürfen) liegt ebenfalls nur dort.
 - In diesem Repository liegen nur erfundene Beispiele: `test/corpus/` (Erwartungen zu den erfundenen Testdokumenten) und `test/corpus/rueckmeldungen/beispiel.json` (eine Rückmeldung zu einem erfundenen Dokument).
 
 ## Issues in diesem Repository
 
-Ein Issue «Regel meldet Fehlalarm» ist willkommen, aber **ohne Dokumenttext**:
+Ein Issue «Regel meldet Fehlalarm» ist willkommen, aber **ohne Dokumenttext**. Wer kein GitHub-Konto hat, schreibt an `sektion-grenze@sem.admin.ch`.
 
 - Nenne das Kriterium (zum Beispiel `L06`), die Sprache, den Dokumenttyp und das Format.
 - Beschreibe das Muster in eigenen Worten oder mit einem **selbst erfundenen** Beispielsatz, der dasselbe zeigt.

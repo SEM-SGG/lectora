@@ -8,6 +8,8 @@ body:
         **Dieses Repository ist öffentlich.** Schreibe keinen Text aus einem Dokument in dieses Formular, auch nicht auszugsweise.
         Füge keine Dokumente, keine Rückmeldedateien mit Textstellen und keine Bildschirmfotos von Dokumenten an.
         Ein Bildschirmfoto der Oberfläche mit den Beispieldokumenten von Lectora ist in Ordnung.
+        Es gilt die Datenregel der SGG (README.md): nichts mit Vermerk INTERN oder höher, keine Personendaten.
+        Ohne GitHub-Konto: sektion-grenze@sem.admin.ch.
   - type: input
     id: version
     attributes:

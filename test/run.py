@@ -19,7 +19,7 @@ GROUPS = {
     'schnell': [('i18n_test.mjs',), ('ausbau_test.mjs',), ('sprachkorpus_test.mjs',), ('werkzeug_test.mjs',), ('ki_test.mjs',), ('profile_test.mjs',), ('erlasse_test.py',), ('statik_test.mjs',), ('release_test.py',),
                 ('hygiene', [PY, 'tools/hygiene.py']), ('hygiene-commits', [PY, 'tools/hygiene.py', '--commits']), ('hygiene_test.py',),
                 ('notices', [NODE, 'tools/notices.mjs', '--check']),
-                ('versionen', [PY, 'tools/release_check.py', '--aktuell'])],
+                ('versionen', [PY, 'tools/release_check.py', '--aktuell']), ('dokumentation', [PY, 'tools/doku_check.py']), ('doku_test.py',)],
     'logik': [('engine_test.py',), ('compare_test.py',), ('corpus_test.py',)],
     'export': [('export_test.py',), ('annot_test.py',)],
     'browser': [('ui_test.py',), ('feinschliff_test.py',), ('ki_ui_test.py',), ('review_test.py',), ('sprachfassungen_ui_test.py',), ('a11y_test.py',), ('contrast_test.py',)],

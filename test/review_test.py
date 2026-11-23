@@ -1,6 +1,6 @@
 """Regressionstests zu den Befunden der Sicherheits- und Datenschutzprüfung (Paket «Review B»):
   1. Unlesbare Dateien: Teil mit DTD oder Lesefehler, ohne Text, entpackt zu gross → Fehlermeldung, nie ein leeres «bestandenes» Dokument
-  2. Klassifizierungsvermerke je Stufe und Ort; VERTRAULICH und GEHEIM sperren jede KI-Funktion, INTERN verlangt die Bestätigung
+  2. Klassifizierungsvermerke je Stufe und Ort; INTERN, VERTRAULICH und GEHEIM sperren jede KI-Funktion (Datenregel der SGG)
   3. Keine Anfrage an Claude vor der Zustimmung, für jede KI-Funktion; Zustimmung nennt, was gesendet wird (auch eigene Kriterien)
   4. KI-Prüfung: Obergrenze ehrlich genannt (Zustimmung und Ergebnis)
   5. KI-Vorschläge: geprüft, von Sammelentscheiden ausgenommen, in Word, PDF, PowerPoint und Bericht gekennzeichnet
@@ -126,10 +126,21 @@ with sync_playwright() as pw:
     rw = pg.evaluate('(() => { const b = document.querySelector("[data-fid^=rw-]"); return b && b.dataset.fid; })()')
     if rw: pg.click(f'[data-fid="{rw}"]'); pg.wait_for_selector('#dlg[open]')
     check(bool(rw) and pg.query_selector('[data-fid="ai-blocked"]') is not None, 'Formulierungsvorschlag: gesperrt'); pg.keyboard.press('Escape'); pg.wait_for_timeout(150)
-    open_ai('klassif_intern_kopf.docx'); t = pg.inner_text('#dlg')
-    check(pg.is_disabled('[data-fid="aiask-ok"]') and 'INTERN' in t and 'nach Muster' in t, 'INTERN: Bestätigung nötig, Hinweis auf die Erkennung nach Muster')
-    pg.check('[data-fid="aiAck"]'); check(not pg.is_disabled('[data-fid="aiask-ok"]'), 'INTERN: nach der Bestätigung sendbar'); pg.click('[data-fid="aiask-cancel"]')
-    open_ai('klassif_keine.docx'); check(not pg.is_disabled('[data-fid="aiask-ok"]') and pg.query_selector('[data-fid="aiAck"]') is None, '«intern» im Text ist kein Vermerk: gewöhnliche Zustimmung'); pg.click('[data-fid="aiask-cancel"]')
+    # INTERN: gesperrt wie VERTRAULICH, für jede KI-Funktion, ohne Kontrollkästchen und ohne Schaltfläche zum Senden
+    for fid, view in (('aiDoc-go', 'doc'), ('aiDuty-go', 'duty')):
+        open_ai('klassif_intern_kopf.docx', fid, view); t = pg.inner_text('#dlg')
+        check(pg.query_selector('[data-fid="ai-blocked"]') is not None and pg.query_selector('[data-fid="aiask-ok"]') is None and pg.query_selector('#dlg input[type="checkbox"]') is None
+              and '«INTERN»' in t and 'Datenregel' in t and 'nach Muster' in t, f'INTERN ({fid}): gesperrt, ohne Weg zum Senden, mit Datenregel und Hinweis auf die Erkennung nach Muster')
+        pg.click('[data-fid="aiblock-close"]'); pg.wait_for_timeout(150)
+    # Formulierungsvorschlag: Das Testdokument mit INTERN hat keine Vorschläge; das Dokument mit Mängeln trägt hier den Vermerk INTERN
+    i = idx['klassif_vertraulich_fuss.docx']
+    pg.evaluate(f'(() => {{ const d = DP.state.docs[{i}]; d.meta.classification = {{level: 1, label: "INTERN"}}; DP.state.cur = d.id; DP.state.view = "list"; DP.ui.go("check"); }})()'); pg.wait_for_timeout(400)
+    rw = pg.evaluate('(() => { const b = document.querySelector("[data-fid^=rw-]"); return b && b.dataset.fid; })()')
+    if rw: pg.click(f'[data-fid="{rw}"]'); pg.wait_for_selector('#dlg[open]')
+    check(bool(rw) and pg.query_selector('[data-fid="ai-blocked"]') is not None and '«INTERN»' in pg.inner_text('#dlg'), 'INTERN: Formulierungsvorschlag gesperrt'); pg.keyboard.press('Escape'); pg.wait_for_timeout(150)
+    open_ai('klassif_keine.docx'); t = pg.inner_text('#dlg')
+    check(not pg.is_disabled('[data-fid="aiask-ok"]') and pg.query_selector('[data-fid="ai-blocked"]') is None and 'Personendaten' in pg.inner_text('[data-fid="ai-rule"]'),
+          '«intern» im Text ist kein Vermerk: gewöhnliche Zustimmung, mit dem Satz zu Personendaten'); pg.click('[data-fid="aiask-cancel"]')
     check(nprompts(pg) == 0, f'nichts an Claude gesendet ({nprompts(pg)} Anfragen)')
     pg.context.close()
 

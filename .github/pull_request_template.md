@@ -2,6 +2,10 @@
 
 <!-- Für Nutzerinnen und Nutzer: was neu ist, was anders ist, was behoben ist. Kein Text aus echten Dokumenten. -->
 
+Produktdokumentation: nachgeführt
+<!-- oder: «Produktdokumentation: nicht betroffen, weil …» (mit Grund). Jede Änderung an Funktion, Oberfläche oder Bedienweg
+     zieht docs/lectora-dokumentation.html in allen drei Sprachen nach (AGENTS.md, Abschnitt «Produktdokumentation»). -->
+
 ## Prüfliste
 
 - [ ] `python3 tools/norm.py` nach Änderungen in `src/`
@@ -13,3 +17,5 @@
 - [ ] `python3 tools/hygiene.py`: 0 Befunde (nichts Internes, keine echten Dokumente)
 - [ ] `CHANGELOG.md` ergänzt (bei Änderungen für Nutzerinnen und Nutzer)
 - [ ] Dokumentation in `docs/` angepasst, wo nötig
+- [ ] Produktdokumentation (`docs/lectora-dokumentation.html`, DE, FR, IT) nachgeführt oder begründet nicht betroffen; `python3 tools/doku_check.py` ohne Abweichung
+- [ ] Kein Inhalt mit Vermerk INTERN oder höher, keine Personendaten (Datenregel der SGG, README.md)

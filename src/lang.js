@@ -178,15 +178,25 @@
     + 'INTERN VERTRAULICH GEHEIM INTERNE CONFIDENTIEL SECRET INTERNO CONFIDENZIALE SEGRETO TODO TBD XXX').split(' '));
 
   /* Klassifizierungsvermerke nach der Informationssicherheitsverordnung (ISV) in drei Sprachen, dazu englische Formen.
-     Erkannt wird ein Vermerk nur als ganze Zeile oder als eigener Teil einer Zeile (getrennt durch | · • / ; , – — oder Tabulator),
-     gross oder klein geschrieben, wahlweise mit «Klassifizierung:» davor und einem kurzen Zusatz nach einem Trennzeichen
-     («VERTRAULICH – nur für …»). «Interne Weisung» oder «die interne Kommunikation» sind keine Vermerke. */
+     Erkannt wird ein Vermerk als ganze Zeile oder als eigener Teil einer Zeile (getrennt durch | · • / ; , – — oder Tabulator),
+     gross oder klein geschrieben, wahlweise mit «Klassifizierung:» (auch ohne Doppelpunkt) davor und einem kurzen Zusatz nach einem
+     Trennzeichen («VERTRAULICH – nur für …»). Dazu ein kurzer Teil ganz in Grossbuchstaben (höchstens drei Wörter), der mit einem
+     Vermerk endet («SEM-INTERN», «NUR INTERN», «STRICTLY CONFIDENTIAL»): Im Zweifel sperrt die Erkennung lieber zu viel als zu wenig.
+     Ausgenommen sind dort «INTERNE» und «INTERNO», die als Beiwort häufig sind («NOTE INTERNE»); als eigener Teil zählen sie.
+     «Interne Weisung» oder «die interne Kommunikation» sind keine Vermerke. */
   const CLASSIF = [
     { level: 3, label: 'GEHEIM', re: /^(?:geheim|secret|segreto)$/i },
     { level: 2, label: 'VERTRAULICH', re: /^(?:vertraulich|confidentiel(?:le)?|confidenziale|confidential)$/i },
     { level: 1, label: 'INTERN', re: /^(?:intern|interne|interno|ad uso interno|uso interno|internal)$/i }
   ];
-  const CL_PREFIX = /^(?:klassifi(?:zierung|kation)|klassifizierungsstufe|classification|classificazione|livello di classificazione)\s*[:：]\s*/i;
+  const CL_PREFIX = /^(?:klassifi(?:zierung|kation)(?:svermerk|sstufe)?|classification|classificazione|livello di classificazione)(?:\s*[:：]\s*|\s+)/i;
+  /** Letztes Wort eines kurzen Teils ganz in Grossbuchstaben (höchstens drei Wörter, getrennt an Leerzeichen und Bindestrichen). */
+  const CAPS_END = /^(?:intern|internal|vertraulich|geheim|confidentiel(?:le)?|confidenziale|confidential|secret|segreto)$/i;
+  function capsEnd(t) {
+    if (t !== t.toUpperCase() || t === t.toLowerCase()) return null;
+    const w = t.split(/[\s\u2010\u2011-]+/).filter(Boolean);
+    return w.length >= 2 && w.length <= 3 && CAPS_END.test(w[w.length - 1]) ? w[w.length - 1] : null;
+  }
   /** Sucht in Zeilen (Liste oder Text mit Zeilenumbrüchen) den höchsten Vermerk. Ergebnis: {level, label} oder null; label ist
       der Vermerk, wie er im Dokument steht, in Grossbuchstaben. */
   function findClassification(input) {
@@ -198,7 +208,8 @@
       for (const seg of line.split(/\s*(?:[|·•\/;,\t]|\s[–—-]\s)\s*/)) {
         const t = seg.replace(CL_PREFIX, '').replace(/^[\s«»"“”„'’()\[\]*_.:-]+|[\s«»"“”„'’()\[\]*_.:!-]+$/g, '');
         if (!t) continue;
-        for (const c of CLASSIF) if (c.re.test(t) && (!best || c.level > best.level)) best = { level: c.level, label: t.toUpperCase() };
+        const end = capsEnd(t);
+        for (const c of CLASSIF) if ((c.re.test(t) || (end && c.re.test(end))) && (!best || c.level > best.level)) best = { level: c.level, label: t.toUpperCase() };
       }
     }
     return best;

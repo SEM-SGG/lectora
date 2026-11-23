@@ -4,7 +4,7 @@ Lectora steht noch unter keiner Lizenz; die Sektion klärt, was Art. 9 EMBAG daf
 
 Willkommen sind:
 
-- **Fehlermeldungen** und **Fehlalarme** als Issue, mit den Vorlagen und ohne Text aus echten Dokumenten (siehe [README.md](README.md#probleme-melden)),
+- **Fehlermeldungen** und **Fehlalarme** als Issue, mit den Vorlagen und ohne Text aus echten Dokumenten (siehe [README.md](README.md#probleme-melden)); ohne GitHub-Konto an `sektion-grenze@sem.admin.ch`,
 - **Sicherheitslücken** als private Meldung (siehe [SECURITY.md](SECURITY.md)).
 
 Für die verantwortliche Sektion: Regeln für die Arbeit am Code in [AGENTS.md](AGENTS.md), Einrichten und Testen in [docs/entwicklung.md](docs/entwicklung.md).
