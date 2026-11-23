@@ -51,7 +51,7 @@ Eine Versionsnummer hat drei Zahlen: **X.Y.Z**, zum Beispiel 2.0.1. Erhöhe gena
 - **Y** (Nebenversion): neue Kriterien, neue Funktionen, andere Startwerte der Standardprofile. Aus 2.0.1 wird 2.1.0.
 - **X** (Hauptversion): Alte Prüfprofile oder Rückmeldedateien passen nicht mehr, oder Bedienung und Ergebnisse ändern sich grundlegend. Aus 2.1.0 wird 3.0.0.
 
-**Produktdokumentation:** Sie nennt die Version, die sie beschreibt. Bei einer Korrekturversion (Z) bleibt sie, wie sie ist. Erhöhst du X oder Y, muss sie vorher nachgeführt sein: Die Prüfungen scheitern sonst mit «docs/lectora-dokumentation.html beschreibt die Version …». Die Datei ist zu gross, um sie im Browser zu bearbeiten; gib den Auftrag aus der Meldung an einen Agenten ([pflege.md](pflege.md#produktdokumentation)). Meist hat der Agent, der die neuen Funktionen gebaut hat, die Dokumentation schon nachgeführt.
+**Produktdokumentation:** Sie nennt die Version, die sie beschreibt. Bei einer Korrekturversion (Z) bleibt sie, wie sie ist. Erhöhst du X oder Y, muss sie vorher nachgeführt sein; sonst scheitern die Prüfungen mit der Meldung «docs/lectora-dokumentation.html beschreibt die Version …». Die Datei ist zu gross, um sie im Browser zu bearbeiten. Gib den Auftrag aus der Meldung an einen KI-Agenten ([pflege.md](pflege.md#produktdokumentation)). Meist hat der Agent, der die neuen Funktionen gebaut hat, die Dokumentation schon nachgeführt.
 
 Eine Nummer, für die schon ein Tag oder ein Release besteht, verwendest du nie noch einmal. Scheitert ein Lauf, bevor er den Tag gesetzt hat, ist die Nummer noch frei. Der Workflow sagt dir, wenn sie es nicht ist.
 
@@ -182,7 +182,7 @@ Nach jeder Änderung prüft GitHub den Pull Request von Neuem. Das dauert etwa e
 | «version.json ist nach der Änderung kein gültiges JSON mehr (Zeile 4, Spalte 3). …» | JSON ist das Format dieser Datei; ein einziges falsches Zeichen macht sie unlesbar. Meist fehlt ein Komma am Zeilenende oder ein Anführungszeichen. Vergleiche Zeichen für Zeichen mit dem Beispiel in Schritt 1b. |
 | «version.json: Der Hinweis auf Französisch enthält etwas, das wie eine Adresse aussieht …» | Entferne die Adresse oder den Dateinamen aus dem Hinweis. |
 | «version.json: Der Hinweis auf Italienisch hat 230 Zeichen, erlaubt sind 200. …» | Kürze den Hinweis. |
-| «docs/lectora-dokumentation.html beschreibt die Version 2.0.1, die Version ist aber 2.1.0. …» | Eine Neben- oder Hauptversion braucht eine nachgeführte Produktdokumentation. Gib den Auftrag aus der Meldung an einen Agenten ([pflege.md](pflege.md#produktdokumentation)); er ändert die Datei im selben Zweig oder in einem eigenen Pull Request. |
+| «docs/lectora-dokumentation.html beschreibt die Version 2.0.1, die Version ist aber 2.1.0. …» | Eine Neben- oder Hauptversion braucht eine nachgeführte Produktdokumentation. Gib den Auftrag aus der Meldung an einen KI-Agenten ([pflege.md](pflege.md#produktdokumentation)). Er ändert die Datei im selben Zweig oder in einem eigenen Pull Request. |
 
 Jede Korrektur machst du wie in Schritt 1b: Zweig `version-2.0.1` wählen, Datei bearbeiten, **Commit directly to the `version-2.0.1` branch**¹. Die Prüfungen starten danach von selbst neu.
 
@@ -229,7 +229,7 @@ Es läuft nie mehr als eine Veröffentlichung gleichzeitig. Startest du eine zwe
 
 1. **Release:** Öffne die Startseite des Repositorys. Klicke rechts unter **Releases**¹ auf «Lectora 2.0.1». Dort stehen drei Dateien: `Lectora.html`, `Lectora-2.0.1.html` und `SHA256SUMS.txt`. Darüber steht dein Text aus `CHANGELOG.md`.
 2. **Datei:** Lade `Lectora.html` herunter und öffne sie mit einem Doppelklick. Oben steht «Offline-Ausgabe 2.0.1».
-3. **Webseite:** Öffne nach einigen Minuten `https://sem-sgg.github.io/lectora/`. Oben steht dieselbe Nummer. `https://sem-sgg.github.io/lectora/dokumentation.html` zeigt die Produktdokumentation. Zeigt sie noch die alte, warte zehn Minuten und lade die Seite neu. Die Adresse `https://sem-sgg.github.io/lectora/version.json` zeigt die neue Nummer und deinen Hinweis.
+3. **Webseite:** Öffne nach einigen Minuten `https://sem-sgg.github.io/lectora/`. Oben steht dieselbe Nummer. Unter `https://sem-sgg.github.io/lectora/dokumentation.html` erscheint die Produktdokumentation. Zeigt die Webseite noch die alte Version, warte zehn Minuten und lade die Seite neu. Die Adresse `https://sem-sgg.github.io/lectora/version.json` zeigt die neue Nummer und deinen Hinweis.
 4. **Hinweis in alten Kopien:** Öffne eine ältere `Lectora.html` auf einem Computer mit Internet. Oben erscheint «Neue Version 2.0.1 verfügbar.» mit deinem Hinweis und dem Knopf «Neue Version herunterladen».
 
 Erscheint der Hinweis nicht, obwohl die Webseite die neue Nummer zeigt: Prüfe den Hinweis in `version.json` gegen die Regeln in Schritt 1b.
@@ -297,7 +297,7 @@ Meldet der Lauf «Das Release v2.0.1 besteht schon, aber als Entwurf oder mit an
 gh workflow run pages.yml --ref main -f tag=v2.0.1
 ```
 
-Der Workflow `pages` nimmt `Lectora.html` aus dem Release des Tags, prüft die Prüfsumme aus `SHA256SUMS.txt` und legt die Datei mit der `version.json` und der Produktdokumentation dieses Tags auf die Webseite (enthält ein älterer Tag keine Produktdokumentation, nimmt er die von `main`). Er tut das in einem eigenen, neuen Lauf mit nur einem hochgeladenen Exemplar der Webseite.
+Der Workflow `pages` nimmt `Lectora.html` aus dem Release des Tags, prüft die Prüfsumme aus `SHA256SUMS.txt` und legt die Datei mit der `version.json` und der Produktdokumentation dieses Tags auf die Webseite. Enthält ein älterer Tag keine Produktdokumentation, nimmt er die von `main`. Er tut das in einem eigenen, neuen Lauf mit nur einem hochgeladenen Exemplar der Webseite.
 
 **So sieht es aus, wenn es geklappt hat:** Der Lauf «GitHub Pages auf eine bestehende Version» hat einen grünen Haken. Die Webseite `https://sem-sgg.github.io/lectora/` zeigt oben die neue Nummer, und `https://sem-sgg.github.io/lectora/version.json` nennt sie (warte bei Bedarf zehn Minuten und lade neu). Mach danach mit [Schritt 4](#schritt-4-ergebnis-prüfen) weiter.
 

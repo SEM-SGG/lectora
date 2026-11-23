@@ -3,8 +3,8 @@
 <!-- Für Nutzerinnen und Nutzer: was neu ist, was anders ist, was behoben ist. Kein Text aus echten Dokumenten. -->
 
 Produktdokumentation: nachgeführt
-<!-- oder: «Produktdokumentation: nicht betroffen, weil …» (mit Grund). Jede Änderung an Funktion, Oberfläche oder Bedienweg
-     zieht docs/lectora-dokumentation.html in allen drei Sprachen nach (AGENTS.md, Abschnitt «Produktdokumentation»). -->
+<!-- oder: «Produktdokumentation: nicht betroffen, weil …» (mit Grund). Bei jeder Änderung an Funktion, Oberfläche oder Bedienweg
+     muss docs/lectora-dokumentation.html in allen drei Sprachen nachgeführt werden (AGENTS.md, Abschnitt «Produktdokumentation»). -->
 
 ## Prüfliste
 

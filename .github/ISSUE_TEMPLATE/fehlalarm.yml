@@ -7,7 +7,7 @@ body:
       value: |
         **Dieses Repository ist öffentlich. Schreibe keinen Text aus einem Dokument in dieses Formular.**
         Beschreibe das Muster in eigenen Worten oder mit einem selbst erfundenen Satz, der dasselbe zeigt.
-        Rückmeldedateien mit Textstellen gehören nie in ein Issue. Per Mail gehen sie nur innerhalb der Arbeitsumgebung des Bundes
+        Rückmeldedateien mit Textstellen gehören nie in ein Issue (eine Meldung auf GitHub). Sende sie per Mail nur innerhalb der Arbeitsumgebung des Bundes
         (Datenregel der SGG, siehe README.md und docs/rueckmeldungen.md). Ohne GitHub-Konto: sektion-grenze@sem.admin.ch.
   - type: input
     id: kriterium

@@ -46,7 +46,7 @@ python3 test/corpus_test.py
 
 Der Workflow `erlasse` läuft am 3. jedes Monats und auf Knopfdruck (Actions → `erlasse` → «Run workflow»). Findet er Unterschiede, öffnet er einen Pull Request vom Zweig `erlasse/abgleich` mit dem Bericht als Beschreibung. Ohne Unterschiede tut er nichts.
 
-Wer die Fehlermails eines zeitgesteuerten Laufs erhält, wie die Übergabe an eine Nachfolge geht, was bei einem verspäteten oder ausgebliebenen Lauf zu tun ist und was ein Start von Hand bewirkt (er ersetzt den Inhalt eines offenen Pull Request dieses Workflows), steht in [pflege.md](pflege.md#zeitgesteuerter-lauf-übergabe-verspätung-start-von-hand).
+Einzelheiten zum zeitgesteuerten Lauf stehen in [pflege.md](pflege.md#zeitgesteuerter-lauf-übergabe-verspätung-start-von-hand): wer Fehlermails erhält, wie die Übergabe an eine Nachfolge abläuft und was bei einem verspäteten oder ausgebliebenen Lauf zu tun ist. Dort steht auch, was ein Start von Hand bewirkt (er ersetzt den Inhalt eines offenen Pull Request dieses Workflows).
 
 Fedlex ist eine fremde Quelle. Liefert sie unplausible Werte (Abkürzung fehlt, wo es bisher eine gab; Markup, Adressen oder Steuerzeichen in einem Wert; SR-Nummer oder ELI in falscher Form; mehr als 6 automatische Änderungen bzw. mehr als 10 Prozent der Tabelle), übernimmt der Abgleich nichts, der Lauf scheitert mit den Gründen im Protokoll, und es entsteht kein Pull Request. Ist eine grosse Änderung echt (zum Beispiel eine Revision vieler Erlasse), führe den Abgleich lokal aus, prüfe die Werte von Hand und passe `MAX_CHANGES_ABS` in `tools/erlasse_abgleich.py` für diesen Lauf an. Die Werte im Bericht des Pull Requests sind maskiert: Markdown, Links und Erwähnungen (`@`) wirken dort nicht.
 

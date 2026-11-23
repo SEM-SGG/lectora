@@ -39,9 +39,9 @@ Eine einzelne HTML-Seite, die Verwaltungsdokumente (Word, PDF, PowerPoint) auf D
 
 Dependabot schlägt Updates für GitHub Actions (`Aktionen:`), Python-Werkzeuge der Tests (`pip:`) und npm-Pakete (`npm:`) vor. So geht die Fachperson damit um (ausführlich in [docs/pflege.md](docs/pflege.md#pull-requests-von-dependabot)):
 
-- **Updates von GitHub Actions und von Werkzeugen für Tests** werden zusammengeführt, wenn alle Prüfungen grün sind.
-- **Updates der eingebetteten Bibliotheken** (JSZip, PDF.js, pdf-lib) scheitern absichtlich, bis Prüfsumme (SHA-512) und Adresse auf cdnjs in `build.mjs` stehen. Die Fachperson gibt sie als kopierbaren Auftrag an einen Agenten; der Agent trägt Wert und Adresse ein, führt `node tools/notices.mjs --write` und alle Tests aus und legt einen eigenen Pull Request an.
-- **Hauptversionen, die einen Umbau verlangen**, werden geschlossen (Kommentar `@dependabot ignore this major version`). Für `pdfjs-dist` steht eine begründete `ignore`-Regel in `.github/dependabot.yml`; wer den Umbau auf ES-Module beauftragt bekommt, entfernt sie.
+- **Updates von GitHub Actions und von Werkzeugen für Tests** führt die Fachperson zusammen, wenn alle Prüfungen grün sind.
+- **Updates der eingebetteten Bibliotheken** (JSZip, PDF.js, pdf-lib) scheitern absichtlich, bis Prüfsumme (SHA-512) und Adresse auf cdnjs in `build.mjs` stehen. Die Fachperson beauftragt damit einen Agenten (kopierbarer Auftrag in `docs/pflege.md`); der Agent trägt Wert und Adresse ein, führt `node tools/notices.mjs --write` und alle Tests aus und legt einen eigenen Pull Request an.
+- **Hauptversionen, die einen Umbau verlangen**, schliesst Dependabot selbst, sobald die Fachperson `@dependabot ignore this major version` kommentiert. Für `pdfjs-dist` steht eine begründete `ignore`-Regel in `.github/dependabot.yml`; wer den Umbau auf ES-Module beauftragt bekommt, entfernt sie.
 
 ## Gestaltung (Design System «Carbon»)
 

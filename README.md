@@ -32,17 +32,17 @@ Die KI-Funktionen laufen nur in der Artefakt-Ausgabe. Wie du ein eigenes Artefak
 ## Herunterladen und öffnen
 
 - **Datei:** Lade [`Lectora.html`](https://github.com/SEM-SGG/lectora/releases/latest/download/Lectora.html) direkt herunter (oder von der [Seite der neusten Ausgabe](https://github.com/SEM-SGG/lectora/releases/latest)). Öffne die Datei mit einem Doppelklick. Sie läuft ohne Installation und ohne Internet. Die Prüfsummen stehen in `SHA256SUMS.txt` daneben.
-- **Webseite:** Öffne [sem-sgg.github.io/lectora](https://sem-sgg.github.io/lectora/). Dort liegt immer die neuste Ausgabe. Es ist dieselbe Datei; deine Dokumente bleiben auch dort im Browser. Die Webseite ist für unklassifizierte Dokumente und zum Ausprobieren gedacht. «Als Datei speichern» lädt dir die Datei `Lectora.html` direkt herunter.
+- **Webseite:** Öffne [sem-sgg.github.io/lectora](https://sem-sgg.github.io/lectora/). Dort liegt immer die neuste Ausgabe. Es ist dieselbe Datei; deine Dokumente bleiben auch dort im Browser. Die Webseite ist für unklassifizierte Dokumente und zum Ausprobieren gedacht. Mit «Als Datei speichern» lädst du die Datei `Lectora.html` direkt herunter.
 
 **Merkregel: Webseite und KI nur unklassifiziert. Gespeicherte Datei: jede Stufe.** Dokumente mit dem Vermerk INTERN, VERTRAULICH oder GEHEIM prüfst du mit der heruntergeladenen Datei `Lectora.html`. Erkennt Lectora auf der Webseite einen dieser Vermerke, prüft es das Dokument dort nicht und verweist auf die Datei. An Claude sendet Lectora solche Dokumente nie. Die Erkennung ist eine Näherung. Die Grundlage ist die [Datenregel der SGG](#datenregel); Einzelheiten stehen in [docs/datenschutz.md](docs/datenschutz.md#github-pages).
 
-Gibt es eine neuere Version, zeigt Lectora oben einen Hinweis mit «Neue Version herunterladen»; der Knopf lädt die neue `Lectora.html` direkt herunter.
+Gibt es eine neuere Version, zeigt Lectora oben einen Hinweis mit dem Knopf «Neue Version herunterladen». Ein Klick lädt die neue `Lectora.html` direkt herunter.
 
 **Entscheide exportieren:** Lectora speichert nichts. Hast du Vorschläge angenommen oder abgelehnt und noch nicht exportiert, fragt der Browser nach, bevor du den Tab schliesst oder neu lädst. Verwirft der Browser einen Tab im Hintergrund (in Edge «schlafende Tabs»), fragt er nicht. Exportiere deshalb vor einer Pause.
 
 ## Produktdokumentation
 
-Die Produktdokumentation erklärt auf Deutsch, Französisch und Italienisch, was Lectora tut, wie der Arbeitsablauf aussieht, welche Ausgaben es gibt und wie Lectora mit deinen Dokumenten umgeht: [sem-sgg.github.io/lectora/dokumentation.html](https://sem-sgg.github.io/lectora/dokumentation.html). Die Webseite erhält sie mit jeder Veröffentlichung aus [`docs/lectora-dokumentation.html`](docs/lectora-dokumentation.html). Die Anleitung in Lectora verlinkt sie im Abschnitt «Hilfe und Rückmeldung».
+Die Produktdokumentation erklärt auf Deutsch, Französisch und Italienisch, was Lectora tut, wie der Arbeitsablauf aussieht, welche Ausgaben es gibt und wie Lectora mit deinen Dokumenten umgeht: [sem-sgg.github.io/lectora/dokumentation.html](https://sem-sgg.github.io/lectora/dokumentation.html). Bei jeder Veröffentlichung übernimmt die Webseite die aktuelle Fassung aus [`docs/lectora-dokumentation.html`](docs/lectora-dokumentation.html). Auch die Anleitung in Lectora verlinkt sie im Abschnitt «Hilfe und Rückmeldung».
 
 ## Datenregel
 
@@ -63,7 +63,7 @@ Was daraus für Lectora folgt:
 | --- | --- |
 | Gespeicherte Datei `Lectora.html` | prüft sie lokal, wie alle Dokumente (Punkt 1) |
 | Webseite auf GitHub Pages | prüft sie nicht und verweist auf die Datei `Lectora.html` |
-| KI-Funktionen der Artefakt-Ausgabe (Claude) | sendet sie nie; eine Bestätigung, trotzdem zu senden, gibt es nicht. Der Dialog vor dem Senden nennt zusätzlich Punkt 3 (Personendaten). |
+| KI-Funktionen der Artefakt-Ausgabe (Claude) | sendet sie nie; die Sperre lässt sich nicht übergehen. Der Dialog vor dem Senden nennt zusätzlich Punkt 3 (Personendaten). |
 
 Lectora erkennt den Vermerk nach Muster; die Erkennung ist eine Näherung und sperrt im Zweifel eher zu viel. Personendaten erkennt Lectora nicht. Was du auf der Webseite prüfst oder an Claude sendest, verantwortest du.
 
@@ -71,7 +71,7 @@ Lectora erkennt den Vermerk nach Muster; die Erkennung ist eine Näherung und sp
 
 - **Deine Dokumente bleiben auf deinem Computer.** Der Browser liest die Dateien direkt. Dokumente, Befunde und Einstellungen liegen nur im Arbeitsspeicher des Tabs. Lectora speichert nichts: kein Server, keine Datenbank, kein Browser-Speicher, keine Cookies. Schliesst du den Tab, ist alles weg.
 - **Eine Anfrage beim Start (Offline-Ausgabe).** Die Datei liest auf GitHub Pages die Nummer der neusten Version (`sem-sgg.github.io/lectora/version.json`). Die Anfrage enthält keine Dokumentdaten und keine Kennung. GitHub sieht dabei wie bei jedem Webzugriff die IP-Adresse deines Computers, den Browser, seine Sprache und die Uhrzeit. Eine Sicherheitsrichtlinie in der Datei erlaubt nur diese eine Adresse. Wer auch diese Anfrage nicht will, baut eine Ausgabe ohne Versionsabfrage (siehe [docs/datenschutz.md](docs/datenschutz.md)).
-- **Webseite auf GitHub Pages:** GitHub liefert den Programmcode bei jedem Aufruf neu aus; eine gespeicherte `Lectora.html` ändert sich dagegen nicht unbemerkt. Deshalb ist die Webseite für unklassifizierte Dokumente gedacht. Dokumente mit dem Vermerk INTERN, VERTRAULICH oder GEHEIM prüft Lectora dort nicht; du prüfst sie mit der gespeicherten Datei, die alle Dokumente ohne Einschränkung lokal prüft. Die Webseite erkennt den Vermerk nach Muster; die Erkennung ist eine Näherung.
+- **Webseite auf GitHub Pages:** GitHub liefert den Programmcode bei jedem Aufruf neu aus; eine gespeicherte `Lectora.html` ändert sich dagegen nicht unbemerkt. Deshalb ist die Webseite für unklassifizierte Dokumente gedacht. Dokumente mit dem Vermerk INTERN, VERTRAULICH oder GEHEIM prüft Lectora dort nicht. Verwende dafür die gespeicherte Datei `Lectora.html`: Sie prüft alle Dokumente ohne Einschränkung lokal. Die Webseite erkennt den Vermerk nach Muster; die Erkennung ist eine Näherung.
 - **Artefakt-Ausgabe:** Sie lädt vier Dateien von Programmbibliotheken von cdnjs, jede mit Integritätsprüfung. Text an Claude geht nur, wenn du eine KI-Funktion startest. Lectora sagt vorher, was gesendet wird, und fragt nach; nur bei Formulierungsvorschlägen (einzelne Sätze) kannst du die Rückfrage für die Sitzung abschalten. Dokumente mit dem Vermerk INTERN, VERTRAULICH oder GEHEIM sendet Lectora nie an Claude; die Erkennung des Vermerks ist eine Näherung. An Claude gehen nach der [Datenregel](#datenregel) nur unklassifizierte Dokumente ohne besonders schützenswerte Personendaten und ohne Falldaten zu Personen aus Verfahren. Welche weiteren Bedingungen für den gesendeten Text gelten, hängt vom Claude-Konto ab (siehe [docs/datenschutz.md](docs/datenschutz.md)).
 
 Ausführlich: [docs/datenschutz.md](docs/datenschutz.md).
@@ -85,7 +85,7 @@ Getestet mit Chromium (der Engine von Google Chrome und Microsoft Edge) in den a
 - **Fehler:** Lege im Repository ein [Issue](https://github.com/SEM-SGG/lectora/issues/new/choose) mit der Vorlage «Fehler» an.
 - **Eine Regel meldet einen Fehlalarm:** Vorlage «Regel meldet Fehlalarm».
 - **Ohne GitHub-Konto:** Schreibe an die Funktionsadresse der Sektion, `sektion-grenze@sem.admin.ch`.
-- **Wichtig:** Dieses Repository ist öffentlich. Schreibe nie Text aus einem Dokument in ein Issue, auch nicht auszugsweise. Rückmeldedateien mit Textauszügen und Dokumentinhalte gehören nie in ein Issue; per Mail sendest du sie nur innerhalb der Arbeitsumgebung des Bundes (siehe [Datenregel](#datenregel) und [docs/rueckmeldungen.md](docs/rueckmeldungen.md)).
+- **Wichtig:** Dieses Repository ist öffentlich. Schreibe nie Text aus einem Dokument in ein Issue (eine Meldung auf GitHub), auch nicht auszugsweise. Auch Rückmeldedateien mit Textauszügen gehören nie in ein Issue; per Mail sendest du sie nur innerhalb der Arbeitsumgebung des Bundes (siehe [Datenregel](#datenregel) und [docs/rueckmeldungen.md](docs/rueckmeldungen.md)).
 - Sicherheitslücken meldest du nicht öffentlich, sondern wie in [SECURITY.md](SECURITY.md) beschrieben.
 - Beiträge von aussen (Pull Requests) nehmen wir an, sobald die Lizenz geklärt ist (siehe [CONTRIBUTING.md](CONTRIBUTING.md)).
 
