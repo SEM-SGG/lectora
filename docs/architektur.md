@@ -143,4 +143,4 @@ Die Tests simulieren `window.claude` (siehe `MOCK` in `test/ui_test.py`).
 
 ## Design
 
-Das Design System «Carbon» (nach IBM Carbon) steht in `src/styles.css`: Tokens in `:root`, darunter die Komponenten. Regeln in [AGENTS.md](../AGENTS.md#gestaltung).
+Das Design System «Carbon» (nach IBM Carbon) steht in `src/styles.css`: Tokens in `:root`, darunter die Komponenten. Regeln in [AGENTS.md](../AGENTS.md#gestaltung-design-system-carbon).
