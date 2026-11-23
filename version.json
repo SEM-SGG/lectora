@@ -1,9 +1,9 @@
 {
-  "version": "2.0.0",
-  "date": "2026-11-18",
+  "version": "2.0.1",
+  "date": "2026-11-23",
   "note": {
-    "de": "Erste Ausgabe aus dem öffentlichen Repository.",
-    "fr": "Première édition tirée du dépôt public.",
-    "it": "Prima edizione tratta dal repository pubblico."
+    "de": "Die Webseite prüft Dokumente mit dem Vermerk VERTRAULICH oder GEHEIM nicht mehr und fragt bei INTERN nach; die gespeicherte Datei prüft weiterhin alle Dokumente.",
+    "fr": "La page web ne contrôle plus les documents portant la mention CONFIDENTIEL ou SECRET et demande confirmation pour INTERNE ; le fichier enregistré contrôle toujours tous les documents.",
+    "it": "La pagina web non verifica più i documenti con l’indicazione CONFIDENZIALE o SEGRETO e chiede conferma per AD USO INTERNO; il file salvato verifica sempre tutti i documenti."
   }
 }
