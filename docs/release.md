@@ -241,7 +241,7 @@ Es läuft nie mehr als eine Veröffentlichung gleichzeitig. Startest du eine zwe
 | «Der Tag v2.0.1 liess sich nicht anlegen: … Verhindert ein Ruleset für Tags v* das Anlegen, …» | Eine Einstellung fehlt. Bitte eine Person mit der Rolle «Admin», sie zu setzen ([repo-einstellungen.md](repo-einstellungen.md), «Ruleset für Tags»). Danach **Re-run jobs** → **Re-run failed jobs**. Die Tests laufen dabei nicht noch einmal. |
 | Ein Test scheitert in «Prüfen und bauen». | War es ein zufälliger Fehler (zum Beispiel ein Zeitlimit), wähle oben rechts **Re-run jobs** → **Re-run failed jobs**. Sonst frag eine Entwicklerin oder einen Entwickler. |
 | «GitHub Pages» scheitert, «GitHub Release» ist grün. | Meist ist GitHub Pages nicht eingeschaltet, oder die Umgebung `github-pages` lässt `main` nicht zu. Die Meldung endet dann oft mit «… is not allowed to deploy to github-pages due to environment protection rules». Bitte eine Person mit der Rolle «Admin», die Einstellung zu setzen ([repo-einstellungen.md](repo-einstellungen.md)). Danach holst du die Webseite mit dem Workflow `pages` nach: [GitHub Pages nachholen, wenn das Release schon besteht](#github-pages-nachholen-wenn-das-release-schon-besteht). |
-| «GitHub Pages» scheitert mit «No artifacts named "github-pages" were found for this workflow run» oder «Multiple artifacts named "github-pages" were unexpectedly found for this workflow run. …», «GitHub Release» ist grün. | Das Release ist veröffentlicht, nur die Webseite fehlt. Wiederhole den Lauf nicht. Hole die Webseite mit dem Workflow `pages` nach: [GitHub Pages nachholen, wenn das Release schon besteht](#github-pages-nachholen-wenn-das-release-schon-besteht). |
+| «GitHub Pages» scheitert mit «No artifacts named "github-pages-1" were found for this workflow run» oder «Multiple artifacts named "github-pages-1" were unexpectedly found for this workflow run. …» (statt 1 steht die Nummer des Versuchs), «GitHub Release» ist grün. | Das Release ist veröffentlicht, nur die Webseite fehlt. Wähle oben rechts **Re-run jobs** → **Re-run failed jobs**. Scheitert auch das, hole die Webseite mit dem Workflow `pages` nach: [GitHub Pages nachholen, wenn das Release schon besteht](#github-pages-nachholen-wenn-das-release-schon-besteht). |
 
 ## Schritt 4: Ergebnis prüfen
 
@@ -290,16 +290,18 @@ Meldet der Lauf «Das Release v2.0.1 besteht schon, aber als Entwurf oder mit an
 
 **Woran du den Fall erkennst:** Im Lauf des Workflows `release` haben «Prüfen und bauen» und «GitHub Release» einen grünen Haken, «GitHub Pages» ein rotes Kreuz. Im Schritt mit `actions/deploy-pages` steht eine dieser Meldungen:
 
-- «No artifacts named "github-pages" were found for this workflow run». Sie kann schon beim ersten Versuch erscheinen, obwohl der Schritt davor (`actions/upload-pages-artifact`) die Webseite hochgeladen hat. Die Ursache ist nicht geklärt; es sieht nach einem Zeitproblem bei GitHub aus.
-- «Multiple artifacts named "github-pages" were unexpectedly found for this workflow run. Artifact count is 2.» Sie erscheint, wenn du «GitHub Pages» mit **Re-run failed jobs** wiederholst, nachdem es die Webseite schon einmal hochgeladen hat. Die Wiederholung lädt sie ein zweites Mal hoch, und `actions/deploy-pages` nimmt nur eine an. Jede weitere Wiederholung desselben Laufs scheitert gleich.
+- «No artifacts named "github-pages-1" were found for this workflow run» (statt 1 steht die Nummer des Versuchs). Sie kann erscheinen, obwohl der Schritt davor (`actions/upload-pages-artifact`) die Webseite hochgeladen hat. `actions/deploy-pages` sucht die Webseite in der Liste der Dateien des Laufs, und dort fehlt sie unmittelbar nach dem Hochladen manchmal noch. Das ist ein bekannter Fehler bei GitHub ([actions/deploy-pages#451](https://github.com/actions/deploy-pages/issues/451)). Der Workflow wartet deshalb 30 Sekunden, bevor er die Webseite bereitstellt. Das macht den Fehler seltener, schliesst ihn aber nicht aus.
+- «Multiple artifacts named "github-pages-1" were unexpectedly found for this workflow run. …» Sie bedeutet, dass derselbe Versuch die Webseite zweimal hochgeladen hat. Eine Wiederholung lädt die Webseite unter einem neuen Namen hoch; die doppelte Webseite stört sie nicht.
+
+**Zuerst wiederholen:** Wähle auf der Seite des Laufs oben rechts **Re-run jobs** → **Re-run failed jobs**. GitHub wiederholt nur «GitHub Pages». Jeder Versuch lädt die Webseite unter einem eigenen Namen hoch (`github-pages-2` beim zweiten Versuch); die Webseite eines früheren Versuchs stört deshalb nicht. Ist der Lauf danach grün, mach mit [Schritt 4](#schritt-4-ergebnis-prüfen) weiter. Scheitert auch die Wiederholung, hole die Webseite wie unten beschrieben mit dem Workflow `pages` nach.
 
 **Was schon veröffentlicht ist:** der Tag `vX.Y.Z` und das Release mit `Lectora.html`, `Lectora-X.Y.Z.html` und `SHA256SUMS.txt`. Wer die Datei herunterlädt, bekommt die neue Version.
 
 **Was noch fehlt:** Die Webseite `https://sem-sgg.github.io/lectora/` zeigt noch die alte Version, und `https://sem-sgg.github.io/lectora/version.json` nennt noch die alte Nummer. Ältere Kopien zeigen deshalb noch keinen Hinweis auf die neue Version.
 
-**Was du nicht tust:** Wiederhole den Lauf nicht noch einmal. Starte den Workflow `release` nicht neu, und nimm keine neue Nummer. Die Nummer ist vergeben, und der Workflow `release` lehnt sie ab, weil Tag und Release schon bestehen.
+**Was du nicht tust:** Starte keinen neuen Lauf des Workflows `release` (**Run workflow**), und nimm keine neue Nummer. Die Nummer ist vergeben, und der Workflow `release` lehnt sie ab, weil Tag und Release schon bestehen.
 
-**So holst du die Webseite nach, im Browser:**
+**Wenn die Wiederholung nicht hilft, holst du die Webseite so nach, im Browser:**
 
 1. Öffne das Repository und klicke oben auf **Actions**.
 2. Klicke links in der Liste der Workflows auf **pages**.
