@@ -1,5 +1,6 @@
 # GitHub Pages von Hand auf eine bestehende Version setzen (Zurückrollen): Actions → pages → Run workflow → Tag (z. B. v2.0.0).
-# Nimmt Lectora.html aus dem Release dieses Tags (Prüfsumme aus SHA256SUMS.txt desselben Release) und version.json vom Tag.
+# Nimmt Lectora.html aus dem Release dieses Tags (Prüfsumme aus SHA256SUMS.txt desselben Release), version.json vom Tag und die
+# Produktdokumentation (docs/lectora-dokumentation.html als dokumentation.html) vom Tag; ältere Tags ohne diese Datei: die von main.
 # Ältere Offline-Ausgaben sehen danach diese Version als neuste. Siehe docs/release.md, Abschnitt «Zurückrollen».
 name: pages
 
@@ -58,6 +59,12 @@ jobs:
           python3 tools/release_check.py "$TAG"
           cp dl/Lectora.html site/index.html
           cp version.json site/version.json
+          if [ -f docs/lectora-dokumentation.html ]; then
+            cp docs/lectora-dokumentation.html site/dokumentation.html
+          else
+            echo "::warning::Der Tag $TAG enthält keine Produktdokumentation; GitHub Pages erhält die von main."
+            git show origin/main:docs/lectora-dokumentation.html > site/dokumentation.html
+          fi
           touch site/.nojekyll
       # Ein Name je Versuch: Bei «Re-run failed jobs» findet deploy-pages sonst auch die Seite des früheren Versuchs
       # und bricht ab («Multiple artifacts named …»), weil es den Namen in allen Versuchen des Laufs sucht

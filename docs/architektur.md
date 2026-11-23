@@ -36,6 +36,8 @@ Der ganze Zustand steht in einem Objekt `S` (`DP.state`) in `ui.js`, nur im Arbe
 
 Es gibt keinen Speicher im Browser (kein localStorage, kein sessionStorage, keine IndexedDB, keine Cookies). «Sitzung leeren» setzt alles zurück. Wer Einstellungen behalten will, speichert ein Prüfprofil als Datei.
 
+**Warnung vor dem Verlassen:** `decSig(doc)` fasst die Entscheide eines Dokuments zu einer Zeichenfolge zusammen (jeder Befund, der nicht offen ist, als Fehlalarm markiert ist oder einen bearbeiteten Vorschlag trägt). `save()` merkt sich diesen Stand in `EXPORTED` (WeakMap, nur im Arbeitsspeicher), sobald ein Export dieses Dokuments gespeichert ist: Word mit Änderungen, bereinigte Fassung, Prüfbericht, PDF oder PowerPoint mit Kommentaren. Ein Listener für `beforeunload` ruft `preventDefault()`, wenn ein Dokument Entscheide trägt, die vom gemerkten Stand abweichen; der Browser zeigt dann seinen eigenen Dialog. Er fragt nur, wenn die Person mit der Seite gearbeitet hat (Nutzeraktivierung), und nie, wenn er einen Tab im Hintergrund verwirft. Ob der eingebettete Rahmen der Artefakt-Ausgabe auf claude.ai den Dialog zeigen darf, bestimmt die Plattform (Sandbox); das ist nicht geprüft.
+
 `render()` baut die aktuelle Ansicht neu auf. `h()` erzeugt Elemente, `t()` holt Texte. Bedienelemente tragen ein `data-fid`, über das Tests und die Fokusführung sie finden.
 
 ## Ausgaben
@@ -76,14 +78,14 @@ form-action 'none'
 
 Auf GitHub Pages gilt dieselbe Richtlinie (dieselbe Datei). GitHub setzt keine eigene CSP. Downloads über `blob:` und der Worker funktionieren auch über https; `offline_test.py` prüft das mit einem lokalen Webserver.
 
-### Klassifizierte Dokumente auf GitHub Pages
+### Klassifizierte Dokumente auf GitHub Pages und im Artefakt
 
-Die Offline-Ausgabe läuft als geöffnete Datei (`file://`) und als Webseite auf GitHub Pages. `ui.js` unterscheidet die beiden mit `WEB = DP.offline && /^https?:$/.test(location.protocol)` (das gilt für jeden `http(s)`-Server; die Hinweistexte gehen von der veröffentlichten Adresse auf GitHub Pages aus). Nur wenn `WEB` gilt:
+Die Offline-Ausgabe läuft als geöffnete Datei (`file://`) und als Webseite auf GitHub Pages. `ui.js` unterscheidet die beiden mit `WEB = DP.offline && /^https?:$/.test(location.protocol)` (das gilt für jeden `http(s)`-Server; die Hinweistexte gehen von der veröffentlichten Adresse auf GitHub Pages aus). `CL_BLOCK = WEB || !DP.offline` gilt auf der Webseite und in der Artefakt-Ausgabe (und in der Testausgabe `--local`): In beiden liefert eine fremde Infrastruktur den Programmcode bei jedem Aufruf aus.
 
-- Die Startseite sagt, dass die Webseite für unklassifizierte Dokumente gedacht ist, und verweist auf «Als Datei speichern» (Seite der neusten Ausgabe, feste Adresse `RELEASE_URL`).
-- `readFiles` liest den Vermerk direkt nach `DP.parse.parseFile` aus `doc.meta.classification` (ermittelt von `DP.lang.findClassification`, derselben Erkennung wie für die Sperre der KI-Funktionen). Das geschieht vor der Rückfrage nach einer neuen Fassung und vor der Prüfung; Beispieldokumente sind ausgenommen. VERTRAULICH und GEHEIM (Stufe 2 und 3): kein Laden, keine Prüfung, eine Erklärung verweist auf die Datei `Lectora.html`. INTERN (Stufe 1): ein Warndialog mit Kontrollkästchen; ohne Bestätigung lädt Lectora das Dokument nicht.
+- Nur wenn `WEB` gilt: Die Startseite sagt, dass die Webseite für unklassifizierte Dokumente gedacht ist, mit «Als Datei speichern» (Direktlink auf die Datei der neusten Ausgabe, feste Adresse `DOWNLOAD_URL`) und «Dokumentation» (`DOC_URL`).
+- Wenn `CL_BLOCK` gilt: `readFiles` liest den Vermerk direkt nach `DP.parse.parseFile` aus `doc.meta.classification` (ermittelt von `DP.lang.findClassification`, derselben Erkennung wie für die Sperre der KI-Funktionen). Das geschieht vor der Rückfrage nach einer neuen Fassung und vor der Prüfung; Beispieldokumente sind ausgenommen. INTERN, VERTRAULICH und GEHEIM (Stufe 1 bis 3, Datenregel der SGG): kein Laden, keine Prüfung, eine Erklärung (`webClassifBlocked`, Texte `web.*` bzw. `art.*`) verweist auf die Datei `Lectora.html`. Einen Weg, trotzdem zu prüfen, gibt es nicht. Das gilt für Dateiauswahl, Ablegen, mehrere Dateien und «Neue Fassung laden», weil alle über `readFiles` gehen; ein gesperrtes Dokument erreicht weder Prüfung noch Sprachvergleich.
 
-Unter `file://` und in der Artefakt-Ausgabe (`DP.offline` ist `false`) greift diese Prüfung nicht. Gründe und Grenzen der Erkennung: [datenschutz.md](datenschutz.md#github-pages).
+Nur unter `file://` greift diese Prüfung nicht. Gründe und Grenzen der Erkennung: [datenschutz.md](datenschutz.md#github-pages). Die Sperre der KI-Funktionen (`aiBlocked`, siehe unten) bleibt als zweite Sicherung.
 
 ### Versionsabfrage
 
@@ -92,8 +94,8 @@ Unter `file://` und in der Artefakt-Ausgabe (`DP.offline` ist `false`) greift di
 0. Der Workflow `release` legt `version.json` (aus dem Repository, vom veröffentlichten Commit) zusammen mit der Webseite auf GitHub Pages ab, und zwar erst nach den Tests und nach dem Anlegen des Release. Vorher sieht keine verteilte Ausgabe die neue Version.
 1. 600 Millisekunden nach dem Start, wenn die Seite bedienbar ist: eine Anfrage an `https://sem-sgg.github.io/lectora/version.json` (`GET`, ohne Abfrageteil, ohne Cookies, ohne Referrer, ohne eigene Kopfzeilen, ohne Zwischenspeicher, Weiterleitungen verboten), höchstens 8 Sekunden. Was GitHub dabei erfährt, steht in [datenschutz.md](datenschutz.md).
 2. Antwort höchstens 4 KiB, JSON-Objekt mit höchstens 8 Feldern; `version` im Muster X.Y.Z, `date` als gültiges Datum, `note` mit Texten in de, fr, it (je höchstens 200 Zeichen, ohne `<`, `>`, Steuerzeichen und ohne alles, was wie eine Adresse aussieht: `://`, `www.`, ein Hostname, `@`). Sonst: nichts. `tools/release_check.py` prüft dieselben Regeln vor der Veröffentlichung.
-3. Ist die Version neuer (Vergleich Zahl für Zahl), zeigt `ui.js` einen Hinweis unter der Utility-Leiste. Der Link führt immer zur festen Adresse `https://github.com/SEM-SGG/lectora/releases/latest` (Konstante `RELEASE_URL` in `ui.js`), nie zu einer Adresse aus der Antwort. Auf GitHub Pages lautet die Aktion «Seite neu laden».
-4. Scheitert die Abfrage und ist die Ausgabe älter als 90 Tage, erscheint ein Hinweis, im Repository nachzusehen.
+3. Ist die Version neuer (Vergleich Zahl für Zahl), zeigt `ui.js` einen Hinweis unter der Utility-Leiste. «Neue Version herunterladen» führt immer zur festen Adresse `https://github.com/SEM-SGG/lectora/releases/latest/download/Lectora.html` (Konstante `DOWNLOAD_URL` in `ui.js`, Direktlink auf die Datei), nie zu einer Adresse aus der Antwort. Der Dateiname `Lectora.html` im Release ist deshalb fest (Workflow `release`). Auf GitHub Pages lautet die Aktion «Seite neu laden».
+4. Scheitert die Abfrage und ist die Ausgabe älter als 90 Tage, erscheint ein Hinweis, im Repository nachzusehen («Auf GitHub nachsehen» öffnet bewusst die Seite der neusten Ausgabe, `RELEASE_URL`).
 5. «Ausblenden» gilt bis zum Neuladen.
 
 Die Artefakt-Ausgabe fragt nichts ab (die Plattform sperrt Verbindungen).
@@ -115,7 +117,7 @@ Regeln für jede Funktion, die Text an Claude sendet:
 
 1. Sie startet nur auf einen ausdrücklichen Klick, nie von selbst.
 2. Vorher zeigt ein Dialog, was gesendet wird («Gesendet wird»: welches Dokument, welche Teile, eigene Kriterien im Wortlaut, Obergrenze). Erst «Senden» startet den Lauf. Einzige Ausnahme: Formulierungsvorschläge (ein Satz) lassen sich für die Sitzung ohne Rückfrage anfordern.
-3. Klassifizierungsvermerk (`DP.lang.findClassification`, ganze Zeilen in Kopf- und Fusszeilen, Folienfüssen, Randzeilen jeder PDF-Seite und am Anfang): INTERN verlangt eine zusätzliche Bestätigung; VERTRAULICH und GEHEIM (und die Entsprechungen) sperren jede KI-Funktion, ohne Möglichkeit, trotzdem zu senden (`aiBlocked` in `ui.js`).
+3. Klassifizierungsvermerk (`DP.lang.findClassification`, ganze Zeilen oder eigene Teile einer Zeile in Kopf- und Fusszeilen, Folienfüssen, Randzeilen jeder PDF-Seite und den ersten sechs Absätzen; dazu kurze Teile in Grossbuchstaben, die mit dem Vermerk enden): INTERN, VERTRAULICH und GEHEIM (und die Entsprechungen) sperren jede KI-Funktion, ohne Möglichkeit, trotzdem zu senden (`aiBlocked` in `ui.js`, Datenregel der SGG). Weil die Artefakt-Ausgabe solche Dokumente gar nicht lädt (`CL_BLOCK`), ist das die zweite Sicherung, etwa für einen Vermerk, den erst eine später geladene Fassung trägt. Der Dialog vor dem Senden nennt Punkt 3 der Regel (Personendaten).
 4. Die Plattform fragt beim ersten Aufruf einer Fähigkeit selbst um Zustimmung.
 5. Jede Anfrage behandelt den Dokumenttext als Daten: Der Text steht als JSON zwischen Markierungen (`<<<DOCUMENT` … `DOCUMENT>>>`, Zeilenumbrüche flach), der Prompt sagt Claude vorher und nachher, dass Anweisungen darin nicht zu befolgen sind. Eigene Kriterien (Q07) stehen als Prüfkriterien gerahmt, die Regeln und Antwortform nicht ändern können.
 6. Jeder Korrekturvorschlag aus einer KI-Funktion (KI-Prüfung, Bedeutungsvergleich, Formulierungsvorschlag) besteht `DP.ai.checkFacts` mit `meaningGuards`: Zahlen, Uhrzeiten, Daten, Verweise, Links; Zahl mit Einheit; Richtung von Fristen und Daten; Verneinung; Verbindlichkeit (Klassen von `DP.modal`; L06 darf sie ändern, mit Warnung; X11 muss der Referenz entsprechen); andere handelnde Stelle ergibt eine Warnung. Ein Vorschlag, der nicht besteht, bleibt nur als Hinweis mit Grund (`fixRej`). Alles sind Näherungen.
@@ -135,10 +137,10 @@ Die Tests simulieren `window.claude` (siehe `MOCK` in `test/ui_test.py`).
 ## Bekannte Punkte
 
 - **Office-Prüfung:** `test/ooxml_check.py` prüft Paket, Beziehungen, Kennungen, Änderungen und Kommentare, aber nicht gegen das Schema (Reihenfolge der Elemente, Pflichtattribute, Werte, Feldfunktionen). Ein zusätzlicher Auftrag mit dem Validator des Open XML SDK (Microsoft, MIT-Lizenz, .NET) in GitHub Actions würde diese Lücke schliessen.
-- **pdf.js 3.11.174:** betroffen von CVE-2024-4367; Lectora setzt `isEvalSupported: false`, und die Offline-Ausgabe verbietet `eval` per CSP. Der Wechsel auf pdf.js 4 (nur noch ES-Module) verlangt Änderungen am Build.
+- **pdf.js 3.11.174:** betroffen von CVE-2024-4367; Lectora setzt `isEvalSupported: false`, und die Offline-Ausgabe verbietet `eval` per CSP. Der Wechsel auf pdf.js 4 (nur noch ES-Module) verlangt Änderungen am Build. Dependabot schlägt Hauptversionen von `pdfjs-dist` deshalb nicht vor (`ignore` in `.github/dependabot.yml`); den Umbau beauftragt die Sektion bewusst.
 - **pdf-lib 1.17.1** wird seit 2021 nicht mehr gepflegt. Ersatz prüfen, wenn Fehler auftreten.
 - **PowerPoint-Kommentare:** Lectora schreibt klassische Kommentare (`p:cmLst`); PowerPoint für Microsoft 365 zeigt sie als ältere Kommentare an und bietet die Umwandlung an. Mit modernen Kommentaren in derselben Datei ist das Zusammenspiel nicht getestet.
-- **Tabs im Ruhezustand:** Edge (Schlafende Tabs) und Chrome (Speichersparmodus) können einen Tab im Hintergrund verwerfen. Beim Zurückkehren lädt die Seite neu; die Sitzung ist dann leer, ohne Warnung.
+- **Tabs im Ruhezustand:** Edge (Schlafende Tabs) und Chrome (Speichersparmodus) können einen Tab im Hintergrund verwerfen. Beim Zurückkehren lädt die Seite neu; die Sitzung ist dann leer, ohne Warnung (`beforeunload` greift dabei nicht). Die Anleitung rät, vor Pausen zu exportieren.
 - **Lesen grosser PDF-Dateien in der Artefakt-Ausgabe** geschieht im Hauptthread: Die Testdokumente brauchen rund 0,1 Sekunden, eine Datei mit 164 Seiten 0,7 Sekunden, eine mit 656 Seiten 2,6 Sekunden, während derer die Seite nicht reagiert (die Fortschrittsanzeige steht vorher).
 
 ## Design

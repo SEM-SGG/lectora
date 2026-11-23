@@ -164,16 +164,14 @@ with sync_playwright() as pw:
                     pg.goto('file://' + OFFLINE_FILE if where == 'file' else pages + '/' + os.path.basename(OFFLINE_FILE)); pg.wait_for_selector('#updBand:not([hidden])', timeout=10000); pg.evaluate(AXE)
                     print(f'  offline Versionshinweis {where} {lang} {vw}px Verstösse:', pg.evaluate(AXE_RUN))
                     if where == 'pages':
-                        # Dokumente mit Klassifizierungsvermerk (Startseite mit Hinweis oben geprüft): Sperrdialog (VERTRAULICH), Rückfrage (INTERN) offen und angehakt
+                        # Dokumente mit Klassifizierungsvermerk (Startseite mit Hinweis oben geprüft): Sperrdialog bei VERTRAULICH und bei INTERN
                         idle = '!document.getElementById("dlg").open && !DP.state.busy'
                         pg.set_input_files('#file', [os.path.join(FX, 'klassif_vertraulich_fuss.docx')]); pg.wait_for_selector('#dlg[open] [data-fid="web-classif-blocked"]', timeout=30000); pg.wait_for_timeout(300)
                         print(f'  Pages Sperrdialog VERTRAULICH {lang} {vw}px Verstösse:', pg.evaluate(AXE_RUN)); pg.keyboard.press('Escape'); pg.wait_for_function(idle); pg.wait_for_timeout(300)
-                        pg.set_input_files('#file', [os.path.join(FX, 'klassif_intern_kopf.docx')]); pg.wait_for_selector('#dlg[open] [data-fid="web-intern-dlg"]', timeout=30000); pg.wait_for_timeout(300)
-                        print(f'  Pages Rückfrage INTERN {lang} {vw}px Verstösse:', pg.evaluate(AXE_RUN))
-                        # Nach dem Farbübergang von «Trotzdem prüfen» (--motion-fast) messen
-                        pg.check('#webInternAck'); pg.wait_for_timeout(400); print(f'  Pages Rückfrage INTERN angehakt {lang} {vw}px Verstösse:', pg.evaluate(AXE_RUN))
-                        pg.click('[data-fid="webintern-cancel"]'); pg.wait_for_function(idle); pg.wait_for_timeout(300)
-                        if pg.evaluate('DP.state.docs.length'): VIOL.append(f'Pages {lang} {vw}px: Dokument mit Vermerk trotz Sperre bzw. Abbrechen geladen')
+                        pg.set_input_files('#file', [os.path.join(FX, 'klassif_intern_kopf.docx')]); pg.wait_for_selector('#dlg[open] [data-fid="web-classif-blocked"]', timeout=30000); pg.wait_for_timeout(300)
+                        print(f'  Pages Sperrdialog INTERN {lang} {vw}px Verstösse:', pg.evaluate(AXE_RUN))
+                        pg.click('[data-fid="webblock-close"]'); pg.wait_for_function(idle); pg.wait_for_timeout(300)
+                        if pg.evaluate('DP.state.docs.length'): VIOL.append(f'Pages {lang} {vw}px: Dokument mit Vermerk trotz Sperre geladen')
                     pg.evaluate('DP.ui.go("criteria")'); pg.wait_for_timeout(500); print(f'  offline Kriterien mit Standardprofil {where} {lang} {vw}px Verstösse:', pg.evaluate(AXE_RUN))
                     pg.close()
             pg = br.new_page(viewport={'width': vw, 'height': vh}, locale='de-CH'); pg.route(VERSION_URL, lambda r: r.abort())
@@ -181,6 +179,18 @@ with sync_playwright() as pw:
             pg.goto('file://' + OFFLINE_FILE); pg.wait_for_selector('#updBand:not([hidden])', timeout=15000); pg.evaluate(AXE)
             print(f'  offline Altershinweis {vw}px Verstösse:', pg.evaluate(AXE_RUN)); pg.close()
     else: VIOL.append('Offline-Ausgabe fehlt (node build.mjs --offline)'); print('  Offline-Ausgabe fehlt (node build.mjs --offline)')
+    # Artefakt-Ausgabe (Testausgabe dist-local): Sperrdialog für ein Dokument mit Vermerk, DE, FR und IT, 1280 und 375 px
+    for vw, vh in ((1280, 900), (375, 812)):
+        for lang in ('de', 'fr', 'it'):
+            pg = br.new_page(viewport={'width': vw, 'height': vh}, locale=lang + '-CH'); pg.goto(url(8771) + '/dist-local/index.html'); pg.wait_for_timeout(500)
+            pg.set_input_files('#file', [os.path.join(FX, 'klassif_intern_kopf.docx')]); pg.wait_for_selector('#dlg[open] [data-fid="web-classif-blocked"]', timeout=30000); pg.wait_for_timeout(300)
+            pg.evaluate(AXE); print(f'  Artefakt Sperrdialog INTERN {lang} {vw}px Verstösse:', pg.evaluate(AXE_RUN))
+            ov = pg.evaluate('(() => { const d = document.getElementById("dlg"); return [d.scrollWidth <= d.clientWidth + 1, document.documentElement.scrollWidth <= innerWidth + 1]; })()')
+            if ov != [True, True]: VIOL.append(f'Artefakt Sperrdialog {lang} {vw}px: Überlauf {ov}')
+            pg.screenshot(path=os.path.join(SHOTS_DIR, f'a11y_artefakt_sperre_{lang}_{vw}.png'))
+            pg.click('[data-fid="webblock-close"]'); pg.wait_for_function('!document.getElementById("dlg").open && !DP.state.busy'); pg.wait_for_timeout(200)
+            if pg.evaluate('DP.state.docs.length'): VIOL.append(f'Artefakt {lang} {vw}px: Dokument mit Vermerk trotz Sperre geladen')
+            pg.close()
     # Grosses Dokument: Zeit bis Anzeige
     pg = br.new_page(viewport={'width': 1280, 'height': 900}); pg.goto(url(8771) + '/dist-local/index.html'); pg.wait_for_timeout(400)
     t0 = time.time(); pg.set_input_files('#file', [os.path.join(FX, 'gross_de.docx')]); pg.wait_for_function('DP.state.docs.length === 1 && !DP.state.busy', timeout=60000); t1 = time.time()

@@ -1,6 +1,7 @@
 # Versions-Updates als Pull Requests. Aktionen sind in den Workflows per Commit festgelegt (Version im Kommentar); Dependabot
 # aktualisiert Commit und Kommentar. npm: Eine neue Version einer Bibliothek (JSZip, pdf.js, pdf-lib) lässt den Build scheitern, bis
 # der neue SHA-512-Wert und die Adresse auf cdnjs in build.mjs stehen (docs/entwicklung.md); danach node tools/notices.mjs --write.
+# Wie die Fachperson mit diesen Pull Requests umgeht: docs/pflege.md, Abschnitt «Pull Requests von Dependabot».
 version: 2
 updates:
   - package-ecosystem: github-actions
@@ -16,6 +17,14 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: "npm"
+    ignore:
+      # pdf.js ab Version 4 gibt es nur noch als ES-Module. Lectora lädt pdf.js als klassisches Skript: in der Artefakt-Ausgabe von
+      # cdnjs mit Integritätsprüfung, in der Offline-Ausgabe eingebettet mit CSP-Hashes und einem Worker aus einer blob:-Adresse.
+      # Eine neue Hauptversion verlangt einen Umbau von build.mjs, der CSP und der PDF-Tests (Pull Request #7, 3 → 6).
+      # Die bekannte Lücke CVE-2024-4367 ist abgefangen (isEvalSupported: false, CSP ohne eval; docs/architektur.md, «Bekannte Punkte»).
+      # Den Umbau beauftragt die Sektion bewusst; dann diese Regel entfernen.
+      - dependency-name: pdfjs-dist
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: pip
     directory: /
     schedule:

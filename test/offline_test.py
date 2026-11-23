@@ -4,8 +4,9 @@ Browsers (Office-Prüfung), kein KI-Zugang, axe auf den Zuständen der Offline-A
 Versionsabfrage: neuere, gleiche und ältere Version, fehlerhafte, feindliche, langsame und scheiternde Antworten, genau eine Anfrage
 ohne Abfrageteil, Cookies und Referrer, CSP sperrt jede andere Adresse; Altershinweis; Ausgabe ohne Versionsabfrage (keine Anfrage);
 GitHub Pages (Auslieferung über einen lokalen Webserver): «Seite neu laden», «Als Datei speichern», Downloads, PDF-Worker.
-Dokumente mit Klassifizierungsvermerk: auf GitHub Pages Hinweis auf der Startseite, Sperre (VERTRAULICH, GEHEIM) und Rückfrage (INTERN)
-über Dateiauswahl, Ablegen, mehrere Dateien und «Neue Fassung laden»; als lokale Datei (file://) ohne Hinweis, Sperre und Rückfrage.
+Dokumente mit Klassifizierungsvermerk: auf GitHub Pages Hinweis auf der Startseite, Sperre (INTERN, VERTRAULICH, GEHEIM) über Dateiauswahl,
+Ablegen, mehrere Dateien und «Neue Fassung laden»; als lokale Datei (file://) ohne Hinweis und ohne Sperre.
+Warnung beim Verlassen (beforeunload): nur mit Entscheiden, die seit dem letzten Export nicht exportiert sind.
 Standardprofile im Profilband. Umgekehrt für die Artefakt-Ausgabe: kein erreichbarer Download-Link, keine Offline-Kennzeichnung, nur cdnjs.
 Vorher: node build.mjs --offline && node build.mjs --offline --no-update-check && node build.mjs --local && node build.mjs.
 Schluss: «FEHLER: keine»."""
@@ -48,7 +49,9 @@ check(bool(lic) and 'JSZip' in lic.group(1) and 'Apache License' in lic.group(1)
 code = html[lic.end():] if lic else html
 hosts = sorted(set(h for h in re.findall(r'https?://([a-z0-9.-]+)', code) if h))
 raw = re.findall(r'https://sem-sgg\.github\.io[^\s"\'`;)]*', code)
-check(raw and all(u == VERSION_URL for u in raw), f'sem-sgg.github.io nur als Adresse der Versionsdatei ({len(raw)}×: CSP und src/update.js)')
+# Abgefragt wird nur die Versionsdatei (CSP: connect-src); die Produktdokumentation ist ein gewöhnlicher Link der Anleitung (src/ui.js, DOC_URL)
+check(raw and all(u in (VERSION_URL, DOC_URL) for u in raw) and raw.count(DOC_URL) == 1 and f"connect-src {VERSION_URL};" in html,
+      f'sem-sgg.github.io nur als Adresse der Versionsdatei (CSP, src/update.js) und einmal als Link auf die Produktdokumentation ({len(raw)}×)')
 check('raw.githubusercontent.com' not in code, 'keine Adresse auf raw.githubusercontent.com (frühere Versionsabfrage)')
 # Erlaubt sind nur Kennungen, die nie geladen werden: XML-Namensräume (OOXML, SVG, XMP, XFA) und Quellenhinweise in den Lizenzköpfen
 NS_HOSTS = {'sem-sgg.github.io', 'schemas.openxmlformats.org', 'purl.oclc.org', 'purl.org', 'www.w3.org', 'ns.adobe.com', 'www.xfa.org', 'www.apache.org', 'github.com', 'raw.github.com', 'stuk.github.io', 'stuartk.com'}
@@ -98,7 +101,7 @@ def update_tests(pw):
         a = pg.evaluate('(() => { const a = document.querySelector("[data-fid=upd-dl]"); return a && [a.getAttribute("href"), a.target, a.rel, a.innerText.trim()]; })()')
         # Datum in der Schreibweise der Oberfläche, nicht als JJJJ-MM-TT
         day = {'de': '1. März 2027', 'fr': '1er mars 2027', 'it': '1° marzo 2027'}[lang]
-        check(word in t and note in t and day in t and '2027-03-01' not in t and a == [RELEASE_URL, '_blank', 'noopener noreferrer', btn], f'{lang}: neuere Version → Hinweis «{t.splitlines()[0][:90]}», Link auf {a and a[0]}')
+        check(word in t and note in t and day in t and '2027-03-01' not in t and a == [DOWNLOAD_URL, '_blank', 'noopener noreferrer', btn], f'{lang}: neuere Version → Hinweis «{t.splitlines()[0][:90]}», Link auf {a and a[0]}')
         if lang == 'de':
             r = seen[0]; hd = r.all_headers()
             check(len(seen) == 1 and r.url == VERSION_URL and '?' not in r.url and r.method == 'GET', f'genau eine Anfrage, GET, genau die Adresse ohne Abfrageteil ({len(seen)}× {r.url})')
@@ -236,14 +239,16 @@ def update_tests(pw):
         check(rl and rl[0] == 'BUTTON' and rl[1] == {'de': 'Seite neu laden', 'fr': 'Recharger la page'}[lang] and pg.query_selector('[data-fid="upd-dl"]') is None, f'Pages {lang} {w}px: neuere Version → «{rl and rl[1]}» statt Download')
         ov = pg.evaluate('(() => { const u = document.querySelector(".utility"), b = document.getElementById("updBand"); return [u.scrollWidth <= u.clientWidth + 1, b.scrollWidth <= b.clientWidth + 1, document.documentElement.scrollWidth <= innerWidth + 1]; })()')
         check(ov == [True, True, True], f'Pages {lang} {w}px: Utility-Leiste und Hinweis ohne Überlauf {ov}')
-        check(wsv == [False, RELEASE_URL, '_blank', {'de': 'Als Datei speichern', 'fr': 'Enregistrer comme fichier'}[lang]], f'Pages {lang} {w}px: «Als Datei speichern» verweist auf die neuste Ausgabe {wsv}')
+        check(wsv == [False, DOWNLOAD_URL, '_blank', {'de': 'Als Datei speichern', 'fr': 'Enregistrer comme fichier'}[lang]], f'Pages {lang} {w}px: «Als Datei speichern» verweist auf die neuste Ausgabe {wsv}')
         # Startseite: Hinweis zu klassifizierten Dokumenten, sichtbar, ohne Überlauf, Link auf die neuste Ausgabe
         nt = pg.evaluate('''(() => { const n = document.querySelector("[data-fid=web-classif-note]"), a = n && n.querySelector("[data-fid=web-note-dl]"); if (!n || !a) return null;
           const r = n.getBoundingClientRect(), d = document.getElementById("drop");
           return [getComputedStyle(n).display !== "none" && r.width > 0 && r.height > 0, n.scrollWidth <= n.clientWidth + 1, document.documentElement.scrollWidth <= innerWidth + 1,
             !!d && !!(n.compareDocumentPosition(d) & Node.DOCUMENT_POSITION_FOLLOWING), a.getAttribute("href"), a.target, a.rel, Math.round(a.getBoundingClientRect().height), a.innerText.trim(), n.innerText]; })()''')
-        kw = {'de': ('VERTRAULICH', 'GEHEIM', 'INTERN', 'Näherung', 'als Datei'), 'fr': ('CONFIDENTIEL', 'SECRET', 'INTERNE', 'approximation', 'comme fichier')}[lang]
-        check(bool(nt) and nt[:4] == [True, True, True, True] and nt[4:7] == [RELEASE_URL, '_blank', 'noopener noreferrer'] and nt[7] >= (40 if w < 672 else 32)
+        kw = {'de': ('INTERN, VERTRAULICH oder GEHEIM', 'Näherung', 'Lectora.html'), 'fr': ('INTERNE, CONFIDENTIEL ou SECRET', 'approximation', 'Lectora.html')}[lang]
+        doc = pg.evaluate('(() => { const a = document.querySelector("[data-fid=web-note-doc]"); return a && [a.getAttribute("href"), a.target, a.rel, a.innerText.trim()]; })()')
+        check(doc == [DOC_URL, '_blank', 'noopener noreferrer', {'de': 'Dokumentation', 'fr': 'Documentation'}[lang]], f'Pages {lang} {w}px: Hinweis mit Link auf die Produktdokumentation {doc}')
+        check(bool(nt) and nt[:4] == [True, True, True, True] and nt[4:7] == [DOWNLOAD_URL, '_blank', 'noopener noreferrer'] and nt[7] >= (40 if w < 672 else 32)
               and nt[8] == {'de': 'Als Datei speichern', 'fr': 'Enregistrer comme fichier'}[lang] and all(k in nt[9] for k in kw),
               f'Pages {lang} {w}px: Hinweis zu klassifizierten Dokumenten über der Ablage, ohne Überlauf, Link «{nt and nt[8]}» auf die neuste Ausgabe, {nt and nt[7]} px hoch')
         if w == 1440 and lang == 'de':
@@ -273,9 +278,9 @@ def update_tests(pw):
     br.close()
 
 # ===== GitHub Pages: Dokumente mit Klassifizierungsvermerk =====
-# VERTRAULICH und GEHEIM (und Entsprechungen) werden nicht geladen (Sperrdialog), INTERN erst nach angehakter Bestätigung.
+# INTERN, VERTRAULICH und GEHEIM (und Entsprechungen) werden nicht geladen (Sperrdialog), ohne Weg, trotzdem zu prüfen.
 # Wege: Dateiauswahl (#file), Ablegen auf der Ablagefläche, «Neue Fassung laden» (#verFile), mehrere Dateien auf einmal.
-LINK = [RELEASE_URL, '_blank', 'noopener noreferrer']
+LINK = [DOWNLOAD_URL, '_blank', 'noopener noreferrer']
 link = lambda pg, fid: pg.evaluate(f'''(() => {{ const a = document.querySelector('[data-fid="{fid}"]'); return a && [a.getAttribute("href"), a.target, a.rel]; }})()''')
 ndocs = lambda pg: pg.evaluate('DP.state.docs.length')
 def put(pg, names): pg.set_input_files('#file', [os.path.join(FX, n) for n in names])
@@ -311,39 +316,26 @@ def web_classif_tests(start, base):
     wait_dlg(pg, 'web-classif-blocked'); dt = pg.inner_text('#dlg')
     check(ndocs(pg) == 0 and '«SECRET»' in dt, 'Pages: abgelegte Datei mit Vermerk SECRET → Sperrdialog, nicht geladen')
     pg.keyboard.press('Escape'); settle(pg); check(ndocs(pg) == 0, 'Pages: nach dem Ablegen kein Dokument geladen')
-    # Rückfrage INTERN: Bestätigen erst nach Anhaken; Abbrechen und Escape verwerfen das Dokument
+    # INTERN (Datenregel der SGG: INTERN oder höher nur mit der gespeicherten Datei): Sperre wie VERTRAULICH, ohne Weg, trotzdem zu prüfen
     name = 'klassif_intern_kopf.docx'
-    put(pg, [name]); wait_dlg(pg, 'web-intern-dlg')
+    put(pg, [name]); wait_dlg(pg, 'web-classif-blocked')
     dt = pg.inner_text('#dlg'); ax = axe(pg); fc = focus(pg)
-    check(ndocs(pg) == 0 and pg.is_disabled('[data-fid="webintern-ok"]') and not pg.is_checked('#webInternAck') and fc == 'webintern-cancel' and link(pg, 'webintern-dl') == LINK
-          and '«INTERN»' in dt and f'«{name}»' in dt and pg.query_selector('#dlg [data-fid="webblock-close"]') is None and not ax,
-          f'Pages: {name} → Rückfrage, «Trotzdem prüfen» gesperrt, Fokus auf «Abbrechen» ({fc}), Link auf die neuste Ausgabe, axe {ax}')
-    pg.evaluate('document.querySelector("[data-fid=webintern-ok]").click()'); pg.wait_for_timeout(300)
-    check(pg.evaluate('document.getElementById("dlg").open') and ndocs(pg) == 0, 'Pages: Klick auf das gesperrte «Trotzdem prüfen» ohne Wirkung')
-    pg.click('[data-fid="webintern-cancel"]'); settle(pg); fc = focus(pg)
-    check(ndocs(pg) == 0 and pg.evaluate('Object.keys(DP.state.res).length') == 0 and fc == 'pick', f'Pages: INTERN abgebrochen → nicht geladen, Fokus auf «Dateien auswählen» ({fc})')
-    put(pg, [name]); wait_dlg(pg, 'web-intern-dlg'); pg.check('#webInternAck'); pg.keyboard.press('Escape'); settle(pg)
-    check(ndocs(pg) == 0 and focus(pg) == 'pick', 'Pages: INTERN mit Escape geschlossen (auch angehakt) → nicht geladen')
-    put(pg, [name]); wait_dlg(pg, 'web-intern-dlg')
-    pg.check('#webInternAck'); on = pg.is_enabled('[data-fid="webintern-ok"]')
-    pg.uncheck('#webInternAck'); off = pg.is_disabled('[data-fid="webintern-ok"]')
-    # axe erst nach dem Farbübergang der Schaltfläche (--motion-fast), sonst misst es eine Zwischenfarbe
-    pg.check('#webInternAck'); pg.wait_for_timeout(400); ax = axe(pg)
-    check(on and off and pg.is_enabled('[data-fid="webintern-ok"]') and not ax, f'Pages: Anhaken gibt «Trotzdem prüfen» frei, Abhaken sperrt wieder; axe angehakt {ax}')
-    pg.click('[data-fid="webintern-ok"]'); waitf(pg, 'DP.state.docs.length === 1 && !DP.state.busy'); pg.wait_for_timeout(300)
-    st = pg.evaluate('(() => { const d = DP.state.docs[0], r = DP.state.res[d.id]; return [d.name, d.meta.classification && d.meta.classification.level, !!r && Array.isArray(r.rule), DP.state.cur === d.id]; })()')
-    check(st == [name, 1, True, True], f'Pages: INTERN bestätigt → geladen und geprüft {st}')
+    check(ndocs(pg) == 0 and fc == 'webblock-close' and link(pg, 'webblock-dl') == LINK and '«INTERN»' in dt and f'«{name}»' in dt and 'nicht geladen' in dt
+          and pg.query_selector('#dlg input[type="checkbox"]') is None and pg.query_selector('[data-fid="web-intern-dlg"]') is None and not ax,
+          f'Pages: {name} (INTERN) → Sperrdialog wie bei VERTRAULICH, kein Kontrollkästchen, Fokus auf «Schliessen» ({fc}), axe {ax}')
+    pg.click('[data-fid="webblock-close"]'); settle(pg); fc = focus(pg)
+    check(ndocs(pg) == 0 and pg.evaluate('Object.keys(DP.state.res).length') == 0 and fc == 'pick', f'Pages: INTERN → nicht geladen, Fokus auf «Dateien auswählen» ({fc})')
     check(not ev['err'] and not pg.evaluate('window.__csp'), 'Pages (Vermerke): keine Fehler, keine CSP-Verstösse ' + repr(ev['err'][:2]))
     ctx.close()
 
-    # Mehrere Dateien auf einmal: VERTRAULICH schliessen, INTERN abbrechen → nur das Dokument ohne Vermerk
+    # Mehrere Dateien auf einmal: VERTRAULICH und INTERN gesperrt → nur das Dokument ohne Vermerk
     ctx, pg, seen, ev = start(vbody(version=VERSION), target=base + '/'); pg.wait_for_timeout(500)
     put(pg, ['klassif_vertraulich_fuss.docx', 'klassif_intern_kopf.docx', 'klassif_keine.docx'])
     wait_dlg(pg, 'web-classif-blocked'); first = ndocs(pg); pg.click('[data-fid="webblock-close"]')
-    wait_dlg(pg, 'web-intern-dlg'); second = ndocs(pg); pg.click('[data-fid="webintern-cancel"]')
+    waitf(pg, 'document.getElementById("dlg").open && document.getElementById("dlg").innerText.includes("«INTERN»")'); second = ndocs(pg); pg.click('[data-fid="webblock-close"]')
     waitf(pg, 'DP.state.docs.length === 1 && !DP.state.busy && !document.getElementById("dlg").open'); pg.wait_for_timeout(300)
     names = pg.evaluate('DP.state.docs.map(d => d.name)')
-    check(first == 0 and second == 0 and names == ['klassif_keine.docx'] and pg.evaluate('Object.keys(DP.state.res).length') == 1, f'Pages: drei Dateien (VERTRAULICH, INTERN, ohne Vermerk) → nacheinander Sperre und Rückfrage, geladen nur {names}')
+    check(first == 0 and second == 0 and names == ['klassif_keine.docx'] and pg.evaluate('Object.keys(DP.state.res).length') == 1, f'Pages: drei Dateien (VERTRAULICH, INTERN, ohne Vermerk) → zweimal Sperre, geladen nur {names}')
 
     # «Neue Fassung laden»: eine Fassung mit Vermerk ersetzt das geladene Dokument nicht (Sperre bzw. Rückfrage abgebrochen)
     did, n0 = pg.evaluate('[DP.state.docs[0].id, DP.state.docs[0].paras.length]')
@@ -355,16 +347,12 @@ def web_classif_tests(start, base):
     check(unchanged() and fc == 'webblock-close', f'Pages: neue Fassung mit VERTRAULICH → Sperrdialog, Fokus auf «Schliessen» ({fc})')
     pg.click('[data-fid="webblock-close"]'); settle(pg); fc = focus(pg)
     check(unchanged() and fc == f'ver-{did}', f'Pages: neue Fassung mit VERTRAULICH → alte Fassung bleibt, Fokus zurück auf «Neue Fassung laden» ({fc})')
-    new_version('klassif_intern_kopf.docx'); wait_dlg(pg, 'web-intern-dlg'); pg.click('[data-fid="webintern-cancel"]'); settle(pg); fc = focus(pg)
-    check(unchanged() and fc == f'ver-{did}', f'Pages: neue Fassung mit INTERN abgebrochen → alte Fassung bleibt, Fokus zurück ({fc})')
-    new_version('klassif_intern_kopf.docx'); wait_dlg(pg, 'web-intern-dlg'); pg.check('#webInternAck'); pg.click('[data-fid="webintern-ok"]')
-    waitf(pg, '!DP.state.busy && Object.keys(DP.state.versions).length === 1'); pg.wait_for_timeout(300)
-    st = pg.evaluate('[DP.state.docs.length, DP.state.docs[0].name, DP.state.docs[0].meta.classification && DP.state.docs[0].meta.classification.level]')
-    check(st == [1, 'klassif_intern_kopf.docx', 1], f'Pages: neue Fassung mit INTERN bestätigt → ersetzt die alte Fassung {st}')
+    new_version('klassif_intern_kopf.docx'); wait_dlg(pg, 'web-classif-blocked'); pg.click('[data-fid="webblock-close"]'); settle(pg); fc = focus(pg)
+    check(unchanged() and fc == f'ver-{did}', f'Pages: neue Fassung mit INTERN → Sperrdialog, alte Fassung bleibt, Fokus zurück ({fc})')
     check(not ev['err'] and not pg.evaluate('window.__csp'), 'Pages (Mehrfach, neue Fassung): keine Fehler, keine CSP-Verstösse ' + repr(ev['err'][:2]))
     ctx.close()
 
-    # Bildschirmfotos und Gestaltung: Startseite mit Hinweis, Sperrdialog, Rückfrage; 1440 und 375 px, DE und FR
+    # Bildschirmfotos und Gestaltung: Startseite mit Hinweis, Sperrdialog (VERTRAULICH, INTERN); 1440 und 375 px, DE und FR
     for w, h, lang in ((1440, 900, 'de'), (1440, 900, 'fr'), (375, 812, 'de'), (375, 812, 'fr')):
         ctx, pg, seen, ev = start(vbody(version=VERSION), w=w, h=h, locale=lang + '-CH', target=base + '/'); pg.wait_for_timeout(500)
         pg.evaluate('document.querySelector("[data-fid=web-classif-note]").scrollIntoView({block: "nearest"})'); pg.wait_for_timeout(150)
@@ -375,12 +363,12 @@ def web_classif_tests(start, base):
               f'Pages {lang} {w}px: Sperrdialog «{title}», ohne Überlauf, Schaltflächen hoch genug {lay}, axe {ax}')
         pg.screenshot(path=os.path.join(SHOTS, f'74_pages_web_block_{lang}_{w}.png'))
         pg.keyboard.press('Escape'); settle(pg)
-        put(pg, ['klassif_intern_kopf.docx']); wait_dlg(pg, 'web-intern-dlg')
+        put(pg, ['klassif_intern_kopf.docx']); wait_dlg(pg, 'web-classif-blocked')
         title = pg.inner_text('#dlg h2'); lay = dlg_layout(pg, w); ax = axe(pg)
-        check(title.startswith({'de': 'Dokument mit Vermerk «INTERN»', 'fr': 'Contrôler sur la page web un document'}[lang]) and 'INTERN' in title and lay == [True, True, True] and not ax,
-              f'Pages {lang} {w}px: Rückfrage «{title}», ohne Überlauf, Schaltflächen hoch genug {lay}, axe {ax}')
+        check(title == {'de': 'Dokument wird auf der Webseite nicht geprüft', 'fr': 'Document non contrôlé sur la page web'}[lang] and 'INTERN' in pg.inner_text('#dlg') and lay == [True, True, True] and not ax,
+              f'Pages {lang} {w}px: INTERN → Sperrdialog «{title}», ohne Überlauf, Schaltflächen hoch genug {lay}, axe {ax}')
         pg.screenshot(path=os.path.join(SHOTS, f'75_pages_web_intern_{lang}_{w}.png'))
-        pg.click('[data-fid="webintern-cancel"]'); settle(pg)
+        pg.click('[data-fid="webblock-close"]'); settle(pg)
         check(ndocs(pg) == 0 and not ev['err'], f'Pages {lang} {w}px: nichts geladen, keine Fehler')
         ctx.close()
 
@@ -524,6 +512,38 @@ with sync_playwright() as pw:
         csp_v += pg.evaluate('window.__csp')
         pg.context.close()
 
+    # ===== Warnung beim Verlassen (beforeunload): nur mit Entscheiden, die seit dem letzten Export nicht exportiert sind =====
+    def unload(pg):
+        """Schliesst die Seite mit beforeunload. Ein Dialog des Browsers wird abgelehnt, die Seite bleibt dann offen. Ergebnis: [Art des Dialogs, geschlossen]."""
+        got = []
+        def on(d): got.append(d.type); d.dismiss()
+        pg.on('dialog', on)
+        # Wartet über eine zweite Seite desselben Kontexts: time.sleep hielte die Ereignisse von Playwright an (Dialog, Schliessen)
+        helper = pg.context.new_page()
+        pg.close(run_before_unload=True)
+        for _ in range(50):
+            if got or pg.is_closed(): break
+            helper.wait_for_timeout(100)
+        helper.wait_for_timeout(300); helper.close()
+        if not pg.is_closed(): pg.remove_listener('dialog', on)
+        return [got[0] if got else None, pg.is_closed()]
+    pg = page()
+    pg.click('[data-fid="demo"]'); waitf(pg, 'DP.state.docs.length === 3 && !DP.state.busy')
+    check(unload(pg) == [None, True], 'Verlassen ohne Entscheide: keine Warnung, Seite geschlossen')
+    pg = page()
+    pg.click('[data-fid="demo"]'); waitf(pg, 'DP.state.docs.length === 3 && !DP.state.busy')
+    pg.evaluate('DP.state.cur = DP.state.docs[0].id; DP.ui.go("check")'); pg.wait_for_timeout(500)
+    pg.click('.chg.c-open > :is(del, ins)'); pg.wait_for_selector('#dvTb'); pg.click('[data-fid="tb-acc"]'); pg.wait_for_timeout(300)
+    r1 = unload(pg)
+    check(r1 == ['beforeunload', False], f'Verlassen nach einem angenommenen Vorschlag: Warnung des Browsers, Seite bleibt offen {r1}')
+    # Export eines anderen Dokuments zählt nicht; Export dieses Dokuments schon
+    pg.evaluate('DP.state.cur = DP.state.docs[1].id; DP.ui.go("export")'); pg.wait_for_timeout(400); download(pg, 'dl-rep', 'rep')
+    r2 = unload(pg)
+    check(r2 == ['beforeunload', False], f'Export eines anderen Dokuments: Warnung bleibt {r2}')
+    pg.evaluate('DP.state.cur = DP.state.docs[0].id; DP.ui.go("export")'); pg.wait_for_timeout(400); download(pg, 'dl-word', 'word')
+    r3 = unload(pg)
+    check(r3 == [None, True], f'nach dem Export dieses Dokuments: keine Warnung, Seite geschlossen {r3}')
+
     # ===== Klassifizierungsvermerke als lokale Datei (file://): kein Hinweis, keine Sperre, keine Rückfrage =====
     # Eigener Kontext, damit die Indizes von DP.state.docs oben unberührt bleiben
     pg = page()
@@ -545,7 +565,7 @@ with sync_playwright() as pw:
 
     other = sorted(set(u for u in reqs if not (u.startswith('file://') and u.split('#')[0].split('?')[0] == 'file://' + OFF) and not u.startswith(('blob:', 'data:')) and u != VERSION_URL))
     check(not other, 'Netzwerk: keine Anfrage ausser der Datei selbst, blob:, data: und der Versionsdatei ' + (repr(other[:5]) if other else f'({len(reqs)} Anfragen)'))
-    check(all(len(v) == 1 for v in vreqs) and len(vreqs) == 5, f'je Start genau eine Versionsabfrage ({[len(v) for v in vreqs]})')
+    check(all(len(v) == 1 for v in vreqs) and len(vreqs) == 7, f'je Start genau eine Versionsabfrage ({[len(v) for v in vreqs]})')
     check(not csp_v, 'keine CSP-Verstösse ' + (repr(csp_v[:5]) if csp_v else ''))
     check(not msgs, 'Konsole ohne Fehler und Warnungen ' + (repr(msgs[:5]) if msgs else ''))
     br.close()

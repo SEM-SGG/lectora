@@ -2,6 +2,32 @@
 
 Jede Version hat einen Eintrag. Die Überschrift hat die Form `## X.Y.Z – JJJJ-MM-TT`; der Workflow `release` übernimmt den obersten Eintrag als Text der Veröffentlichung.
 
+## 2.1.0 – 2026-11-23
+
+Lectora setzt die Datenregel der SGG um. Merkregel: Klassifizierte Dokumente prüft nur die gespeicherte Datei `Lectora.html`. Webseite und Artefakt: nur unklassifizierte Dokumente.
+
+### Geändert
+
+- Artefakt-Ausgabe auf claude.ai: Dokumente mit dem Vermerk INTERN, VERTRAULICH oder GEHEIM (und den Entsprechungen) lädt und prüft Lectora dort nicht mehr, wie auf der Webseite: Auch hier liefert eine fremde Infrastruktur den Programmcode aus (claude.ai, Bibliotheken von cdnjs). Eine Erklärung verweist auf die gespeicherte Datei `Lectora.html`. Das gilt für die Dateiauswahl, das Ablegen von Dateien, mehrere Dateien auf einmal und «Neue Fassung laden»; einen Weg, die Sperre zu übergehen, gibt es nicht.
+- KI-Funktionen der Artefakt-Ausgabe (zweite Sicherung): Dokumente mit dem Vermerk INTERN (auch INTERNE, AD USO INTERNO, USO INTERNO, INTERNAL) sendet Lectora nie an Claude, wie bisher schon VERTRAULICH und GEHEIM. Die Bestätigung «Ich bestätige, dass ich dieses Dokument trotz Klassifizierungsvermerk senden darf» entfällt; es gibt keinen Weg, ein Dokument mit Vermerk trotzdem zu senden. Das gilt für jede KI-Funktion und für Vergleiche, an denen ein solches Dokument beteiligt ist.
+- Der Dialog vor dem Senden an Claude nennt die Datenregel: keine besonders schützenswerten Personendaten und keine Falldaten zu Personen aus Verfahren, auch nicht in unklassifizierten Dokumenten.
+- Webseite (GitHub Pages): Dokumente mit dem Vermerk INTERN prüft Lectora dort nicht mehr, wie VERTRAULICH und GEHEIM; die Rückfrage mit Häkchen entfällt. Eine Erklärung verweist auf die Datei `Lectora.html`. Die gespeicherte Datei prüft weiterhin jedes Dokument lokal.
+- Die Erkennung des Vermerks sperrt im Zweifel eher zu viel. Neu erkannt werden auch «Klassifizierung INTERN» ohne Doppelpunkt und kurze Angaben in Grossbuchstaben, die mit dem Vermerk enden (zum Beispiel «SEM-INTERN», «NUR INTERN», «STRICTLY CONFIDENTIAL»). «Interne Weisung», «die interne Kommunikation» oder «NOTE INTERNE» lösen die Sperre weiterhin nicht aus. Die Erkennung bleibt eine Näherung.
+- «Neue Version herunterladen» und «Als Datei speichern» laden die Datei `Lectora.html` der neusten Ausgabe direkt herunter, statt die englische Seite der Ausgabe zu öffnen. «Auf GitHub nachsehen» im Hinweis für ältere Kopien öffnet weiterhin die Seite der neusten Ausgabe.
+
+### Neu
+
+- Warnung vor Verlust: Hat jemand Vorschläge angenommen oder abgelehnt, Befunde ausgeblendet oder als Fehlalarm markiert und das Dokument seither nicht exportiert, fragt der Browser vor dem Schliessen, Neuladen oder Verlassen der Seite nach. Ohne Entscheide oder nach dem Export erscheint keine Warnung. Verwirft der Browser einen Tab im Hintergrund (Edge: schlafende Tabs), warnt er nicht; die Anleitung rät deshalb, vor Pausen zu exportieren. In der Artefakt-Ausgabe auf claude.ai erscheint die Warnung nicht in jedem Fall.
+- Anleitung: neue Abschnitte «Datenregel» und «Hilfe und Rückmeldung» mit Links zur Produktdokumentation und zu «Fehler melden» und mit der Funktionsadresse der Sektion für Rückmeldungen ohne GitHub-Konto. Die Rückmeldung zu den Regeln nennt dieselbe Adresse.
+- Die Produktdokumentation erscheint mit jeder Veröffentlichung auf GitHub Pages unter der festen Adresse `dokumentation.html`; die Startseite der Webseite verlinkt sie.
+
+### Repository
+
+- `README.md`, `docs/datenschutz.md` und `AGENTS.md` enthalten die Datenregel der SGG; die bisher offene Frage, welche Dokumente an Claude gehen dürfen, ist damit entschieden.
+- Routineprüfung der Produktdokumentation: `tools/release_check.py` prüft ihre Version (bei Neben- und Hauptversionen muss sie nachgeführt sein), `tools/doku_check.py` ihre Kennzahlen (Kriterien, Erlasse, Dateigrössen). Jeder Pull Request sagt, ob die Produktdokumentation nachgeführt ist.
+- Neue Anleitung `docs/pflege.md` für die Pflege im Browser: Pull Requests von Dependabot, zeitgesteuerter Lauf «erlasse» (Übergabe, Verspätung, Start von Hand). Dependabot schlägt keine Hauptversionen von PDF.js mehr vor, solange der Umbau auf ES-Module nicht beauftragt ist.
+- Hygieneprüfung: Die Funktionsadresse der Sektion ist als einzige Adresse unter einer Domain des Bundes zugelassen.
+
 ## 2.0.1 – 2026-11-23
 
 Lectora als Webseite auf GitHub Pages ist für unklassifizierte Dokumente gedacht. Dokumente mit Klassifizierungsvermerk prüft man mit der gespeicherten Datei `Lectora.html`.

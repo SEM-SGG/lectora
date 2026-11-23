@@ -65,7 +65,7 @@ Die Hygieneprüfung lässt in Commits nur Adressen zu, die nichts über eine Per
 
 ## Organisation und Repository: nicht umbenennen, nicht löschen
 
-Offline-Ausgaben, die schon verteilt sind, fragen fest bei `https://sem-sgg.github.io/lectora/version.json` nach und verweisen zum Herunterladen fest auf `https://github.com/SEM-SGG/lectora/releases/latest`. Daraus folgt:
+Offline-Ausgaben, die schon verteilt sind, fragen fest bei `https://sem-sgg.github.io/lectora/version.json` nach und verweisen zum Herunterladen fest auf `https://github.com/SEM-SGG/lectora/releases/latest/download/Lectora.html` (ältere Ausgaben bis 2.0.1 auf die Seite `https://github.com/SEM-SGG/lectora/releases/latest`). Die Anleitung verweist fest auf die Produktdokumentation `https://sem-sgg.github.io/lectora/dokumentation.html`. Daraus folgt:
 
 - **Benenne die Organisation `SEM-SGG` und das Repository `lectora` nie um.** Nach einer Umbenennung findet keine verteilte Ausgabe mehr eine neue Version (Weiterleitungen sind für die Abfrage gesperrt).
 - **Lösche sie nie.** Ist der Name frei, kann ihn jemand anders anlegen: Dann zeigen alle verteilten Ausgaben dessen Hinweise und verweisen auf dessen Downloads. Ein Repository, das nicht mehr gepflegt wird, wird **archiviert** (Settings → General → Danger Zone → Archive this repository), nicht gelöscht.

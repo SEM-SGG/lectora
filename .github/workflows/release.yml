@@ -9,8 +9,9 @@
 #      bauen; alle Tests
 #   2. release: von Hand zuerst der Tag (in einem Schritt, scheitert, wenn er schon besteht); dann GitHub Release mit Lectora.html
 #      (fester Name), Lectora-X.Y.Z.html, SHA256SUMS.txt; Text aus CHANGELOG.md
-#   3. pages: dieselbe geprüfte Datei als index.html und die version.json dieser Version auf GitHub Pages
-#      (https://sem-sgg.github.io/lectora/); erst damit sehen die Offline-Ausgaben die neue Version (Versionsabfrage)
+#   3. pages: dieselbe geprüfte Datei als index.html, die version.json dieser Version und die Produktdokumentation
+#      (docs/lectora-dokumentation.html als dokumentation.html) auf GitHub Pages (https://sem-sgg.github.io/lectora/);
+#      erst damit sehen die Offline-Ausgaben die neue Version (Versionsabfrage)
 # Wiederholen («Re-run failed jobs»): Besteht der Tag oder das Release aus einem früheren Versuch desselben Laufs, auf demselben
 # Commit und mit denselben Dateien, geht der Lauf weiter bis GitHub Pages. Der Auftrag pages lädt die Seite in jedem Versuch
 # unter einem eigenen Namen hoch (github-pages-<Versuch>); seine Wiederholung geht deshalb auch nach dem Hochladen. Ausweg, wenn
@@ -132,6 +133,8 @@ jobs:
           cp notizen.md veroeffentlichung/notizen.md
           # Versionsdatei für die Abfrage der Offline-Ausgaben: geht erst mit GitHub Pages online, nach dem Release
           cp version.json veroeffentlichung/version.json
+          # Produktdokumentation dieser Version: auf GitHub Pages unter der festen Adresse dokumentation.html (nicht im Release)
+          cp docs/lectora-dokumentation.html veroeffentlichung/dokumentation.html
           cd veroeffentlichung && sha256sum "Lectora-$V.html" Lectora.html > SHA256SUMS.txt && cat SHA256SUMS.txt
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
@@ -209,6 +212,8 @@ jobs:
           cp veroeffentlichung/Lectora.html site/index.html
           # Erst jetzt (Tests bestanden, Release angelegt) erfahren die Offline-Ausgaben von der neuen Version
           cp veroeffentlichung/version.json site/version.json
+          # Produktdokumentation: feste Adresse https://sem-sgg.github.io/lectora/dokumentation.html (Konvention der Organisation)
+          cp veroeffentlichung/dokumentation.html site/dokumentation.html
           touch site/.nojekyll
       # Ein Name je Versuch: Bei «Re-run failed jobs» findet deploy-pages sonst auch die Seite des früheren Versuchs
       # und bricht ab («Multiple artifacts named …»), weil es den Namen in allen Versuchen des Laufs sucht

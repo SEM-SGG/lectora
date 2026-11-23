@@ -314,5 +314,20 @@ const row = (o) => Object.assign({ p: 1, quote: 'Sie leitet das Gesuch innert 2 
   ok(long.de.length === A.MSG_MAX && long.de.endsWith('…') && long.fr === 'a b', 'cleanMsg: Länge begrenzt, Leerraum vereinheitlicht');
 }
 
+/* ---------- Klassifizierungsvermerk (DP.lang.findClassification): sperrt KI-Funktionen und die Webseite ab INTERN ----------
+   Im Zweifel lieber zu viel als zu wenig; gewöhnliche Wörter wie «interne Kommunikation» dürfen keinen Vermerk ergeben. */
+{
+  const F = (lines) => { const c = DP.lang.findClassification(lines); return c && [c.level, c.label]; };
+  const yes = [['INTERN', 1], ['intern', 1], ['Interne', 1], ['AD USO INTERNO', 1], ['Uso interno', 1], ['INTERNAL', 1], ['SEM | intern | Weisung', 1],
+    ['Klassifizierung: INTERN', 1], ['Klassifizierung INTERN', 1], ['Klassifizierungsvermerk: INTERN', 1], ['Classification : INTERNE', 1], ['Classificazione: AD USO INTERNO', 1],
+    ['INTERN – nur für den Dienstgebrauch', 1], ['SEM-INTERN', 1], ['NUR INTERN', 1], ['DOKUMENT VERTRAULICH', 2], ['STRICTLY CONFIDENTIAL', 2], ['TOP SECRET', 3],
+    ['SMF | Vertraulich | Weisung Auskunftsgesuche', 2], ['GEHEIM', 3], ['Segreto', 3]];
+  for (const [l, lv] of yes) eq((F([l]) || [0])[0], lv, 'Vermerk erkannt: «' + l + '»');
+  const no = ['Interne Weisung', 'Die interne Kommunikation läuft über die Kanzlei.', 'INTERNE WEISUNG', 'NOTE INTERNE', 'COMUNICAZIONE INTERNA', 'INTERN UND EXTERN',
+    'Internationale Zusammenarbeit', 'INTERNET', 'Classification interne des postes', 'Nur intern zu verwenden ist das Formular A.', 'DAS IST NICHT GEHEIM', 'Vertraulichkeit'];
+  for (const l of no) eq(F([l]), null, 'kein Vermerk: «' + l + '»');
+  eq(F(['Kopfzeile', 'INTERN', 'Fusszeile | VERTRAULICH']), [2, 'VERTRAULICH'], 'höchster Vermerk mehrerer Zeilen');
+}
+
 console.log(n, 'Fälle;', bad, 'Fehler');
 process.exit(bad ? 1 : 0);

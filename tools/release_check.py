@@ -9,6 +9,11 @@ und schreibt den Eintrag als Text für die Release-Notizen.
 version.json muss dieselben Regeln erfüllen wie die Versionsabfrage in src/update.js (sonst zeigt Lectora keinen Hinweis):
 Version X.Y.Z, Datum JJJJ-MM-TT, Hinweis in de, fr, it mit höchstens 200 Zeichen, ohne spitze Klammern, Steuerzeichen und Adressen.
 Der Workflow release legt diese Datei nach bestandenen Tests auf GitHub Pages ab (https://sem-sgg.github.io/lectora/version.json).
+
+Produktdokumentation (docs/lectora-dokumentation.html, auf GitHub Pages als dokumentation.html): Alle Versionsangaben darin nennen
+dieselbe Version X.Y.Z. Erste und zweite Zahl müssen der Version entsprechen, die letzte darf kleiner sein: Eine Korrekturversion
+braucht keine neue Dokumentation, eine Haupt- oder Nebenversion schon. Fehlt die Datei (Kopien in den Tests), entfällt diese Prüfung.
+Die festen Kennzahlen der Dokumentation (Kriterien, Erlasse, Dateigrössen) prüft tools/doku_check.py nach dem Build.
 Exit-Code 0 = alles stimmt, 1 = Abweichung (mit Meldung).
 """
 import datetime, json, os, re, sys
@@ -42,6 +47,32 @@ def load_json(name, errs):
 
 
 SPRACHE = {'de': 'Deutsch', 'fr': 'Französisch', 'it': 'Italienisch'}
+DOKU = 'docs/lectora-dokumentation.html'
+# Versionsangaben der Dokumentation: «Version 2.1.0», «Versione 2.1.0», «(v2.1.0)», «· v2.1.0», «Lectora-2.1.0.html» (Titel, Kopf,
+# Datenfluss, Kriterien, Fuss)
+DOKU_VER = re.compile(r'(?:\bVersione? |\(v|· v|Lectora-)(\d+\.\d+\.\d+)\b')
+
+
+def doku_version(want):
+    """Meldungen zur Version der Produktdokumentation (leer, wenn sie passt oder die Datei fehlt)."""
+    p = os.path.join(ROOT, DOKU)
+    if not os.path.exists(p): return []
+    text = open(p, encoding='utf-8').read()
+    found = sorted(set(DOKU_VER.findall(text)), key=lambda v: tuple(map(int, v.split('.'))))
+    auftrag = (f'Gib einem Agenten den Auftrag: «Ziehe {DOKU} auf Version {want} nach (Versionsangaben, Kennzahlen und Texte in Deutsch, '
+               f'Französisch und Italienisch) nach AGENTS.md.»')
+    if not found: return [f'{DOKU}: Keine Versionsangabe gefunden (erwartet zum Beispiel «Version {want}»). {auftrag}']
+    if len(found) > 1: return [f'{DOKU} nennt verschiedene Versionen ({", ".join(found)}). Alle Angaben (Titel, Kopf, Datenfluss, Kriterien, Fuss) '
+                               f'müssen dieselbe Version nennen. {auftrag}']
+    d, w = tuple(map(int, found[0].split('.'))), tuple(map(int, want.split('.')))
+    if d[:2] != w[:2] and d < w:
+        return [f'{DOKU} beschreibt die Version {found[0]}, die Version ist aber {want}. Eine neue Haupt- oder Nebenversion (erste oder zweite Zahl) '
+                f'bringt neue Funktionen; die Produktdokumentation muss sie in allen drei Sprachen beschreiben. {auftrag} '
+                f'Bei einer Korrekturversion (nur die letzte Zahl erhöht) ist das nicht nötig.']
+    if d > w:
+        return [f'{DOKU} nennt die Version {found[0]}, package.json erst {want}. Die Dokumentation darf nicht neuer sein als die Version: Bereite die '
+                f'Version {found[0]} im selben Pull Request vor (docs/release.md) oder setze die Versionsangaben der Dokumentation auf {want}.']
+    return []
 
 
 def main(argv):
@@ -109,9 +140,11 @@ def main(argv):
     if quelle == 'package.json' and pkg and isinstance(vj, dict) and vj.get('version') == cv and cv and cv != pkg and VER.match(cv):
         errs = [f'package.json nennt noch die Version {pkg}, version.json und CHANGELOG.md schon {cv}. Hast du package.json vergessen? '
                 f'Ändere dort die Zeile "version": "{pkg}" in "version": "{cv}".'] + [e for e in errs if not e.startswith(('version.json nennt', 'CHANGELOG.md: Der oberste'))]
+    errs += doku_version(want)
     fehler(errs)
     if errs: print(f'Version {want}: {len(errs)} Abweichung(en). Korrigiere die genannten Dateien (docs/release.md, Schritt 1).')
-    else: print(f'Version {want}: ' + ('' if quelle == 'package.json' else quelle + ', ') + 'package.json, version.json und CHANGELOG.md stimmen überein.')
+    else: print(f'Version {want}: ' + ('' if quelle == 'package.json' else quelle + ', ') + 'package.json, version.json und CHANGELOG.md stimmen überein'
+                + (f'; die Produktdokumentation passt dazu.' if os.path.exists(os.path.join(ROOT, DOKU)) else '.'))
     return 1 if errs else 0
 
 

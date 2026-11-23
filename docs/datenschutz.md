@@ -2,12 +2,37 @@
 
 Lectora verarbeitet Dokumente der Verwaltung. Deshalb ist klar geregelt, was den Computer verlässt und was nicht.
 
+## Datenregel
+
+Für alle Repositories der Organisation SEM-SGG gilt diese Regel:
+
+> **Datenregel der SGG**
+>
+> 1. **Lokal ist jede Klassifizierungsstufe erlaubt.** Was ein Werkzeug ausschliesslich auf deinem Gerät oder lokal im Browser verarbeitet und nicht ins Internet sendet, darfst du unabhängig von der Klassifizierungsstufe bearbeiten.
+> 2. **INTERN oder höher geht nicht ins Internet.** Dokumente und Inhalte mit dem Vermerk INTERN, VERTRAULICH oder GEHEIM lädst du nicht ins Internet und teilst oder verarbeitest sie nicht über externe Cloud-Dienste. Dazu gehören KI-Dienste (zum Beispiel Claude und ChatGPT), GitHub (Repositories, Issues, Pull Requests) und Online-Speicher ausserhalb der Arbeitsumgebung des Bundes.
+> 3. **Personendaten.** Unabhängig von der Klassifizierung gehören keine besonders schützenswerten Personendaten und keine Falldaten zu Personen aus Verfahren ins Internet oder in externe Cloud-Dienste.
+> 4. **Arbeitsumgebung des Bundes.** Für die vom Bund bereitgestellten Dienste (zum Beispiel Teams, Outlook, SharePoint) gelten die Weisungen des SEM.
+>
+> Als klassifiziert gilt, was einen Klassifizierungsvermerk trägt. Die Regel ergänzt die Weisungen des SEM und ersetzt sie nicht.
+
+Merkregel für Lectora: **Klassifizierte Dokumente prüft nur die gespeicherte Datei `Lectora.html`. Webseite und Artefakt: nur unklassifizierte Dokumente.**
+
+| Ausgabe | Dokumente mit Vermerk INTERN, VERTRAULICH oder GEHEIM | Grund |
+| --- | --- | --- |
+| Gespeicherte Datei `Lectora.html` (Adresse `file://`) | prüft sie lokal wie alle Dokumente | Punkt 1: nichts geht ins Internet |
+| Webseite auf GitHub Pages | lädt und prüft sie nicht, verweist auf die Datei `Lectora.html` | Punkt 2: Den Programmcode liefert eine externe Infrastruktur bei jedem Aufruf neu aus (siehe [GitHub Pages](#github-pages)) |
+| Artefakt-Ausgabe auf claude.ai | lädt und prüft sie nicht, verweist auf die Datei `Lectora.html`; an Claude gehen sie nie | Punkt 2: Den Programmcode liefert claude.ai aus, die Bibliotheken kommen von cdnjs, und Claude ist ein externer KI-Dienst (siehe [Artefakt-Ausgabe](#artefakt-ausgabe-auf-claudeai)) |
+
+Keine dieser Sperren lässt sich übergehen. Im Artefakt bleibt die Sperre der KI-Funktionen als zweite Sicherung bestehen, zum Beispiel für einen Vermerk, den Lectora erst in einer später geladenen Fassung erkennen würde.
+
+Punkt 3 kann Lectora nicht prüfen: Es erkennt keine Personendaten. Der Dialog vor jedem Senden an Claude nennt die Regel deshalb in einem Satz. Rückmeldungen und Fehlermeldungen folgen derselben Regel: Text aus Dokumenten gehört nie in ein Issue (eine Meldung auf GitHub), und eine Rückmeldedatei mit Textstellen geht per Mail nur innerhalb der Arbeitsumgebung des Bundes (siehe [rueckmeldungen.md](rueckmeldungen.md)).
+
 ## Was auf dem Computer bleibt
 
 - Der Browser liest die Dateien direkt. Es gibt keinen Server, der sie empfängt.
 - Dokumente, Befunde, Entscheide und Einstellungen liegen nur im Arbeitsspeicher des Tabs.
 - Lectora speichert nichts im Browser: kein localStorage, kein sessionStorage, keine IndexedDB, kein Cache-Speicher, keine Cookies, kein Service Worker, nichts im Verlauf (Adresse, Titel und `history.state` enthalten nie Dokumentdaten).
-- Wer den Tab schliesst oder neu lädt, verliert alles. «Sitzung leeren» löscht alles sofort: Dokumente, frühere Fassungen, Befunde und Entscheide, Ergebnisse der KI-Funktionen, Rückgängig-Schritte, Einstellungen und noch gültige Download-Adressen.
+- Wer den Tab schliesst oder neu lädt, verliert alles. Liegen bei einem Dokument Entscheide vor, die seit seinem letzten Export noch nicht exportiert sind, fragt der Browser vorher nach (Browser-Ereignis `beforeunload`; Text und Aussehen bestimmt der Browser). In der Artefakt-Ausgabe läuft Lectora in einem eingebetteten Rahmen von claude.ai; ob die Rückfrage dort erscheint, bestimmt die Plattform. Verwirft der Browser einen Tab im Hintergrund (Edge: schlafende Tabs, Chrome: Speichersparmodus), fragt er nie. Exportiere deshalb vor einer Pause. «Sitzung leeren» löscht alles sofort: Dokumente, frühere Fassungen, Befunde und Entscheide, Ergebnisse der KI-Funktionen, Rückgängig-Schritte, Einstellungen und noch gültige Download-Adressen.
 - Verlässt jemand die Seite im selben Tab und kehrt mit «Zurück» zurück, lädt die Seite neu und ist leer. Lectora verwirft dafür alles beim Verlassen (der Zurück-Cache des Browsers bringt kein Dokument zurück).
 - Dateien entstehen nur auf deinen Klick: Exporte, Prüfprofile, Rückmeldungen. Sie landen im Download-Ordner des Browsers (Offline-Ausgabe) bzw. über die Downloads von Claude (Artefakt-Ausgabe).
 - Ein Prüfprofil enthält nur Einstellungen, nie Dokumentinhalte, Dateinamen oder Befunde.
@@ -31,7 +56,7 @@ Die Anfrage enthält keine Dokumentdaten, keine Dateinamen, keine Einstellungen 
 
 - Die Sicherheitsrichtlinie (Content Security Policy) in der Datei erlaubt nur diese eine Adresse. Jede andere Verbindung sperrt der Browser. In den Entwicklerwerkzeugen des Browsers (Netzwerk, Konsole) lässt sich das nachprüfen.
 - Ohne Internet bleibt die Anfrage ohne Antwort; Lectora arbeitet normal weiter.
-- Klickst du auf «Neue Version herunterladen» oder «Im Repository nachsehen», öffnet der Browser die Seite der neusten Ausgabe auf GitHub in einem neuen Tab. Das ist ein gewöhnlicher Seitenaufruf auf deinen Klick.
+- Klickst du auf «Neue Version herunterladen» (oder auf der Webseite auf «Als Datei speichern»), lädt der Browser die Datei `Lectora.html` der neusten Ausgabe direkt von GitHub herunter (`https://github.com/SEM-SGG/lectora/releases/latest/download/Lectora.html`, in einem neuen Tab). «Auf GitHub nachsehen» im Altershinweis öffnet die Seite der neusten Ausgabe. Beides sind gewöhnliche Aufrufe auf deinen Klick.
 
 ### Was die Antwort bewirken kann (Vertrauensmodell)
 
@@ -56,38 +81,41 @@ Unter `https://sem-sgg.github.io/lectora/` liegt dieselbe Datei als Webseite. Gi
 
 ### Webseite für unklassifizierte Dokumente, Datei für klassifizierte
 
-Die Webseite ist für unklassifizierte Dokumente und zum Ausprobieren gedacht. Für Dokumente mit dem Vermerk INTERN, VERTRAULICH oder GEHEIM verwendest du die lokal gespeicherte Datei `Lectora.html`. Die Startseite der Webseite sagt das sichtbar und führt mit «Als Datei speichern» zur Seite der neusten Ausgabe, wo du die Datei herunterlädst.
+Die Webseite ist für unklassifizierte Dokumente und zum Ausprobieren gedacht. Für Dokumente mit dem Vermerk INTERN, VERTRAULICH oder GEHEIM verwendest du die lokal gespeicherte Datei `Lectora.html` ([Datenregel](#datenregel), Punkt 2). Die Startseite der Webseite weist gut sichtbar darauf hin. «Als Datei speichern» lädt die Datei direkt herunter, «Dokumentation» öffnet die Produktdokumentation.
 
 Warum die Unterscheidung: Auch auf der Webseite bleiben die Dokumente im Browser, und Lectora lädt nichts hoch. Den Programmcode liefert aber GitHub, also eine fremde Infrastruktur, bei jedem Aufruf neu aus. Ändert sich der Code auf GitHub, etwa weil jemand das Repository oder die Organisation übernimmt, läuft beim nächsten Aufruf der geänderte Code, ohne dass du es bemerkst. Dazu teilt die Webseite ihre Herkunft mit den anderen Pages-Seiten der Organisation. Eine gespeicherte `Lectora.html` ändert sich dagegen nicht: Sie läuft so, wie du sie heruntergeladen hast, und ihre Prüfsumme lässt sich mit `SHA256SUMS.txt` vergleichen.
 
 Was Lectora auf der Webseite beim Laden eines Dokuments tut:
 
-- **VERTRAULICH oder GEHEIM** (auch CONFIDENTIEL, SECRET, CONFIDENZIALE, SEGRETO, CONFIDENTIAL): Lectora prüft das Dokument nicht. Es erscheint eine Erklärung mit dem Hinweis auf die Datei `Lectora.html`.
-- **INTERN** (auch INTERNE, INTERNO, AD USO INTERNO, USO INTERNO, INTERNAL): Ein Warndialog empfiehlt die Datei `Lectora.html`. Lectora lädt das Dokument nur, wenn du mit einem Häkchen bestätigst, dass du es trotzdem auf der Webseite prüfen willst; ohne Bestätigung bleibt es ungeladen.
+- **INTERN, VERTRAULICH oder GEHEIM** (auch INTERNE, INTERNO, AD USO INTERNO, USO INTERNO, INTERNAL, CONFIDENTIEL, SECRET, CONFIDENZIALE, SEGRETO, CONFIDENTIAL): Lectora lädt und prüft das Dokument nicht. Es erscheint eine Erklärung mit dem Hinweis auf die Datei `Lectora.html`. Eine Bestätigung, das Dokument trotzdem auf der Webseite zu prüfen, gibt es nicht.
 - **Ohne Vermerk:** keine Rückfrage.
 
-Die geöffnete Datei `Lectora.html` (Adresse `file://`) kennt diese Einschränkung nicht. Sie prüft alle Dokumente, auch INTERN, VERTRAULICH und GEHEIM, vollständig im Browser und ohne Internet. Die Artefakt-Ausgabe auf claude.ai bleibt ebenfalls unverändert: Die lokale Prüfung ist für alle Dokumente möglich; für die KI-Funktionen gelten die Regeln im nächsten Abschnitt.
+Das gilt für die Dateiauswahl, das Ablegen von Dateien und «Neue Fassung laden». Die geöffnete Datei `Lectora.html` (Adresse `file://`) kennt diese Einschränkung nicht. Sie prüft alle Dokumente, auch INTERN, VERTRAULICH und GEHEIM, vollständig im Browser und ohne Internet. Die Artefakt-Ausgabe auf claude.ai sperrt diese Dokumente auf dieselbe Weise (nächster Abschnitt).
 
-**Die Erkennung ist eine Näherung.** Lectora sucht den Vermerk nach Muster in Kopf- und Fusszeilen, in Folienfüssen, an den Seitenrändern jeder PDF-Seite und am Anfang des Dokuments. Einen Vermerk an anderer Stelle, in einem Bild oder in abweichender Schreibweise erkennt es nicht; ein solches Dokument lädt die Webseite ohne Rückfrage. Die Prüfung ergänzt die Weisungen der Organisation, sie ersetzt sie nicht: Welche Dokumente du auf der Webseite öffnest, verantwortest du.
+**Die Erkennung ist eine Näherung.** Lectora sucht den Vermerk nach Muster in Kopf- und Fusszeilen, in Folienfüssen, an den Seitenrändern jeder PDF-Seite und in den ersten Absätzen des Dokuments. Erkannt wird er als ganze Zeile, als eigener Teil einer Zeile (getrennt durch `|`, `·`, `/`, `;`, `,`, Gedankenstrich oder Tabulator), auch mit «Klassifizierung:» davor, sowie als kurzer Teil in Grossbuchstaben, der mit dem Vermerk endet («SEM-INTERN», «NUR INTERN»). Im Zweifel sperrt Lectora eher zu viel. Einen Vermerk an anderer Stelle, in einem Bild oder in abweichender Schreibweise erkennt Lectora nicht; ein solches Dokument lädt die Webseite ohne Rückfrage. Die Prüfung ergänzt die Weisungen des SEM, sie ersetzt sie nicht: Welche Dokumente du auf der Webseite öffnest, verantwortest du.
+
+**Fehlerkennungen:** Das Wort «intern» allein löst die Sperre nur aus, wenn es als eigene Zeile oder eigener Teil einer Zeile an einer der genannten Stellen steht. «Interne Weisung», «die interne Kommunikation» oder «NOTE INTERNE» lösen sie nicht aus. Trifft die Sperre trotzdem ein Dokument ohne Vermerk, prüfst du es mit der gespeicherten Datei `Lectora.html`. Einen Weg, die Sperre auf der Webseite, im Artefakt oder bei Claude zu übergehen, gibt es bewusst nicht.
 
 ## Artefakt-Ausgabe auf claude.ai
 
 - Die Seite lädt vier Dateien quelloffener Programmbibliotheken von cdnjs: JSZip beim Öffnen, pdf.js und seine Hilfsdatei (Worker) beim ersten PDF, pdf-lib beim ersten Export mit Kommentaren. Der Browser prüft jede dieser Dateien mit einer Integritätsprüfung (SRI). Dabei gehen keine Dokumentinhalte an cdnjs; cdnjs sieht wie jeder Webserver IP-Adresse, Browser und Uhrzeit.
-- Text an Claude (Anthropic) geht nur, wenn du eine KI-Funktion startest: KI-Prüfung, Bedeutungsvergleich, Formulierungsvorschlag, Rückübersetzung, Pflichtenmatrix. Lectora zeigt vorher, was gesendet wird («Gesendet wird»: Dokument, Teile, eigene Kriterien, Obergrenze), und fragt nach. Einzige Ausnahme: Bei Formulierungsvorschlägen (je ein einzelner Satz) kannst du die Rückfrage für die laufende Sitzung abschalten; bei einem Dokument mit Klassifizierungsvermerk fragt Lectora trotzdem.
+- Text an Claude (Anthropic) geht nur, wenn du eine KI-Funktion startest: KI-Prüfung, Bedeutungsvergleich, Formulierungsvorschlag, Rückübersetzung, Pflichtenmatrix. Lectora zeigt vorher, was gesendet wird («Gesendet wird»: Dokument, Teile, eigene Kriterien, Obergrenze), und fragt nach. Der Dialog nennt Punkt 3 der [Datenregel](#datenregel): keine besonders schützenswerten Personendaten und keine Falldaten zu Personen aus Verfahren. Einzige Ausnahme von der Rückfrage: Bei Formulierungsvorschlägen (je ein einzelner Satz) kannst du sie für die laufende Sitzung abschalten; ein Dokument mit Klassifizierungsvermerk bleibt trotzdem gesperrt.
 - Die Plattform claude.ai fragt beim ersten Aufruf einer Fähigkeit (Claude fragen, Datei herunterladen) selbst um Zustimmung, nicht bei jedem weiteren Aufruf. Wiederholt die Seite innert weniger Minuten genau dieselbe Anfrage, kann die Plattform die frühere Antwort wiederverwenden.
-- **Klassifizierte Dokumente:** Trägt ein Dokument den Vermerk VERTRAULICH oder GEHEIM (CONFIDENTIEL, SECRET, CONFIDENZIALE, SEGRETO), sendet Lectora es nie an Claude, auch nicht teilweise, und bietet keine Möglichkeit, es trotzdem zu tun. Bei INTERN verlangt Lectora vor dem Senden eine zusätzliche Bestätigung. **Die Erkennung ist eine Näherung:** Lectora sucht den Vermerk nach Muster in Kopf- und Fusszeilen, in Folienfüssen, an den Seitenrändern jeder PDF-Seite und am Anfang des Dokuments. Einen Vermerk an anderer Stelle, in einem Bild oder in abweichender Schreibweise erkennt es nicht. Ob ein Dokument an Claude gehen darf, verantwortet die Person, die es sendet.
+- **Klassifizierte Dokumente:** Trägt ein Dokument den Vermerk INTERN, VERTRAULICH oder GEHEIM (INTERNE, AD USO INTERNO, CONFIDENTIEL, SECRET, CONFIDENZIALE, SEGRETO und die übrigen Formen oben), lädt und prüft Lectora es im Artefakt nicht ([Datenregel](#datenregel), Punkt 2). Wie auf der Webseite liefert eine fremde Infrastruktur den Programmcode bei jedem Aufruf aus: claude.ai die Seite, cdnjs die Bibliotheken. Es erscheint dieselbe Erklärung wie auf der Webseite, mit dem Hinweis auf die gespeicherte Datei `Lectora.html`; das gilt für die Dateiauswahl, das Ablegen von Dateien, mehrere Dateien auf einmal (auch für den Sprachvergleich) und «Neue Fassung laden». Eine Möglichkeit, das Dokument trotzdem zu laden, gibt es nicht.
+- **Zweite Sicherung:** Die KI-Funktionen senden ein Dokument mit Vermerk nie an Claude, auch nicht teilweise. Das gilt für jede KI-Funktion und für Vergleiche, an denen ein solches Dokument beteiligt ist. **Die Erkennung ist eine Näherung** (siehe [GitHub Pages](#github-pages)). Ob ein Dokument an Claude gehen darf, verantwortet die Person, die es sendet.
 
 ### Was eine Datenschutzberaterin oder ein Datenschutzberater fragen wird
 
-- **Welche Bedingungen gelten für den Text, der an Claude geht?** Das hängt vom Konto der Person ab, die das Artefakt verwendet (persönliches Konto oder Konto einer Organisation, zum Beispiel Team oder Enterprise): Aufbewahrung, Verwendung für das Training von Modellen und Verarbeitung ausserhalb der Schweiz sind dort geregelt. Lectora ändert daran nichts. **Bevor Lectora mit echten Dokumenten und KI-Funktionen eingesetzt wird, klärt das Amt, welche Konten zulässig sind und welche Dokumente an Claude gehen dürfen**, und hält das fest.
+- **Welche Dokumente dürfen an Claude gehen?** Das regelt die [Datenregel der SGG](#datenregel): nur unklassifizierte Dokumente, ohne besonders schützenswerte Personendaten und ohne Falldaten zu Personen aus Verfahren. Lectora setzt den Teil um, den es erkennen kann (den Klassifizierungsvermerk); Personendaten erkennt es nicht.
+- **Welche Bedingungen gelten für den Text, der an Claude geht?** Das hängt vom Konto der Person ab, die das Artefakt verwendet (persönliches Konto oder Konto einer Organisation, zum Beispiel Team oder Enterprise): Aufbewahrung, Verwendung für das Training von Modellen und Verarbeitung ausserhalb der Schweiz sind dort geregelt. Lectora ändert daran nichts.
 - **Wer sieht was?** Lectora selbst hat keinen Server. Text geht nur an Claude (Anthropic) und nur bei den genannten Funktionen; Programmbibliotheken kommen von cdnjs; die Offline-Ausgabe fragt bei GitHub nach der Version.
-- **Wie zuverlässig ist die Sperre für klassifizierte Dokumente?** Eine Näherung (siehe oben). Sie ergänzt die Weisungen der Organisation, sie ersetzt sie nicht. Das gilt für die Sperre der KI-Funktionen und für die Rückfrage auf GitHub Pages.
-- **Welche Ausgabe für klassifizierte Dokumente?** Die lokal gespeicherte Datei `Lectora.html`. Die Webseite auf GitHub Pages ist für unklassifizierte Dokumente gedacht, weil GitHub ihren Programmcode bei jedem Aufruf neu ausliefert (siehe [GitHub Pages](#github-pages)).
+- **Wie zuverlässig ist die Sperre für klassifizierte Dokumente?** Eine Näherung (siehe oben), die im Zweifel eher zu viel sperrt. Sie ergänzt die Weisungen des SEM, sie ersetzt sie nicht. Das gilt für die Sperre auf GitHub Pages, im Artefakt und für die KI-Funktionen.
+- **Welche Ausgabe für klassifizierte Dokumente?** Nur die lokal gespeicherte Datei `Lectora.html`. Webseite und Artefakt sind für unklassifizierte Dokumente da, weil eine fremde Infrastruktur ihren Programmcode bei jedem Aufruf ausliefert (GitHub bzw. claude.ai und cdnjs); beide laden Dokumente mit Vermerk nicht.
 - **Was bleibt auf dem Gerät?** Exporte im Download-Ordner und in der Download-Liste des Browsers; sonst nichts.
 - **Sind Ergebnisse der KI erkennbar?** Ja: In Lectora tragen sie die Kennzeichnung «KI». In Exporten stehen KI-Befunde als «KI-Befund (Claude)»; eine angenommene Formulierung von Claude erscheint in Word als Änderung des Autors «<Name> (KI-Vorschlag)» mit einem Kommentar, dass Claude sie vorgeschlagen und die prüfende Person sie angenommen hat; im Prüfbericht und in PDF- und PowerPoint-Kommentaren steht dasselbe.
 
 ## Was Lectora nicht tut
 
 - keine Statistik, keine Analyse des Verhaltens, keine Fehlerberichte an Dritte
-- keine automatischen Updates: Der Hinweis auf eine neue Version führt nur zur Seite der neusten Ausgabe; herunterladen musst du selbst
+- keine automatischen Updates: Der Hinweis auf eine neue Version bietet nur den Download der neusten `Lectora.html` an; herunterladen und öffnen musst du selbst
 - keine Weitergabe von Dokumenten an GitHub, auch nicht über Issues: Schreibe nie Dokumenttext in ein Issue (siehe [rueckmeldungen.md](rueckmeldungen.md))

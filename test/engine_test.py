@@ -11,6 +11,9 @@ OFFLINE_FILE = os.path.join(ROOT, 'dist-offline', f'Lectora-{VERSION}.html')
 OFFLINE_NOCHECK_FILE = os.path.join(ROOT, 'dist-offline', f'Lectora-{VERSION}-ohne-Versionsabfrage.html')
 VERSION_URL = 'https://sem-sgg.github.io/lectora/version.json'
 RELEASE_URL = 'https://github.com/SEM-SGG/lectora/releases/latest'
+# Direktlink auf die Datei der neusten Ausgabe («Neue Version herunterladen», «Als Datei speichern»); Produktdokumentation auf GitHub Pages
+DOWNLOAD_URL = RELEASE_URL + '/download/Lectora.html'
+DOC_URL = 'https://sem-sgg.github.io/lectora/dokumentation.html'
 _SERVERS = {}
 
 def _handler(directory):
