@@ -1,6 +1,6 @@
 """Regressionstests zu den Befunden der Sicherheits- und Datenschutzprüfung (Paket «Review B»):
   1. Unlesbare Dateien: Teil mit DTD oder Lesefehler, ohne Text, entpackt zu gross → Fehlermeldung, nie ein leeres «bestandenes» Dokument
-  2. Klassifizierungsvermerke je Stufe und Ort; INTERN, VERTRAULICH und GEHEIM sperren jede KI-Funktion (Datenregel der SGG)
+  2. Klassifizierungsvermerke je Stufe und Ort: im Artefakt nicht geladen (alle Wege); die Sperre der KI-Funktionen als zweite Sicherung
   3. Keine Anfrage an Claude vor der Zustimmung, für jede KI-Funktion; Zustimmung nennt, was gesendet wird (auch eigene Kriterien)
   4. KI-Prüfung: Obergrenze ehrlich genannt (Zustimmung und Ergebnis)
   5. KI-Vorschläge: geprüft, von Sammelentscheiden ausgenommen, in Word, PDF, PowerPoint und Bericht gekennzeichnet
@@ -99,46 +99,84 @@ with sync_playwright() as pw:
     pg.context.close()
 
     # ===== 2. Klassifizierungsvermerke =====
+    # Artefakt-Ausgabe (hier die Testausgabe dist-local, DP.offline ist false): Dokumente mit Vermerk INTERN, VERTRAULICH oder GEHEIM
+    # lädt und prüft Lectora nicht (Sperrdialog wie auf der Webseite), über Dateiauswahl, Ablegen, mehrere Dateien und «Neue Fassung laden».
+    # Die Sperre der KI-Funktionen bleibt zweite Sicherung; der Test gibt dafür geladenen Dokumenten den Vermerk nachträglich.
     print('\n== 2. Klassifizierungsvermerke')
     pg = page()
-    files = ['klassif_intern_kopf.docx', 'klassif_vertraulich_fuss.docx', 'klassif_vertraulich_fuss.pdf', 'klassif_secret_kopf_fr.docx', 'klassif_confidenziale_folie.pptx', 'klassif_keine.docx']
-    load(pg, [os.path.join(FX, f) for f in files])
-    cl = pg.evaluate('Object.fromEntries(DP.state.docs.map(d => [d.name, d.meta.classification && [d.meta.classification.level, d.meta.classification.label]]))')
-    want = {'klassif_intern_kopf.docx': [1, 'INTERN'], 'klassif_vertraulich_fuss.docx': [2, 'VERTRAULICH'], 'klassif_vertraulich_fuss.pdf': [2, 'VERTRAULICH'],
-            'klassif_secret_kopf_fr.docx': [3, 'SECRET'], 'klassif_confidenziale_folie.pptx': [2, 'CONFIDENZIALE'], 'klassif_keine.docx': None}
-    for f in files: check(cl.get(f) == want[f], f'{f}: Vermerk {cl.get(f)}')
+    want = {'klassif_intern_kopf.docx': 'INTERN', 'klassif_vertraulich_fuss.docx': 'VERTRAULICH', 'klassif_vertraulich_fuss.pdf': 'VERTRAULICH',
+            'klassif_secret_kopf_fr.docx': 'SECRET', 'klassif_confidenziale_folie.pptx': 'CONFIDENZIALE'}
+    ndocs = lambda: pg.evaluate('DP.state.docs.length')
+    def blocked():
+        pg.wait_for_selector('#dlg[open] [data-fid="web-classif-blocked"]', timeout=30000); pg.wait_for_timeout(200)
+        a = pg.evaluate('(() => { const a = document.querySelector("[data-fid=webblock-dl]"); return a && [a.getAttribute("href"), a.target]; })()')
+        return pg.inner_text('#dlg'), a
+    def close_block():
+        pg.click('[data-fid="webblock-close"]'); waitf(pg, '!DP.state.busy && !document.getElementById("dlg").open'); pg.wait_for_timeout(200)
+    for f, label in want.items():
+        pg.set_input_files('#file', [os.path.join(FX, f)]); t, a = blocked()
+        check(f'«{label}»' in t and f'«{f}»' in t and 'Dokument wird hier nicht geprüft' in t and 'in Claude nicht' in t and 'Lectora.html' in t and a == [DOWNLOAD_URL, '_blank']
+              and pg.query_selector('#dlg input[type="checkbox"]') is None and ndocs() == 0, f'Artefakt: {f} ({label}) → nicht geladen, Sperrdialog mit Link auf Lectora.html, ohne Weg, trotzdem zu prüfen')
+        if f.endswith('.pdf'):
+            pg.evaluate(AXE); ax = pg.evaluate(AXE_RUN); check(ax == [], f'axe: Sperrdialog im Artefakt ohne Verstoss {ax}')
+            check(pg.evaluate('document.activeElement.dataset.fid') == 'webblock-close', 'Sperrdialog: Fokus auf «Schliessen»')
+            pg.screenshot(path=os.path.join(SHOTS_DIR, 'r00_artefakt_gesperrt_de_1440.png'))
+        close_block()
+    check(ndocs() == 0 and pg.evaluate('Object.keys(DP.state.res).length') == 0 and pg.evaluate('document.activeElement.dataset.fid') == 'pick', 'Artefakt: nichts geladen, nichts geprüft, Fokus auf «Dateien auswählen»')
+    # Mehrere Dateien (etwa für den Sprachvergleich): nur die Fassungen ohne Vermerk werden geladen
+    pg.set_input_files('#file', [os.path.join(FX, n) for n in ('klassif_keine.docx', 'klassif_secret_kopf_fr.docx', 'weisung_fr_errors.docx')])
+    blocked(); close_block(); waitf(pg, '!DP.state.busy && DP.state.docs.length === 2')
+    for _ in range(5):
+        if pg.query_selector('[data-fid="ver-separate"]'): pg.click('[data-fid="ver-separate"]'); pg.wait_for_timeout(300)
+    names = pg.evaluate('DP.state.docs.map(d => d.name)')
+    check(sorted(names) == ['klassif_keine.docx', 'weisung_fr_errors.docx'] and pg.evaluate('DP.state.docs.every(d => !d.meta.classification)'),
+          f'Artefakt: drei Dateien, eine mit SECRET → geladen nur {names}; der Sprachvergleich sieht nur Dokumente ohne Vermerk')
+    # Ablegen auf der Ablagefläche
+    pg.evaluate('DP.ui.go("docs")'); pg.wait_for_timeout(300)
+    raw = base64.b64encode(open(os.path.join(FX, 'klassif_intern_kopf.docx'), 'rb').read()).decode()
+    pg.evaluate('''([b64, name]) => { const bin = atob(b64), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+      const dt = new DataTransfer(); dt.items.add(new File([u], name, {type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"}));
+      document.getElementById("drop").dispatchEvent(new DragEvent("drop", {bubbles: true, cancelable: true, dataTransfer: dt})); }''', [raw, 'klassif_intern_kopf.docx'])
+    t, _ = blocked(); close_block()
+    check('«INTERN»' in t and ndocs() == 2, 'Artefakt: abgelegte Datei mit INTERN → Sperrdialog, nicht geladen')
+    # «Neue Fassung laden»: eine Fassung mit Vermerk ersetzt das geladene Dokument nicht
+    did = pg.evaluate('DP.state.docs.find(d => d.name === "klassif_keine.docx").id')
+    with pg.expect_file_chooser() as fc: pg.click(f'[data-fid="ver-{did}"]')
+    fc.value.set_files(os.path.join(FX, 'klassif_vertraulich_fuss.docx')); t, _ = blocked(); close_block()
+    check('«VERTRAULICH»' in t and pg.evaluate(f'DP.state.docs.some(d => d.id === "{did}" && d.name === "klassif_keine.docx") && Object.keys(DP.state.versions).length === 0'),
+          'Artefakt: neue Fassung mit VERTRAULICH → Sperrdialog, die geladene Fassung bleibt')
+    pg.context.close()
+
+    # Zweite Sicherung: KI-Funktionen sperren ein geladenes Dokument, das (wie eine später geladene Fassung) einen Vermerk trägt
+    pg = page()
+    load(pg, [os.path.join(FX, f) for f in ('weisung_de_flawed.docx', 'weisung_fr_errors.docx', 'klassif_keine.docx')])
     idx = {d: i for i, d in enumerate(pg.evaluate('DP.state.docs.map(d => d.name)'))}
+    def mark(name, level, label):
+        pg.evaluate(f'DP.state.docs[{idx[name]}].meta.classification = ' + ('null' if level is None else f'{{level: {level}, label: "{label}"}}'))
     def open_ai(doc_name, fid='aiDoc-go', view='doc'):
         pg.evaluate(f'DP.state.cur = DP.state.docs[{idx[doc_name]}].id; DP.state.view = "{view}"; DP.ui.go("check")'); pg.wait_for_timeout(400)
         pg.click(f'[data-fid="{fid}"]'); pg.wait_for_selector('#dlg[open]'); pg.wait_for_timeout(150)
-    for f in ('klassif_vertraulich_fuss.docx', 'klassif_vertraulich_fuss.pdf', 'klassif_secret_kopf_fr.docx', 'klassif_confidenziale_folie.pptx'):
-        open_ai(f); t = pg.inner_text('#dlg')
-        check(pg.query_selector('[data-fid="ai-blocked"]') is not None and pg.query_selector('[data-fid="aiask-ok"]') is None and 'sendet Lectora nie an Claude' in t, f'{f}: KI-Prüfung gesperrt, keine Schaltfläche zum Senden')
-        if f.endswith('.pdf'):
-            pg.wait_for_timeout(500); pg.evaluate(AXE); ax = pg.evaluate(AXE_RUN); check(ax == [], f'axe: Dialog «Nicht an Claude senden» ohne Verstoss {ax}')
-            check(pg.evaluate('document.activeElement.dataset.fid') == 'aiblock-close', 'Fokus auf «Schliessen»')
-            pg.screenshot(path=os.path.join(SHOTS_DIR, 'r01_ki_gesperrt_de_1440.png'))
-        pg.click('[data-fid="aiblock-close"]'); pg.wait_for_timeout(150)
-    # Auch Pflichtenmatrix und Formulierungsvorschlag sind gesperrt
-    open_ai('klassif_vertraulich_fuss.docx', 'aiDuty-go', 'duty')
-    check(pg.query_selector('[data-fid="ai-blocked"]') is not None, 'Pflichtenmatrix: gesperrt'); pg.keyboard.press('Escape'); pg.wait_for_timeout(150)
-    pg.evaluate('DP.state.view = "list"; DP.ui.render()'); pg.wait_for_timeout(300)
-    rw = pg.evaluate('(() => { const b = document.querySelector("[data-fid^=rw-]"); return b && b.dataset.fid; })()')
-    if rw: pg.click(f'[data-fid="{rw}"]'); pg.wait_for_selector('#dlg[open]')
-    check(bool(rw) and pg.query_selector('[data-fid="ai-blocked"]') is not None, 'Formulierungsvorschlag: gesperrt'); pg.keyboard.press('Escape'); pg.wait_for_timeout(150)
-    # INTERN: gesperrt wie VERTRAULICH, für jede KI-Funktion, ohne Kontrollkästchen und ohne Schaltfläche zum Senden
-    for fid, view in (('aiDoc-go', 'doc'), ('aiDuty-go', 'duty')):
-        open_ai('klassif_intern_kopf.docx', fid, view); t = pg.inner_text('#dlg')
-        check(pg.query_selector('[data-fid="ai-blocked"]') is not None and pg.query_selector('[data-fid="aiask-ok"]') is None and pg.query_selector('#dlg input[type="checkbox"]') is None
-              and '«INTERN»' in t and 'Datenregel' in t and 'nach Muster' in t, f'INTERN ({fid}): gesperrt, ohne Weg zum Senden, mit Datenregel und Hinweis auf die Erkennung nach Muster')
-        pg.click('[data-fid="aiblock-close"]'); pg.wait_for_timeout(150)
-    # Formulierungsvorschlag: Das Testdokument mit INTERN hat keine Vorschläge; das Dokument mit Mängeln trägt hier den Vermerk INTERN
-    i = idx['klassif_vertraulich_fuss.docx']
-    pg.evaluate(f'(() => {{ const d = DP.state.docs[{i}]; d.meta.classification = {{level: 1, label: "INTERN"}}; DP.state.cur = d.id; DP.state.view = "list"; DP.ui.go("check"); }})()'); pg.wait_for_timeout(400)
+    for level, label in ((1, 'INTERN'), (2, 'VERTRAULICH'), (3, 'GEHEIM')):
+        mark('weisung_de_flawed.docx', level, label)
+        for fid, view in (('aiDoc-go', 'doc'), ('aiDuty-go', 'duty')):
+            open_ai('weisung_de_flawed.docx', fid, view); t = pg.inner_text('#dlg')
+            check(pg.query_selector('[data-fid="ai-blocked"]') is not None and pg.query_selector('[data-fid="aiask-ok"]') is None and pg.query_selector('#dlg input[type="checkbox"]') is None
+                  and f'«{label}»' in t and 'sendet Lectora nie an Claude' in t and 'Datenregel' in t and 'nach Muster' in t, f'{label} ({fid}): KI gesperrt, ohne Weg zum Senden')
+            if level == 2 and fid == 'aiDoc-go':
+                pg.wait_for_timeout(300); pg.evaluate(AXE); ax = pg.evaluate(AXE_RUN); check(ax == [], f'axe: Dialog «Nicht an Claude senden» ohne Verstoss {ax}')
+                check(pg.evaluate('document.activeElement.dataset.fid') == 'aiblock-close', 'Fokus auf «Schliessen»')
+                pg.screenshot(path=os.path.join(SHOTS_DIR, 'r01_ki_gesperrt_de_1440.png'))
+            pg.click('[data-fid="aiblock-close"]'); pg.wait_for_timeout(150)
+    # Formulierungsvorschlag (Liste) und Bedeutungsvergleich: gesperrt, wenn eine beteiligte Fassung einen Vermerk trägt
+    mark('weisung_de_flawed.docx', 1, 'INTERN')
+    pg.evaluate(f'DP.state.cur = DP.state.docs[{idx["weisung_de_flawed.docx"]}].id; DP.state.view = "list"; DP.ui.go("check")'); pg.wait_for_timeout(400)
     rw = pg.evaluate('(() => { const b = document.querySelector("[data-fid^=rw-]"); return b && b.dataset.fid; })()')
     if rw: pg.click(f'[data-fid="{rw}"]'); pg.wait_for_selector('#dlg[open]')
     check(bool(rw) and pg.query_selector('[data-fid="ai-blocked"]') is not None and '«INTERN»' in pg.inner_text('#dlg'), 'INTERN: Formulierungsvorschlag gesperrt'); pg.keyboard.press('Escape'); pg.wait_for_timeout(150)
-    open_ai('klassif_keine.docx'); t = pg.inner_text('#dlg')
+    pg.evaluate(f'DP.state.ref = DP.state.docs[{idx["weisung_de_flawed.docx"]}].id; DP.state.tgt = DP.state.docs[{idx["weisung_fr_errors.docx"]}].id; DP.ui.go("compare")'); pg.wait_for_timeout(800)
+    pg.click('[data-fid="aiCmp-go"]'); pg.wait_for_selector('#dlg[open]'); pg.wait_for_timeout(150)
+    check(pg.query_selector('[data-fid="ai-blocked"]') is not None, 'INTERN in der Referenzfassung: Bedeutungsvergleich gesperrt'); pg.keyboard.press('Escape'); pg.wait_for_timeout(150)
+    open_ai('klassif_keine.docx')
     check(not pg.is_disabled('[data-fid="aiask-ok"]') and pg.query_selector('[data-fid="ai-blocked"]') is None and 'Personendaten' in pg.inner_text('[data-fid="ai-rule"]'),
           '«intern» im Text ist kein Vermerk: gewöhnliche Zustimmung, mit dem Satz zu Personendaten'); pg.click('[data-fid="aiask-cancel"]')
     check(nprompts(pg) == 0, f'nichts an Claude gesendet ({nprompts(pg)} Anfragen)')

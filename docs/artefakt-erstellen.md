@@ -19,6 +19,7 @@ Produktdetails von claude.ai können sich ändern. Die aktuellen Hilfeseiten fin
   - `sample`: Die Seite darf Claude fragen (KI-Funktionen).
   - `downloads`: Die Seite darf erzeugte Dateien zum Herunterladen anbieten (Word, Bericht, Profil).
 - Reihenfolge bei einem neuen Artefakt: zuerst veröffentlichen, dann die Fähigkeiten erklären. Spätere Versionen veröffentlicht Claude über dasselbe Artefakt; die Erklärung bleibt bestehen.
+- Das Artefakt ist für unklassifizierte Dokumente da. Dokumente mit dem Vermerk INTERN, VERTRAULICH oder GEHEIM lädt Lectora im Artefakt nicht und verweist auf die gespeicherte Datei `Lectora.html` (Datenregel der SGG, siehe [datenschutz.md](datenschutz.md#datenregel)).
 - Das Artefakt ist privat, bis du es teilst. Wer es nutzt, muss bei Claude angemeldet sein. Lectora fragt vor jeder KI-Funktion um Zustimmung; die Plattform fragt beim ersten Aufruf zusätzlich. Die Nutzung zählt zum Kontingent der Person, die das Artefakt verwendet, und für den gesendeten Text gelten die Bedingungen ihres Kontos (siehe [datenschutz.md](datenschutz.md#was-eine-datenschutzberaterin-oder-ein-datenschutzberater-fragen-wird)).
 - Die Umgebung des Artefakts verbietet Speicher im Browser, eigene Netzwerkaufrufe der Seite (fetch und ähnliche) und gewöhnliche Downloads; Skripte von cdnjs darf sie laden. Deshalb unterscheidet sich die Artefakt-Ausgabe von der Offline-Ausgabe: Sie lädt die Bibliotheken als Skripte von cdnjs und speichert über die Downloads von Claude.
 
@@ -59,7 +60,7 @@ Wenn ein Schritt nicht geht, brich ab und sag mir genau, woran es liegt. Veröff
 - [ ] «Beispieldokumente laden» lädt drei Dokumente (JSZip ist geladen).
 - [ ] Eine PDF-Datei lässt sich öffnen (pdf.js und seine Hilfsdatei sind geladen).
 - [ ] Prüfung → «KI-Prüfung starten»: Lectora zeigt unter «Gesendet wird», was gesendet wird, und fragt nach. Beim ersten Mal fragt claude.ai zusätzlich um Zustimmung. Ohne Zustimmung geht nichts weg.
-- [ ] Ein Dokument mit dem Vermerk «VERTRAULICH» oder «INTERN» in der Fusszeile: Jede KI-Funktion zeigt «Nicht an Claude senden» und sendet nichts. Der Dialog vor dem Senden eines Dokuments ohne Vermerk nennt die Datenregel (Personendaten).
+- [ ] Ein erfundenes Testdokument mit dem Vermerk «VERTRAULICH» oder «INTERN» in der Fusszeile (zum Beispiel `test/fixtures/klassif_intern_kopf.docx`): Lectora lädt es nicht und zeigt «Dokument wird hier nicht geprüft» mit «Als Datei speichern». Der Dialog vor dem Senden eines Dokuments ohne Vermerk nennt die Datenregel (Personendaten).
 - [ ] Export einer Word-Datei → «Mit Korrekturmodus herunterladen»: claude.ai fragt vor dem Herunterladen nach.
 - [ ] Export einer PDF-Datei → «Mit Kommentaren herunterladen» funktioniert (pdf-lib ist geladen).
 - [ ] Anleitung → Abschnitt «Datenhaltung» nennt cdnjs und die Integritätsprüfung aller vier Dateien; Abschnitt «KI-Prüfung ist freiwillig» beschreibt Claude.

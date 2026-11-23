@@ -73,10 +73,10 @@ Der Workflow «erlasse» startet von selbst am 3. jedes Monats (geplant um 04:23
 
 Die Produktdokumentation (`docs/lectora-dokumentation.html`, im Web unter [sem-sgg.github.io/lectora/dokumentation.html](https://sem-sgg.github.io/lectora/dokumentation.html)) muss zum aktuellen Stand von Lectora passen. Wer eine Funktion, die Oberfläche oder einen Bedienweg ändert, führt sie auf Deutsch, Französisch und Italienisch nach; das verlangt [AGENTS.md](../AGENTS.md#produktdokumentation). Jeder Pull Request nennt in seiner Beschreibung, ob die Dokumentation nachgeführt ist.
 
-Zwei automatische Prüfungen kontrollieren das. Scheitert eine davon (rotes Kreuz bei den Prüfungen → **Details**), nennt ihre Meldung Datei, Fundstelle und Behebung:
+Zwei automatische Prüfungen kontrollieren das. Scheitert eine davon (rotes Kreuz bei den Prüfungen → **Details**), sagt ihre Meldung, was nicht stimmt und wie es zu beheben ist:
 
-- `tools/release_check.py` (erster Schritt der Prüfungen und der Veröffentlichung): prüft die Versionsangaben in der Dokumentation. Erste und zweite Zahl müssen mit `package.json` übereinstimmen. Bei einer Korrekturversion (nur die letzte Zahl steigt) musst du die Dokumentation also nicht ändern; bei einer Neben- oder Hauptversion schon.
-- `tools/doku_check.py` (läuft nach dem Bauen): prüft, ob die Zahl der Kriterien, die Zahl der Erlasse und die Dateigrössen zum aktuellen Stand passen.
+- `tools/release_check.py` (erster Schritt der Prüfungen und der Veröffentlichung): prüft die Versionsangaben in der Dokumentation. Erste und zweite Zahl müssen mit `package.json` übereinstimmen. Bei einer Korrekturversion (nur die letzte Zahl steigt) musst du die Dokumentation also nicht ändern; bei einer Neben- oder Hauptversion schon. Die Meldung nennt die Datei, die Version in der Dokumentation, die erwartete Version und die Behebung (meist einen Auftrag an einen Agenten), aber keine Zeilennummer.
+- `tools/doku_check.py` (läuft nach dem Bauen): prüft, ob die Zahl der Kriterien, die Zahl der Erlasse und die Dateigrössen zum aktuellen Stand passen. Die Meldung nennt die Datei, die Zeile, die veraltete Angabe und den richtigen Wert.
 
 Die Datei ist zu gross, um sie im Browser zu bearbeiten. Meldet eine der Prüfungen eine Abweichung, kopierst du die Meldung und gibst sie mit diesem Auftrag an einen KI-Agenten:
 

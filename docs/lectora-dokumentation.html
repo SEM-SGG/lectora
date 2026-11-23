@@ -683,7 +683,7 @@ a.inline-link:hover { color: var(--primary-hover); }
             Aus derselben Codebasis entstehen zwei Ausgaben: die <strong>Offline-Ausgabe</strong> (<code>Lectora.html</code>, eine einzelne HTML-Datei ohne Konto und ohne Internet) sowie die <strong>Artefakt-Ausgabe auf claude.ai</strong>, die zusätzlich optionale KI-Funktionen (inhaltliche Prüfung, Bedeutungsvergleich, Formulierungsvorschläge, Rückübersetzung und Pflichtenmatrix) jeweils auf ausdrücklichen Klick freischaltet.
           </p>
           <p>
-            Die Offline-Ausgabe läuft in zwei Betriebsarten: Als <strong>lokal geöffnete Datei</strong> (<code>Lectora.html</code> über <code>file://</code>) prüft sie alle Dokumente, auch klassifizierte (<code>INTERN</code>, <code>VERTRAULICH</code>, <code>GEHEIM</code>), vollständig offline ohne Einschränkung. Als <strong>Webseite auf GitHub Pages</strong> (<code>sem-sgg.github.io/lectora</code>) ist dieselbe Datei für unklassifizierte Dokumente und zum Ausprobieren gedacht; erkennt sie dort <code>INTERN</code>, <code>VERTRAULICH</code> oder <code>GEHEIM</code>, lädt und prüft sie das Dokument nicht (Näherung nach Muster). Das folgt aus der Datenregel der SGG: Webseite und KI nur unklassifiziert, gespeicherte Datei jede Stufe.
+            Die Offline-Ausgabe läuft in zwei Betriebsarten: Als <strong>lokal geöffnete Datei</strong> (<code>Lectora.html</code> über <code>file://</code>) prüft sie alle Dokumente, auch klassifizierte (<code>INTERN</code>, <code>VERTRAULICH</code>, <code>GEHEIM</code>), vollständig offline ohne Einschränkung. Als <strong>Webseite auf GitHub Pages</strong> (<code>sem-sgg.github.io/lectora</code>) ist dieselbe Datei für unklassifizierte Dokumente und zum Ausprobieren gedacht; erkennt sie dort <code>INTERN</code>, <code>VERTRAULICH</code> oder <code>GEHEIM</code>, lädt und prüft sie das Dokument nicht (Näherung nach Muster). Die Artefakt-Ausgabe auf claude.ai behandelt solche Dokumente gleich: Auch dort liefert eine fremde Infrastruktur den Programmcode aus, und Lectora lädt sie nicht. Das folgt aus der Datenregel der SGG. Merkregel: Klassifizierte Dokumente prüft nur die gespeicherte Datei <code>Lectora.html</code>; Webseite und Artefakt nur unklassifizierte Dokumente.
           </p>
         </div>
         <div class="lang-fr">
@@ -695,7 +695,7 @@ a.inline-link:hover { color: var(--primary-hover); }
             Une même source produit deux éditions : l’<strong>édition hors ligne</strong> (<code>Lectora.html</code>, un fichier HTML autonome sans compte ni connexion) et l’<strong>édition artefact sur claude.ai</strong>, qui ajoute des fonctions d’IA facultatives (contrôle du contenu, comparaison du sens, propositions de formulation, rétrotraduction et matrice des obligations) activées uniquement sur clic explicite.
           </p>
           <p>
-            L’édition hors ligne fonctionne selon deux modes : ouverte comme <strong>fichier local</strong> (<code>Lectora.html</code> via <code>file://</code>), elle contrôle tous les documents, y compris classifiés (<code>INTERNE</code>, <code>CONFIDENTIEL</code>, <code>SECRET</code>), hors ligne sans restriction. Comme <strong>page web sur GitHub Pages</strong> (<code>sem-sgg.github.io/lectora</code>), ce même fichier est destiné aux documents non classifiés et aux essais ; lorsque Lectora y reconnaît <code>INTERNE</code>, <code>CONFIDENTIEL</code> ou <code>SECRET</code>, il ne charge ni ne contrôle le document (détection par approximation). Cela découle de la règle sur les données de la SGG : page web et IA, uniquement non classifié ; fichier enregistré, tous les niveaux.
+            L’édition hors ligne fonctionne selon deux modes : ouverte comme <strong>fichier local</strong> (<code>Lectora.html</code> via <code>file://</code>), elle contrôle tous les documents, y compris classifiés (<code>INTERNE</code>, <code>CONFIDENTIEL</code>, <code>SECRET</code>), hors ligne sans restriction. Comme <strong>page web sur GitHub Pages</strong> (<code>sem-sgg.github.io/lectora</code>), ce même fichier est destiné aux documents non classifiés et aux essais ; lorsque Lectora y reconnaît <code>INTERNE</code>, <code>CONFIDENTIEL</code> ou <code>SECRET</code>, il ne charge ni ne contrôle le document (détection par approximation). L’édition artefact sur claude.ai traite ces documents de la même manière : là aussi, une infrastructure externe fournit le code du programme, et Lectora ne les charge pas. Cela découle de la règle sur les données de la Section Base Frontières (SGG). Aide-mémoire : seul le fichier enregistré <code>Lectora.html</code> contrôle les documents classifiés ; page web et artefact, uniquement des documents non classifiés.
           </p>
         </div>
         <div class="lang-it">
@@ -707,7 +707,7 @@ a.inline-link:hover { color: var(--primary-hover); }
             Dalla stessa base di codice nascono due edizioni: l’<strong>edizione offline</strong> (<code>Lectora.html</code>, un unico file HTML senza account né internet) e l’<strong>edizione artefatto su claude.ai</strong>, che abilita su clic esplicito funzioni IA facoltative (verifica qualitativa, confronto del significato, proposte di formulazione, retrotraduzione e matrice degli obblighi).
           </p>
           <p>
-            L’edizione offline opera in due modalità: aperta come <strong>file locale</strong> (<code>Lectora.html</code> tramite <code>file://</code>), verifica tutti i documenti, compresi quelli classificati (<code>AD USO INTERNO</code>, <code>CONFIDENZIALE</code>, <code>SEGRETO</code>), offline e senza restrizioni. Come <strong>pagina web su GitHub Pages</strong> (<code>sem-sgg.github.io/lectora</code>), lo stesso file è destinato ai documenti non classificati e alle prove: se Lectora vi riconosce <code>AD USO INTERNO</code>, <code>CONFIDENZIALE</code> o <code>SEGRETO</code>, non carica né verifica il documento (riconoscimento per approssimazione). Ciò discende dalla regola sui dati della SGG: pagina web e IA solo non classificato, file salvato qualsiasi livello.
+            L’edizione offline opera in due modalità: aperta come <strong>file locale</strong> (<code>Lectora.html</code> tramite <code>file://</code>), verifica tutti i documenti, compresi quelli classificati (<code>AD USO INTERNO</code>, <code>CONFIDENZIALE</code>, <code>SEGRETO</code>), offline e senza restrizioni. Come <strong>pagina web su GitHub Pages</strong> (<code>sem-sgg.github.io/lectora</code>), lo stesso file è destinato ai documenti non classificati e alle prove: se Lectora vi riconosce <code>AD USO INTERNO</code>, <code>CONFIDENZIALE</code> o <code>SEGRETO</code>, non carica né verifica il documento (riconoscimento per approssimazione). L’edizione artefatto su claude.ai tratta questi documenti allo stesso modo: anche lì un’infrastruttura esterna fornisce il codice del programma e Lectora non li carica. Ciò discende dalla regola sui dati della Sezione Basi Frontiera (SGG). Promemoria: solo il file salvato <code>Lectora.html</code> verifica i documenti classificati; pagina web e artefatto solo documenti non classificati.
           </p>
         </div>
       </div>
@@ -815,7 +815,7 @@ a.inline-link:hover { color: var(--primary-hover); }
   <rect x="656" y="268" width="10" height="10" rx="2" fill="#8a332c"/>
   <text x="672" y="278" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="600" fill="#161616">Artefakt-Ausgabe (claude.ai)</text>
   <text x="656" y="297" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• 4 Bibliotheken via cdnjs (SHA-512 SRI)</text>
-  <text x="656" y="314" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#a2191f" font-weight="600">• KI nur auf Klick · ab INTERN gesperrt</text>
+  <text x="656" y="314" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#a2191f" font-weight="600">• KI nur auf Klick · ab INTERN nicht geladen</text>
   <rect x="656" y="324" width="280" height="26" fill="#efd9d6"/>
   <text x="665" y="341" font-family="IBM Plex Mono, monospace" font-size="10" fill="#161616" font-weight="600">KI optional · Faktencheck lokal</text>
 </svg>
@@ -892,7 +892,7 @@ a.inline-link:hover { color: var(--primary-hover); }
   <rect x="656" y="268" width="10" height="10" rx="2" fill="#8a332c"/>
   <text x="672" y="278" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="600" fill="#161616">Édition artefact (claude.ai)</text>
   <text x="656" y="297" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• 4 bibliothèques via cdnjs (SRI SHA-512)</text>
-  <text x="656" y="314" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#a2191f" font-weight="600">• IA sur clic · bloquée dès INTERNE</text>
+  <text x="656" y="314" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#a2191f" font-weight="600">• IA sur clic · dès INTERNE non chargé</text>
   <rect x="656" y="324" width="280" height="26" fill="#efd9d6"/>
   <text x="665" y="341" font-family="IBM Plex Mono, monospace" font-size="10" fill="#161616" font-weight="600">IA facultative · Contrôle local</text>
 </svg>
@@ -969,7 +969,7 @@ a.inline-link:hover { color: var(--primary-hover); }
   <rect x="656" y="268" width="10" height="10" rx="2" fill="#8a332c"/>
   <text x="672" y="278" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="600" fill="#161616">Edizione artefatto (claude.ai)</text>
   <text x="656" y="297" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• 4 librerie da cdnjs (SRI SHA-512)</text>
-  <text x="656" y="314" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#a2191f" font-weight="600">• IA su clic · bloccata da AD USO INTERNO</text>
+  <text x="656" y="314" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#a2191f" font-weight="600">• IA su clic · da AD USO INTERNO non caricato</text>
   <rect x="656" y="324" width="280" height="26" fill="#efd9d6"/>
   <text x="665" y="341" font-family="IBM Plex Mono, monospace" font-size="10" fill="#161616" font-weight="600">IA facoltativa · Verifica locale</text>
 </svg>
@@ -1197,9 +1197,9 @@ a.inline-link:hover { color: var(--primary-hover); }
           <div class="ps-solution">
             <span class="ps-label"><span class="lang-de">LÖSUNG IN LECTORA</span><span class="lang-fr">RÉPONSE DE LECTORA</span><span class="lang-it">SOLUZIONE IN LECTORA</span></span>
             <strong><span class="lang-de">Klassifizierungssperre, Faktencheck &amp; lückenlose Kennzeichnung</span><span class="lang-fr">Blocage de classification, contrôle factuel et traçabilité complète</span><span class="lang-it">Blocco classificazione, controllo fattuale e tracciabilità completa</span></strong>
-            <p class="lang-de">Erkannte Vermerke <code>INTERN</code>, <code>VERTRAULICH</code> und <code>GEHEIM</code> sperrt Lectora sowohl beim Laden auf der Webseite (GitHub Pages) als auch für KI-Funktionen (Artefakt), ohne Möglichkeit, die Sperre zu übergehen (Näherung nach Muster). Der Dialog vor dem Senden nennt zusätzlich die Datenregel zu Personendaten. Jeder KI-Vorschlag durchläuft <code>checkFacts</code>, wird nicht per Sammelannahme übernommen und erscheint in Word als eigener Autor <code>&lt;Name&gt; (KI-Vorschlag)</code>.</p>
-            <p class="lang-fr">Les mentions reconnues <code>INTERNE</code>, <code>CONFIDENTIEL</code> et <code>SECRET</code> sont bloquées tant au chargement sur la page web (GitHub Pages) que pour les fonctions d’IA (artefact), sans possibilité de passer outre (approximation). Le dialogue d’envoi rappelle en outre la règle sur les données personnelles. Chaque proposition IA passe par <code>checkFacts</code>, est exclue de « Tout accepter » et figure dans Word sous l’auteur <code>&lt;Nom&gt; (proposition IA)</code>.</p>
-            <p class="lang-it">Le indicazioni riconosciute <code>AD USO INTERNO</code>, <code>CONFIDENZIALE</code> e <code>SEGRETO</code> vengono bloccate sia al caricamento sulla pagina web (GitHub Pages) sia per le funzioni IA (artefatto), senza possibilità di aggirare il blocco (approssimazione). Il dialogo d’invio richiama inoltre la regola sui dati personali. Ogni proposta IA supera <code>checkFacts</code>, è esclusa da «Accetta tutto» e figura in Word con autore <code>&lt;Nome&gt; (proposta IA)</code>.</p>
+            <p class="lang-de">Erkannte Vermerke <code>INTERN</code>, <code>VERTRAULICH</code> und <code>GEHEIM</code> lädt Lectora auf der Webseite (GitHub Pages) und im Artefakt nicht, und die KI-Funktionen sperren sie als zweite Sicherung; die Sperre lässt sich nicht übergehen (Näherung nach Muster). Der Dialog vor dem Senden nennt zusätzlich die Datenregel zu Personendaten. Jeder KI-Vorschlag durchläuft <code>checkFacts</code>, wird nicht per Sammelannahme übernommen und erscheint in Word als eigener Autor <code>&lt;Name&gt; (KI-Vorschlag)</code>.</p>
+            <p class="lang-fr">Les mentions reconnues <code>INTERNE</code>, <code>CONFIDENTIEL</code> et <code>SECRET</code> ne sont chargées ni sur la page web (GitHub Pages) ni dans l’artefact, et les fonctions d’IA les bloquent en seconde sécurité ; rien ne permet de passer outre (approximation). Le dialogue d’envoi rappelle en outre la règle sur les données personnelles. Chaque proposition IA passe par <code>checkFacts</code>, est exclue de « Tout accepter » et figure dans Word sous l’auteur <code>&lt;Nom&gt; (proposition IA)</code>.</p>
+            <p class="lang-it">Le indicazioni riconosciute <code>AD USO INTERNO</code>, <code>CONFIDENZIALE</code> e <code>SEGRETO</code> non vengono caricate né sulla pagina web (GitHub Pages) né nell’artefatto, e le funzioni IA le bloccano come seconda sicurezza; non è possibile aggirare il blocco (approssimazione). Il dialogo d’invio richiama inoltre la regola sui dati personali. Ogni proposta IA supera <code>checkFacts</code>, è esclusa da «Accetta tutto» e figura in Word con autore <code>&lt;Nome&gt; (proposta IA)</code>.</p>
           </div>
         </div>
       </div>
@@ -1207,11 +1207,11 @@ a.inline-link:hover { color: var(--primary-hover); }
       <!-- VISUALISIERUNG 2: PRÜF- UND SCHUTZPIPELINE -->
       <div class="viz-card">
         <div class="viz-header">
-          <h3 class="viz-title"><span class="lang-de">Kernmechaniken: Prüfablauf und Schutzplanken (Webseite und KI)</span><span class="lang-fr">Mécanismes clés : flux de contrôle et garde-fous (page web et IA)</span><span class="lang-it">Meccanismi chiave: flusso di verifica e misure di protezione (pagina web e IA)</span></h3>
+          <h3 class="viz-title"><span class="lang-de">Kernmechaniken: Prüfablauf und Schutzplanken (Webseite, Artefakt und KI)</span><span class="lang-fr">Mécanismes clés : flux de contrôle et garde-fous (page web, artefact et IA)</span><span class="lang-it">Meccanismi chiave: flusso di verifica e misure di protezione (pagina web, artefatto e IA)</span></h3>
           <span class="viz-tag"><span class="lang-de">Referenz · Qualitätssicherung</span><span class="lang-fr">Référence · Assurance qualité</span><span class="lang-it">Riferimento · Garanzia qualità</span></span>
         </div>
         <div class="viz-surface">
-          <svg class="lang-de" viewBox="0 0 960 478" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Prüfablauf und Schutzmechanismen für Webseite und KI (DE)">
+          <svg class="lang-de" viewBox="0 0 960 478" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Prüfablauf und Schutzmechanismen für Webseite, Artefakt und KI (DE)">
   <defs>
     <marker id="arr-p-de" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#0f62fe"/></marker>
   </defs>
@@ -1252,20 +1252,20 @@ a.inline-link:hover { color: var(--primary-hover); }
   <text x="744" y="124" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="#525252">Bericht · PDF/PPTX-Notiz</text>
 
   <line x1="16" y1="164" x2="944" y2="164" stroke="#e0e0e0" stroke-width="1"/>
-  <text x="16" y="188" font-family="IBM Plex Sans, sans-serif" font-size="13" font-weight="600" fill="#161616">B · Schutz klassifizierter Dokumente auf der Webseite (GitHub Pages, direkt nach dem Einlesen · Näherung nach Muster)</text>
+  <text x="16" y="188" font-family="IBM Plex Sans, sans-serif" font-size="13" font-weight="600" fill="#161616">B · Schutz klassifizierter Dokumente auf der Webseite und im Artefakt (direkt nach dem Einlesen · Näherung nach Muster)</text>
 
   <rect x="16" y="202" width="296" height="90" fill="#ffffff" stroke="#e0e0e0"/>
   <rect x="16" y="202" width="296" height="4" fill="#da1e28"/>
   <text x="30" y="226" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="#a2191f">INTERN bis GEHEIM (Stufe 1–3)</text>
-  <text x="30" y="246" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Kein Laden, keine Prüfung auf der Webseite</text>
+  <text x="30" y="246" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Kein Laden, keine Prüfung (Web, Artefakt)</text>
   <text x="30" y="264" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Dialog verweist auf «Als Datei speichern»</text>
   <text x="30" y="282" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="#6f6f6f">Vor Fassungsrückfrage &amp; Prüfung</text>
 
   <rect x="332" y="202" width="296" height="90" fill="#ffffff" stroke="#e0e0e0"/>
   <rect x="332" y="202" width="296" height="4" fill="#f1c21b"/>
   <text x="346" y="226" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="#3d3100">Datenregel der SGG</text>
-  <text x="346" y="246" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Webseite und KI: nur unklassifiziert</text>
-  <text x="346" y="264" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Gespeicherte Datei: jede Stufe</text>
+  <text x="346" y="246" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Webseite, Artefakt: nur unklassifiziert</text>
+  <text x="346" y="264" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Nur gespeicherte Datei: jede Stufe</text>
   <text x="346" y="282" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="#6f6f6f">Keine Bestätigung hebt die Sperre auf</text>
 
   <rect x="648" y="202" width="296" height="90" fill="#ffffff" stroke="#e0e0e0"/>
@@ -1305,7 +1305,7 @@ a.inline-link:hover { color: var(--primary-hover); }
   <text x="662" y="440" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Word-Autor: &lt;Name&gt; (KI-Vorschlag)</text>
   <text x="662" y="458" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Bericht &amp; Kommentare: KI-Befund (Claude)</text>
 </svg>
-          <svg class="lang-fr" viewBox="0 0 960 478" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Processus de contrôle et garde-fous page web et IA (FR)">
+          <svg class="lang-fr" viewBox="0 0 960 478" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Processus de contrôle et garde-fous page web, artefact et IA (FR)">
   <defs>
     <marker id="arr-p-fr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#0f62fe"/></marker>
   </defs>
@@ -1346,20 +1346,20 @@ a.inline-link:hover { color: var(--primary-hover); }
   <text x="744" y="124" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="#525252">Rapport · Notes PDF/PPTX</text>
 
   <line x1="16" y1="164" x2="944" y2="164" stroke="#e0e0e0" stroke-width="1"/>
-  <text x="16" y="188" font-family="IBM Plex Sans, sans-serif" font-size="13" font-weight="600" fill="#161616">B · Protection des documents classifiés sur la page web (GitHub Pages, dès la lecture · approximation)</text>
+  <text x="16" y="188" font-family="IBM Plex Sans, sans-serif" font-size="13" font-weight="600" fill="#161616">B · Protection des documents classifiés sur la page web et dans l’artefact (dès la lecture · approximation)</text>
 
   <rect x="16" y="202" width="296" height="90" fill="#ffffff" stroke="#e0e0e0"/>
   <rect x="16" y="202" width="296" height="4" fill="#da1e28"/>
   <text x="30" y="226" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="#a2191f">INTERNE à SECRET (niv. 1–3)</text>
-  <text x="30" y="246" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Ni chargement ni contrôle sur la page web</text>
+  <text x="30" y="246" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Ni chargement ni contrôle (web, artefact)</text>
   <text x="30" y="264" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Renvoie vers « Enregistrer comme fichier »</text>
   <text x="30" y="282" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="#6f6f6f">Avant la détection de version et le contrôle</text>
 
   <rect x="332" y="202" width="296" height="90" fill="#ffffff" stroke="#e0e0e0"/>
   <rect x="332" y="202" width="296" height="4" fill="#f1c21b"/>
   <text x="346" y="226" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="#3d3100">Règle sur les données SGG</text>
-  <text x="346" y="246" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Page web et IA : non classifié</text>
-  <text x="346" y="264" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Fichier enregistré : tous niveaux</text>
+  <text x="346" y="246" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Page web, artefact : non classifié</text>
+  <text x="346" y="264" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Fichier enregistré seul : tous niveaux</text>
   <text x="346" y="282" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="#6f6f6f">Aucune confirmation ne lève le blocage</text>
 
   <rect x="648" y="202" width="296" height="90" fill="#ffffff" stroke="#e0e0e0"/>
@@ -1399,7 +1399,7 @@ a.inline-link:hover { color: var(--primary-hover); }
   <text x="662" y="440" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Auteur Word : &lt;Nom&gt; (proposition IA)</text>
   <text x="662" y="458" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Rapport et notes : Constat IA (Claude)</text>
 </svg>
-          <svg class="lang-it" viewBox="0 0 960 478" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flusso di verifica e misure di sicurezza pagina web e IA (IT)">
+          <svg class="lang-it" viewBox="0 0 960 478" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flusso di verifica e misure di sicurezza pagina web, artefatto e IA (IT)">
   <defs>
     <marker id="arr-p-it" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#0f62fe"/></marker>
   </defs>
@@ -1440,20 +1440,20 @@ a.inline-link:hover { color: var(--primary-hover); }
   <text x="744" y="124" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="#525252">Rapporto · Note PDF/PPTX</text>
 
   <line x1="16" y1="164" x2="944" y2="164" stroke="#e0e0e0" stroke-width="1"/>
-  <text x="16" y="188" font-family="IBM Plex Sans, sans-serif" font-size="13" font-weight="600" fill="#161616">B · Protezione dei documenti classificati sulla pagina web (GitHub Pages, subito dopo la lettura · approssimazione)</text>
+  <text x="16" y="188" font-family="IBM Plex Sans, sans-serif" font-size="13" font-weight="600" fill="#161616">B · Protezione dei documenti classificati su pagina web e artefatto (subito dopo la lettura · approssimazione)</text>
 
   <rect x="16" y="202" width="296" height="90" fill="#ffffff" stroke="#e0e0e0"/>
   <rect x="16" y="202" width="296" height="4" fill="#da1e28"/>
   <text x="30" y="226" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="#a2191f">AD USO INTERNO – SEGRETO (liv. 1–3)</text>
-  <text x="30" y="246" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Nessun caricamento né verifica sul web</text>
+  <text x="30" y="246" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Né caricamento né verifica (web, artefatto)</text>
   <text x="30" y="264" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Il dialogo rimanda a «Salva come file»</text>
   <text x="30" y="282" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="#6f6f6f">Prima del confronto versioni e della verifica</text>
 
   <rect x="332" y="202" width="296" height="90" fill="#ffffff" stroke="#e0e0e0"/>
   <rect x="332" y="202" width="296" height="4" fill="#f1c21b"/>
   <text x="346" y="226" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="#3d3100">Regola sui dati della SGG</text>
-  <text x="346" y="246" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Pagina web e IA: solo non classificato</text>
-  <text x="346" y="264" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• File salvato: qualsiasi livello</text>
+  <text x="346" y="246" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Web e artefatto: solo non classificato</text>
+  <text x="346" y="264" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#525252">• Solo file salvato: qualsiasi livello</text>
   <text x="346" y="282" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="#6f6f6f">Nessuna conferma supera il blocco</text>
 
   <rect x="648" y="202" width="296" height="90" fill="#ffffff" stroke="#e0e0e0"/>
@@ -1583,7 +1583,7 @@ a.inline-link:hover { color: var(--primary-hover); }
           <tr>
             <td><span class="lang-de">Klassifizierte Dokumente</span><span class="lang-fr">Documents classifiés</span><span class="lang-it">Documenti classificati</span></td>
             <td><span class="lang-de"><strong>Lokale Datei (<code>file://</code>):</strong> alle Stufen (<code>INTERN</code>, <code>VERTRAULICH</code>, <code>GEHEIM</code>) offline ohne Sperre.<br><strong>Webseite (GitHub Pages):</strong> nur für unklassifizierte Dokumente; <code>INTERN</code>, <code>VERTRAULICH</code> und <code>GEHEIM</code> gesperrt (Näherung).</span><span class="lang-fr"><strong>Fichier local (<code>file://</code>) :</strong> tous les niveaux (<code>INTERNE</code>, <code>CONFIDENTIEL</code>, <code>SECRET</code>) hors ligne sans blocage.<br><strong>Page web (GitHub Pages) :</strong> uniquement pour documents non classifiés ; <code>INTERNE</code>, <code>CONFIDENTIEL</code> et <code>SECRET</code> bloqués (approximation).</span><span class="lang-it"><strong>File locale (<code>file://</code>):</strong> tutti i livelli (<code>AD USO INTERNO</code>, <code>CONFIDENZIALE</code>, <code>SEGRETO</code>) offline senza blocchi.<br><strong>Pagina web (GitHub Pages):</strong> solo per documenti non classificati; <code>AD USO INTERNO</code>, <code>CONFIDENZIALE</code> e <code>SEGRETO</code> bloccati (approssimazione).</span></td>
-            <td><span class="lang-de">Lokale Prüfung für alle Dokumente; für KI-Funktionen <code>INTERN</code>, <code>VERTRAULICH</code> und <code>GEHEIM</code> gesperrt, ohne Ausnahme (Näherung).</span><span class="lang-fr">Contrôle local pour tous les documents ; pour l’IA, <code>INTERNE</code>, <code>CONFIDENTIEL</code> et <code>SECRET</code> bloqués sans exception (approximation).</span><span class="lang-it">Verifica locale per tutti i documenti; per le funzioni IA, <code>AD USO INTERNO</code>, <code>CONFIDENZIALE</code> e <code>SEGRETO</code> bloccati senza eccezioni (approssimazione).</span></td>
+            <td><span class="lang-de">Nur unklassifizierte Dokumente: <code>INTERN</code>, <code>VERTRAULICH</code> und <code>GEHEIM</code> werden nicht geladen und nicht geprüft, ohne Ausnahme (Näherung); die Sperre der KI-Funktionen bleibt als zweite Sicherung.</span><span class="lang-fr">Uniquement des documents non classifiés : <code>INTERNE</code>, <code>CONFIDENTIEL</code> et <code>SECRET</code> ne sont ni chargés ni contrôlés, sans exception (approximation) ; le blocage des fonctions d’IA reste une seconde sécurité.</span><span class="lang-it">Solo documenti non classificati: <code>AD USO INTERNO</code>, <code>CONFIDENZIALE</code> e <code>SEGRETO</code> non vengono caricati né verificati, senza eccezioni (approssimazione); il blocco delle funzioni IA resta come seconda sicurezza.</span></td>
           </tr>
           <tr>
             <td><span class="lang-de">Netzwerkverbindungen</span><span class="lang-fr">Connexions réseau</span><span class="lang-it">Connessioni di rete</span></td>
@@ -1599,7 +1599,7 @@ a.inline-link:hover { color: var(--primary-hover); }
       </table></div>
 
       <div class="prose">
-        <h3><span class="lang-de">Lokale Datei und Webseite auf GitHub Pages: Schutz klassifizierter Dokumente</span><span class="lang-fr">Fichier local et page web sur GitHub Pages : protection des documents classifiés</span><span class="lang-it">File locale e pagina web su GitHub Pages: protezione dei documenti classificati</span></h3>
+        <h3><span class="lang-de">Lokale Datei, Webseite und Artefakt: Schutz klassifizierter Dokumente</span><span class="lang-fr">Fichier local, page web et artefact : protection des documents classifiés</span><span class="lang-it">File locale, pagina web e artefatto: protezione dei documenti classificati</span></h3>
         <div class="lang-de">
           <p>
             Auf <code>sem-sgg.github.io/lectora/</code> liegt dieselbe <code>Lectora.html</code> wie im Release. Auch dort bleiben Dokumente im Browser und werden nicht hochgeladen. Den Programmcode liefert aber GitHub (fremde Infrastruktur) bei jedem Aufruf aus; würde das Repository oder die Organisation übernommen, liefe beim nächsten Aufruf veränderter Code unbemerkt. Zudem teilt die Webseite ihre Herkunft (<code>sem-sgg.github.io</code>) mit den übrigen GitHub-Pages-Seiten der Organisation. Eine lokal gespeicherte <code>Lectora.html</code> ändert sich dagegen nicht, und ihre Prüfsumme lässt sich mit <code>SHA256SUMS.txt</code> abgleichen.
@@ -1631,6 +1631,7 @@ a.inline-link:hover { color: var(--primary-hover); }
           <tr>
             <th><span class="lang-de">Erkannter Vermerk</span><span class="lang-fr">Mention reconnue</span><span class="lang-it">Indicazione rilevata</span></th>
             <th><span class="lang-de">Webseite auf GitHub Pages (<code>http:</code>/<code>https:</code>)</span><span class="lang-fr">Page web sur GitHub Pages (<code>http:</code>/<code>https:</code>)</span><span class="lang-it">Pagina web su GitHub Pages (<code>http:</code>/<code>https:</code>)</span></th>
+            <th><span class="lang-de">Artefakt auf claude.ai</span><span class="lang-fr">Artefact sur claude.ai</span><span class="lang-it">Artefatto su claude.ai</span></th>
             <th><span class="lang-de">Lokale Datei <code>Lectora.html</code> (<code>file://</code>)</span><span class="lang-fr">Fichier local <code>Lectora.html</code> (<code>file://</code>)</span><span class="lang-it">File locale <code>Lectora.html</code> (<code>file://</code>)</span></th>
           </tr>
         </thead>
@@ -1638,11 +1639,13 @@ a.inline-link:hover { color: var(--primary-hover); }
           <tr>
             <td><span class="pill pill-error"><span class="lang-de">INTERN · VERTRAULICH · GEHEIM</span><span class="lang-fr">INTERNE · CONFIDENTIEL · SECRET</span><span class="lang-it">AD USO INTERNO · CONFIDENZIALE · SEGRETO</span></span></td>
             <td><span class="lang-de">Dokument wird weder geladen noch geprüft. Dialog <strong>«Dokument wird auf der Webseite nicht geprüft»</strong> nennt Datei und Vermerk und verweist auf <strong>«Als Datei speichern»</strong>. Eine Bestätigung, trotzdem zu prüfen, gibt es nicht. Gilt auch für <code>INTERNE</code>, <code>INTERNO</code>, <code>AD USO INTERNO</code>, <code>USO INTERNO</code>, <code>INTERNAL</code>, <code>CONFIDENTIEL</code>, <code>SECRET</code>, <code>CONFIDENZIALE</code>, <code>SEGRETO</code>, <code>CONFIDENTIAL</code>.</span><span class="lang-fr">Le document n’est ni chargé ni contrôlé. Le dialogue <strong>« Document non contrôlé sur la page web »</strong> indique le fichier et la mention et renvoie vers <strong>« Enregistrer comme fichier »</strong>. Aucune confirmation ne permet de le contrôler quand même. Vaut aussi pour <code>INTERN</code>, <code>INTERNO</code>, <code>AD USO INTERNO</code>, <code>USO INTERNO</code>, <code>INTERNAL</code>, <code>VERTRAULICH</code>, <code>GEHEIM</code>, <code>CONFIDENZIALE</code>, <code>SEGRETO</code>, <code>CONFIDENTIAL</code>.</span><span class="lang-it">Il documento non viene caricato né verificato. Il dialogo <strong>«Documento non verificato sulla pagina web»</strong> indica file e classificazione e rimanda a <strong>«Salva come file»</strong>. Non esiste una conferma per verificarlo comunque. Vale anche per <code>INTERN</code>, <code>INTERNE</code>, <code>INTERNO</code>, <code>USO INTERNO</code>, <code>INTERNAL</code>, <code>VERTRAULICH</code>, <code>GEHEIM</code>, <code>CONFIDENTIEL</code>, <code>SECRET</code>, <code>CONFIDENTIAL</code>.</span></td>
+            <td><span class="lang-de">Wie auf der Webseite: Dokument wird weder geladen noch geprüft. Dialog <strong>«Dokument wird hier nicht geprüft»</strong> verweist auf <strong>«Als Datei speichern»</strong>. Die KI-Funktionen sperren solche Dokumente zusätzlich.</span><span class="lang-fr">Comme sur la page web : le document n’est ni chargé ni contrôlé. Le dialogue <strong>« Document non contrôlé ici »</strong> renvoie vers <strong>« Enregistrer comme fichier »</strong>. Les fonctions d’IA bloquent en outre ces documents.</span><span class="lang-it">Come sulla pagina web: il documento non viene caricato né verificato. Il dialogo <strong>«Documento non verificato qui»</strong> rimanda a <strong>«Salva come file»</strong>. Le funzioni IA bloccano inoltre questi documenti.</span></td>
             <td><span class="lang-de">Kein Hinweis, keine Sperre — vollständige Prüfung offline im Browser.</span><span class="lang-fr">Sans avis ni blocage — contrôle complet hors ligne dans le navigateur.</span><span class="lang-it">Nessun avviso né blocco — verifica completa offline nel browser.</span></td>
           </tr>
           <tr>
             <td><span class="pill pill-info"><span class="lang-de">Ohne Vermerk</span><span class="lang-fr">Sans mention</span><span class="lang-it">Senza indicazione</span></span></td>
             <td><span class="lang-de">Keine Rückfrage — direkte lokale Prüfung im Browser.</span><span class="lang-fr">Aucune confirmation — contrôle local direct dans le navigateur.</span><span class="lang-it">Nessuna conferma — verifica locale diretta nel browser.</span></td>
+            <td><span class="lang-de">Keine Rückfrage — lokale Prüfung im Browser; KI-Funktionen nur auf ausdrücklichen Klick.</span><span class="lang-fr">Aucune confirmation — contrôle local dans le navigateur ; fonctions d’IA uniquement sur clic explicite.</span><span class="lang-it">Nessuna conferma — verifica locale nel browser; funzioni IA solo su clic esplicito.</span></td>
             <td><span class="lang-de">Keine Rückfrage — direkte lokale Prüfung im Browser.</span><span class="lang-fr">Aucune confirmation — contrôle local direct dans le navigateur.</span><span class="lang-it">Nessuna conferma — verifica locale diretta nel browser.</span></td>
           </tr>
         </tbody>
@@ -1902,7 +1905,7 @@ a.inline-link:hover { color: var(--primary-hover); }
         <ul class="lang-fr">
           <li><strong>Détection de classification approximative :</strong> Lectora recherche les mentions telles que <code>INTERNE</code>, <code>CONFIDENTIEL</code> ou <code>SECRET</code> (DE/FR/IT/EN) d’après des modèles dans les en-têtes et pieds de page, les pieds de diapositive, les marges de chaque page PDF et au début du document. Une mention placée ailleurs, dans une image ou sous une graphie inhabituelle n’est pas détectée et le document se charge sur la page web sans confirmation. Dans le doute, la détection bloque plutôt trop ; une détection erronée ne peut pas être contournée et le document se contrôle alors avec le fichier enregistré. Ce contrôle complète les directives du SEM sans les remplacer : la décision d’ouvrir un document sur la page web ou de l’envoyer à Claude relève de la personne qui contrôle.</li>
           <li><strong>Page web sur GitHub Pages et fichier local :</strong> Sur <code>sem-sgg.github.io/lectora/</code>, GitHub fournit le code du programme à chaque ouverture et la page partage son origine avec les autres sites Pages de l’organisation. Pour les documents classifiés, utilisez le fichier <code>Lectora.html</code> téléchargé et vérifié avec <code>SHA256SUMS.txt</code>.</li>
-          <li><strong>Ce qui peut aller à Claude :</strong> selon la règle sur les données de la SGG, uniquement des documents non classifiés, sans données personnelles sensibles ni données de dossiers concernant des personnes faisant l’objet d’une procédure. Lectora ne reconnaît pas les données personnelles. Les autres conditions (conservation, entraînement, lieu de traitement) dépendent du compte Claude utilisé.</li>
+          <li><strong>Ce qui peut aller à Claude :</strong> selon la règle sur les données de la Section Base Frontières (SGG), uniquement des documents non classifiés, sans données personnelles sensibles ni données de dossiers concernant des personnes faisant l’objet d’une procédure. Lectora ne reconnaît pas les données personnelles. Les autres conditions (conservation, entraînement, lieu de traitement) dépendent du compte Claude utilisé.</li>
           <li><strong>Avertissement, onglets en veille et téléchargements :</strong> Si des décisions n’ont pas été exportées depuis le dernier export, le navigateur demande confirmation avant de fermer, de recharger ou de quitter la page (pas dans tous les cas dans l’édition artefact sur claude.ai). Si le navigateur décharge un onglet inactif (Edge : onglets en veille), la session est vidée sans avertissement ; exportez donc avant une pause. Les fichiers exportés restent dans le dossier et l’historique des téléchargements jusqu’à leur suppression.</li>
           <li><strong>PDF signés ou chiffrés :</strong> La copie commentée d’un PDF signé invalide sa signature (Lectora avertit avant ; l’original reste intact). Les PDF chiffrés reçoivent un rapport de contrôle Word.</li>
           <li><strong>Ne remplace pas le contrôle spécialisé :</strong> Les règles locales et l’IA facilitent la relecture, sans se substituer à l’examen juridique et matériel.</li>
@@ -1910,7 +1913,7 @@ a.inline-link:hover { color: var(--primary-hover); }
         <ul class="lang-it">
           <li><strong>Il riconoscimento della classificazione è un’approssimazione:</strong> Lectora cerca indicazioni come <code>AD USO INTERNO</code>, <code>CONFIDENZIALE</code> o <code>SEGRETO</code> (DE/FR/IT/EN) in base a modelli nelle intestazioni e nei piè di pagina, nei piè di diapositiva, nei margini di ogni pagina PDF e all’inizio del documento. Un’indicazione collocata altrove, in un’immagine o in forma diversa non viene rilevata e il documento viene caricato sulla pagina web senza richiesta di conferma. Nel dubbio il riconoscimento blocca piuttosto troppo; un riconoscimento errato non si può aggirare e il documento si verifica allora con il file salvato. Questo controllo integra le istruzioni della SEM senza sostituirle: la responsabilità di aprire un documento sulla pagina web o inviarlo a Claude spetta a chi effettua la verifica.</li>
           <li><strong>Pagina web su GitHub Pages e file locale:</strong> Su <code>sem-sgg.github.io/lectora/</code> GitHub fornisce il codice del programma a ogni apertura e la pagina condivide l’origine con gli altri siti Pages dell’organizzazione. Per i documenti classificati utilizzare il file <code>Lectora.html</code> scaricato e verificato con <code>SHA256SUMS.txt</code>.</li>
-          <li><strong>Che cosa può andare a Claude:</strong> secondo la regola sui dati della SGG solo documenti non classificati, senza dati personali degni di particolare protezione né dati relativi a persone coinvolte in procedimenti. Lectora non riconosce i dati personali. Le altre condizioni (conservazione, addestramento, luogo di trattamento) dipendono dall’account Claude utilizzato.</li>
+          <li><strong>Che cosa può andare a Claude:</strong> secondo la regola sui dati della Sezione Basi Frontiera (SGG) solo documenti non classificati, senza dati personali degni di particolare protezione né dati relativi a persone coinvolte in procedimenti. Lectora non riconosce i dati personali. Le altre condizioni (conservazione, addestramento, luogo di trattamento) dipendono dall’account Claude utilizzato.</li>
           <li><strong>Avviso, schede in sospensione e cartella download:</strong> Se vi sono decisioni non esportate dall’ultima esportazione, il browser chiede conferma prima di chiudere, ricaricare o lasciare la pagina (non in tutti i casi nell’edizione artefatto su claude.ai). Se il browser scarica una scheda inattiva (Edge: schede in sospensione), la sessione si svuota senza avviso; esportare quindi prima di una pausa. I file esportati restano nella cartella e nella cronologia dei download fino alla cancellazione.</li>
           <li><strong>PDF firmati o cifrati:</strong> La copia commentata di un PDF firmato invalida la firma (Lectora avvisa prima; l’originale resta intatto). Per i PDF cifrati si usa il rapporto di verifica Word.</li>
           <li><strong>Non sostituisce il controllo specialistico:</strong> Regole automatiche e IA agevolano la verifica, ma non sostituiscono la lettura specialistica e giuridica.</li>
@@ -1924,21 +1927,21 @@ a.inline-link:hover { color: var(--primary-hover); }
           <li><strong>INTERN oder höher geht nicht ins Internet.</strong> Dokumente und Inhalte mit dem Vermerk <code>INTERN</code>, <code>VERTRAULICH</code> oder <code>GEHEIM</code> laden Sie nicht ins Internet und teilen oder verarbeiten sie nicht über externe Cloud-Dienste. Dazu gehören KI-Dienste (zum Beispiel Claude und ChatGPT), GitHub (Repositories, Issues, Pull Requests) und Online-Speicher ausserhalb der Arbeitsumgebung des Bundes.</li>
           <li><strong>Personendaten.</strong> Unabhängig von der Klassifizierung gehören keine besonders schützenswerten Personendaten und keine Falldaten zu Personen aus Verfahren ins Internet oder in externe Cloud-Dienste.</li>
           <li><strong>Arbeitsumgebung des Bundes.</strong> Für die vom Bund bereitgestellten Dienste (zum Beispiel Teams, Outlook, SharePoint) gelten die Weisungen des SEM.</li>
-          <li>Als klassifiziert gilt, was einen Klassifizierungsvermerk trägt. Die Regel ergänzt die Weisungen des SEM und ersetzt sie nicht. <strong>Merkregel für Lectora: Webseite und KI nur unklassifiziert. Gespeicherte Datei: jede Stufe.</strong></li>
+          <li>Als klassifiziert gilt, was einen Klassifizierungsvermerk trägt. Die Regel ergänzt die Weisungen des SEM und ersetzt sie nicht. <strong>Merkregel für Lectora: Klassifizierte Dokumente prüft nur die gespeicherte Datei <code>Lectora.html</code>. Webseite und Artefakt: nur unklassifizierte Dokumente.</strong></li>
         </ul>
         <ul class="lang-fr">
           <li><strong>Localement, tous les niveaux de classification sont admis.</strong> Ce qu’un outil traite exclusivement sur votre appareil ou localement dans le navigateur, sans l’envoyer sur internet, vous pouvez le traiter quel que soit le niveau de classification.</li>
           <li><strong>INTERNE ou plus ne va pas sur internet.</strong> Vous ne téléversez pas sur internet les documents et contenus portant la mention <code>INTERNE</code>, <code>CONFIDENTIEL</code> ou <code>SECRET</code> et ne les partagez ni ne les traitez au moyen de services en nuage externes. En font partie les services d’IA (par exemple Claude et ChatGPT), GitHub (dépôts, issues, pull requests) et les espaces de stockage en ligne hors de l’environnement de travail de la Confédération.</li>
           <li><strong>Données personnelles.</strong> Indépendamment de la classification, les données personnelles sensibles et les données de dossiers concernant des personnes faisant l’objet d’une procédure ne vont ni sur internet ni dans des services en nuage externes.</li>
           <li><strong>Environnement de travail de la Confédération.</strong> Les services mis à disposition par la Confédération (par exemple Teams, Outlook, SharePoint) sont régis par les directives du SEM.</li>
-          <li>Est considéré comme classifié ce qui porte une mention de classification. Cette règle complète les directives du SEM et ne les remplace pas. <strong>Aide-mémoire pour Lectora : page web et IA, uniquement non classifié. Fichier enregistré : tous les niveaux.</strong></li>
+          <li>Est considéré comme classifié ce qui porte une mention de classification. Cette règle complète les directives du SEM et ne les remplace pas. <strong>Aide-mémoire pour Lectora : seul le fichier enregistré <code>Lectora.html</code> contrôle les documents classifiés. Page web et artefact : uniquement des documents non classifiés.</strong></li>
         </ul>
         <ul class="lang-it">
           <li><strong>In locale è ammesso qualsiasi livello di classificazione.</strong> Ciò che uno strumento elabora esclusivamente sul proprio dispositivo o localmente nel browser, senza inviarlo in internet, può essere trattato indipendentemente dal livello di classificazione.</li>
           <li><strong>AD USO INTERNO o superiore non va in internet.</strong> Documenti e contenuti con l’indicazione <code>AD USO INTERNO</code>, <code>CONFIDENZIALE</code> o <code>SEGRETO</code> non vanno caricati in internet né condivisi o elaborati tramite servizi cloud esterni. Vi rientrano i servizi di IA (ad esempio Claude e ChatGPT), GitHub (repository, issue, pull request) e gli spazi di archiviazione online al di fuori dell’ambiente di lavoro della Confederazione.</li>
           <li><strong>Dati personali.</strong> Indipendentemente dalla classificazione, i dati personali degni di particolare protezione e i dati relativi a persone coinvolte in procedimenti non vanno in internet né in servizi cloud esterni.</li>
           <li><strong>Ambiente di lavoro della Confederazione.</strong> Per i servizi messi a disposizione dalla Confederazione (ad esempio Teams, Outlook, SharePoint) valgono le istruzioni della SEM.</li>
-          <li>È considerato classificato ciò che reca un’indicazione di classificazione. La regola completa le istruzioni della SEM e non le sostituisce. <strong>Promemoria per Lectora: pagina web e IA solo non classificato. File salvato: qualsiasi livello.</strong></li>
+          <li>È considerato classificato ciò che reca un’indicazione di classificazione. La regola completa le istruzioni della SEM e non le sostituisce. <strong>Promemoria per Lectora: solo il file salvato <code>Lectora.html</code> verifica i documenti classificati. Pagina web e artefatto: solo documenti non classificati.</strong></li>
         </ul>
       </div>
 
@@ -1968,13 +1971,13 @@ a.inline-link:hover { color: var(--primary-hover); }
         <span class="section-num"><span class="lang-de">05 · EINRICHTUNG &amp; NUTZUNG</span><span class="lang-fr">05 · MISE EN PLACE ET UTILISATION</span><span class="lang-it">05 · MESSA IN SERVIZIO E UTILIZZO</span></span>
         <h2><span class="lang-de">Start in vier Schritten</span><span class="lang-fr">Démarrage en quatre étapes</span><span class="lang-it">Avvio in quattro passi</span></h2>
         <p class="lang-de">
-          Für die Offline-Ausgabe ist weder eine Installation noch ein Konto nötig. Für klassifizierte Dokumente (<code>INTERN</code>, <code>VERTRAULICH</code>, <code>GEHEIM</code>) laden Sie die Datei <code>Lectora.html</code> lokal herunter; für unklassifizierte Dokumente und zum Ausprobieren steht zusätzlich die Webseite auf GitHub Pages bereit. Merkregel: Webseite und KI nur unklassifiziert, gespeicherte Datei jede Stufe.
+          Für die Offline-Ausgabe ist weder eine Installation noch ein Konto nötig. Für klassifizierte Dokumente (<code>INTERN</code>, <code>VERTRAULICH</code>, <code>GEHEIM</code>) laden Sie die Datei <code>Lectora.html</code> lokal herunter; für unklassifizierte Dokumente und zum Ausprobieren steht zusätzlich die Webseite auf GitHub Pages bereit. Merkregel: Klassifizierte Dokumente prüft nur die gespeicherte Datei; Webseite und Artefakt nur unklassifizierte Dokumente.
         </p>
         <p class="lang-fr">
-          L’édition hors ligne ne requiert ni installation ni compte. Pour les documents classifiés (<code>INTERNE</code>, <code>CONFIDENTIEL</code>, <code>SECRET</code>), téléchargez le fichier <code>Lectora.html</code> en local ; la page web sur GitHub Pages est prévue pour les documents non classifiés et les essais. Aide-mémoire : page web et IA, uniquement non classifié ; fichier enregistré, tous les niveaux.
+          L’édition hors ligne ne requiert ni installation ni compte. Pour les documents classifiés (<code>INTERNE</code>, <code>CONFIDENTIEL</code>, <code>SECRET</code>), téléchargez le fichier <code>Lectora.html</code> en local ; la page web sur GitHub Pages est prévue pour les documents non classifiés et les essais. Aide-mémoire : seul le fichier enregistré contrôle les documents classifiés ; page web et artefact, uniquement des documents non classifiés.
         </p>
         <p class="lang-it">
-          L’edizione offline non richiede né installazione né account. Per i documenti classificati (<code>AD USO INTERNO</code>, <code>CONFIDENZIALE</code>, <code>SEGRETO</code>) scaricare il file <code>Lectora.html</code> in locale; la pagina web su GitHub Pages è destinata ai documenti non classificati e alle prove. Promemoria: pagina web e IA solo non classificato; file salvato, qualsiasi livello.
+          L’edizione offline non richiede né installazione né account. Per i documenti classificati (<code>AD USO INTERNO</code>, <code>CONFIDENZIALE</code>, <code>SEGRETO</code>) scaricare il file <code>Lectora.html</code> in locale; la pagina web su GitHub Pages è destinata ai documenti non classificati e alle prove. Promemoria: solo il file salvato verifica i documenti classificati; pagina web e artefatto solo documenti non classificati.
         </p>
       </div>
 

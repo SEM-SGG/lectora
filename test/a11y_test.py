@@ -179,6 +179,18 @@ with sync_playwright() as pw:
             pg.goto('file://' + OFFLINE_FILE); pg.wait_for_selector('#updBand:not([hidden])', timeout=15000); pg.evaluate(AXE)
             print(f'  offline Altershinweis {vw}px Verstösse:', pg.evaluate(AXE_RUN)); pg.close()
     else: VIOL.append('Offline-Ausgabe fehlt (node build.mjs --offline)'); print('  Offline-Ausgabe fehlt (node build.mjs --offline)')
+    # Artefakt-Ausgabe (Testausgabe dist-local): Sperrdialog für ein Dokument mit Vermerk, DE, FR und IT, 1280 und 375 px
+    for vw, vh in ((1280, 900), (375, 812)):
+        for lang in ('de', 'fr', 'it'):
+            pg = br.new_page(viewport={'width': vw, 'height': vh}, locale=lang + '-CH'); pg.goto(url(8771) + '/dist-local/index.html'); pg.wait_for_timeout(500)
+            pg.set_input_files('#file', [os.path.join(FX, 'klassif_intern_kopf.docx')]); pg.wait_for_selector('#dlg[open] [data-fid="web-classif-blocked"]', timeout=30000); pg.wait_for_timeout(300)
+            pg.evaluate(AXE); print(f'  Artefakt Sperrdialog INTERN {lang} {vw}px Verstösse:', pg.evaluate(AXE_RUN))
+            ov = pg.evaluate('(() => { const d = document.getElementById("dlg"); return [d.scrollWidth <= d.clientWidth + 1, document.documentElement.scrollWidth <= innerWidth + 1]; })()')
+            if ov != [True, True]: VIOL.append(f'Artefakt Sperrdialog {lang} {vw}px: Überlauf {ov}')
+            pg.screenshot(path=os.path.join(SHOTS_DIR, f'a11y_artefakt_sperre_{lang}_{vw}.png'))
+            pg.click('[data-fid="webblock-close"]'); pg.wait_for_function('!document.getElementById("dlg").open && !DP.state.busy'); pg.wait_for_timeout(200)
+            if pg.evaluate('DP.state.docs.length'): VIOL.append(f'Artefakt {lang} {vw}px: Dokument mit Vermerk trotz Sperre geladen')
+            pg.close()
     # Grosses Dokument: Zeit bis Anzeige
     pg = br.new_page(viewport={'width': 1280, 'height': 900}); pg.goto(url(8771) + '/dist-local/index.html'); pg.wait_for_timeout(400)
     t0 = time.time(); pg.set_input_files('#file', [os.path.join(FX, 'gross_de.docx')]); pg.wait_for_function('DP.state.docs.length === 1 && !DP.state.busy', timeout=60000); t1 = time.time()

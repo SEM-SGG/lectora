@@ -21,6 +21,11 @@
   /** Offline-Ausgabe über http(s) geöffnet, also auf GitHub Pages oder einem Webserver: Dokumente mit Klassifizierungsvermerk (INTERN,
       VERTRAULICH, GEHEIM) prüft Lectora dort nicht (readFiles, Datenregel der SGG). Als lokale Datei (file:) und in der Artefakt-Ausgabe gilt WEB nicht. */
   const WEB = !!DP.offline && /^https?:$/.test(location.protocol);
+  /** Dokumente mit Klassifizierungsvermerk lädt Lectora nicht: auf der Webseite (WEB) und in der Artefakt-Ausgabe (DP.offline ist false).
+      In beiden liefert eine fremde Infrastruktur den Programmcode bei jedem Aufruf aus (GitHub Pages bzw. claude.ai mit Bibliotheken von
+      cdnjs). Nur die gespeicherte Datei Lectora.html (file:) prüft alle Stufen. Datenregel der SGG; die Sperre der KI-Funktionen (aiBlocked)
+      bleibt als zweite Sicherung. */
+  const CL_BLOCK = WEB || !DP.offline;
 
   /** Einstellungen und Ansichtszustände mit ihren Ausgangswerten; «Sitzung leeren» setzt alle darauf zurück. */
   const DEFAULTS = () => ({
@@ -527,9 +532,9 @@
         await nextPaint();
         const doc = await DP.parse.parseFile(file);
         doc.demo = !!demo;
-        // Auf GitHub Pages: INTERN, VERTRAULICH und GEHEIM (und Entsprechungen) nie prüfen (Datenregel der SGG: INTERN oder höher geht
-        // nicht ins Internet). Vor der Fassungsrückfrage, damit auch «Neue Fassung laden» geschützt ist; ein verworfenes Dokument bleibt nirgends liegen.
-        const cl = WEB && !demo ? doc.meta.classification : null;
+        // Auf GitHub Pages und im Artefakt: INTERN, VERTRAULICH und GEHEIM (und Entsprechungen) nie laden und nie prüfen (CL_BLOCK). Vor
+        // der Fassungsrückfrage, damit auch «Neue Fassung laden» geschützt ist; ein verworfenes Dokument bleibt nirgends liegen.
+        const cl = CL_BLOCK && !demo ? doc.meta.classification : null;
         if (cl && cl.level >= 1) { S.busy = null; render(); await webClassifBlocked(doc.name, cl.label, opts.focus || 'pick'); continue; }
         let target = opts.versionOf ? docById(opts.versionOf) : null;
         if (!target && !demo) {
@@ -608,15 +613,18 @@
       });
     });
   }
-  /** Auf GitHub Pages (WEB): Dokument mit Vermerk INTERN, VERTRAULICH oder GEHEIM. Erklärung statt Prüfung; das Dokument wird nicht geladen.
-      Erhält nur Dateiname und Vermerk (keinen Verweis auf das Dokumentobjekt). Löst auf, sobald der Dialog schliesst. */
+  /** Auf GitHub Pages (WEB) und im Artefakt (CL_BLOCK): Dokument mit Vermerk INTERN, VERTRAULICH oder GEHEIM. Erklärung statt Prüfung; das
+      Dokument wird nicht geladen. Texte je Ausgabe (web.* bzw. art.*). Erhält nur Dateiname und Vermerk (keinen Verweis auf das
+      Dokumentobjekt). Löst auf, sobald der Dialog schliesst. */
   function webClassifBlocked(name, label, back) {
+    const x = WEB ? { t: t('web.block.t'), p: t('web.block.p', { name, label }), p2: t('web.block.p2'), heur: t('web.heur') }
+      : { t: t('art.block.t'), p: t('art.block.p', { name, label }), p2: t('art.block.p2'), heur: t('art.heur') };
     return new Promise((done) => {
       dialog((d, close) => {
         d.setAttribute('aria-labelledby', 'dlgTitle');
-        app(d, h('div', { class: 'dlg-body', 'data-fid': 'web-classif-blocked' }, h('h2', { id: 'dlgTitle' }, t('web.block.t')),
-          h('div', { class: 'notice err' }, icon('gpp_maybe'), h('span', null, t('web.block.p', { name, label }))),
-          h('p', null, t('web.block.p2')), h('p', { class: 'help' }, t('web.heur'))),
+        app(d, h('div', { class: 'dlg-body', 'data-fid': 'web-classif-blocked' }, h('h2', { id: 'dlgTitle' }, x.t),
+          h('div', { class: 'notice err' }, icon('gpp_maybe'), h('span', null, x.p)),
+          h('p', null, x.p2), h('p', { class: 'help' }, x.heur)),
           h('div', { class: 'dlg-actions' },
             h('a', { class: 'btn text', href: DOWNLOAD_URL, target: '_blank', rel: 'noopener noreferrer', 'data-fid': 'webblock-dl', 'data-tip': t('tip.webSave') }, icon('download', 'sm'), t('web.save')),
             h('button', { type: 'button', class: 'btn', 'data-fid': 'webblock-close', 'data-autofocus': true, onclick: close }, t('btn.close'))));

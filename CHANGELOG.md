@@ -4,11 +4,12 @@ Jede Version hat einen Eintrag. Die Überschrift hat die Form `## X.Y.Z – JJJJ
 
 ## 2.1.0 – 2026-11-23
 
-Lectora setzt die Datenregel der SGG um. Merkregel: Webseite und KI nur unklassifiziert, gespeicherte Datei jede Stufe.
+Lectora setzt die Datenregel der SGG um. Merkregel: Klassifizierte Dokumente prüft nur die gespeicherte Datei `Lectora.html`. Webseite und Artefakt: nur unklassifizierte Dokumente.
 
 ### Geändert
 
-- KI-Funktionen der Artefakt-Ausgabe: Dokumente mit dem Vermerk INTERN (auch INTERNE, AD USO INTERNO, USO INTERNO, INTERNAL) sendet Lectora nie an Claude, wie bisher schon VERTRAULICH und GEHEIM. Die Bestätigung «Ich bestätige, dass ich dieses Dokument trotz Klassifizierungsvermerk senden darf» entfällt; es gibt keinen Weg, ein Dokument mit Vermerk trotzdem zu senden. Das gilt für jede KI-Funktion und für Vergleiche, an denen ein solches Dokument beteiligt ist.
+- Artefakt-Ausgabe auf claude.ai: Dokumente mit dem Vermerk INTERN, VERTRAULICH oder GEHEIM (und den Entsprechungen) lädt und prüft Lectora dort nicht mehr, wie auf der Webseite: Auch hier liefert eine fremde Infrastruktur den Programmcode aus (claude.ai, Bibliotheken von cdnjs). Eine Erklärung verweist auf die gespeicherte Datei `Lectora.html`. Das gilt für die Dateiauswahl, das Ablegen von Dateien, mehrere Dateien auf einmal und «Neue Fassung laden»; einen Weg, die Sperre zu übergehen, gibt es nicht.
+- KI-Funktionen der Artefakt-Ausgabe (zweite Sicherung): Dokumente mit dem Vermerk INTERN (auch INTERNE, AD USO INTERNO, USO INTERNO, INTERNAL) sendet Lectora nie an Claude, wie bisher schon VERTRAULICH und GEHEIM. Die Bestätigung «Ich bestätige, dass ich dieses Dokument trotz Klassifizierungsvermerk senden darf» entfällt; es gibt keinen Weg, ein Dokument mit Vermerk trotzdem zu senden. Das gilt für jede KI-Funktion und für Vergleiche, an denen ein solches Dokument beteiligt ist.
 - Der Dialog vor dem Senden an Claude nennt die Datenregel: keine besonders schützenswerten Personendaten und keine Falldaten zu Personen aus Verfahren, auch nicht in unklassifizierten Dokumenten.
 - Webseite (GitHub Pages): Dokumente mit dem Vermerk INTERN prüft Lectora dort nicht mehr, wie VERTRAULICH und GEHEIM; die Rückfrage mit Häkchen entfällt. Eine Erklärung verweist auf die Datei `Lectora.html`. Die gespeicherte Datei prüft weiterhin jedes Dokument lokal.
 - Die Erkennung des Vermerks sperrt im Zweifel eher zu viel. Neu erkannt werden auch «Klassifizierung INTERN» ohne Doppelpunkt und kurze Angaben in Grossbuchstaben, die mit dem Vermerk enden (zum Beispiel «SEM-INTERN», «NUR INTERN», «STRICTLY CONFIDENTIAL»). «Interne Weisung», «die interne Kommunikation» oder «NOTE INTERNE» lösen die Sperre weiterhin nicht aus. Die Erkennung bleibt eine Näherung.
