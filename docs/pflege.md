@@ -40,7 +40,7 @@ Im Zweifel führst du nichts zusammen und gibst den Auftrag an einen KI-Agenten.
 ```text
 Im Repository SEM-SGG/lectora liegt der Pull Request #<Nummer> von Dependabot. Übernimm das Update nach AGENTS.md und
 docs/entwicklung.md (Abschnitt «Bauen»): bei einer eingebetteten Bibliothek den neuen SHA-512-Wert und die Adresse auf
-cdnjs in build.mjs eintragen, danach node tools/notices.mjs --write; dann alle Tests (npm test). Ändere sonst nichts.
+cdnjs in build.mjs eintragen; bei jedem Update danach node tools/notices.mjs --write; dann alle Tests (npm test). Ändere sonst nichts.
 Verlangt das Update einen Umbau, brich ab und sag mir, was der Umbau umfasst. Lege einen eigenen Pull Request gegen main
 an, der #<Nummer> nennt, und sag mir, ob ich #<Nummer> danach schliessen soll.
 ```
