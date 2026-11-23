@@ -2,6 +2,19 @@
 
 Jede Version hat einen Eintrag. Die Überschrift hat die Form `## X.Y.Z – JJJJ-MM-TT`; der Workflow `release` übernimmt den obersten Eintrag als Text der Veröffentlichung.
 
+## 2.0.1 – 2026-11-23
+
+Lectora als Webseite auf GitHub Pages ist für unklassifizierte Dokumente gedacht. Dokumente mit Klassifizierungsvermerk prüft man mit der gespeicherten Datei `Lectora.html`.
+
+### Geändert
+
+- Webseite: Erkennt Lectora beim Laden eines Dokuments den Vermerk VERTRAULICH oder GEHEIM (auch CONFIDENTIEL, SECRET, CONFIDENZIALE, SEGRETO, CONFIDENTIAL), lädt es das Dokument nicht und prüft es nicht. Eine Erklärung verweist auf die Datei `Lectora.html`. Das gilt für die Dateiauswahl, das Ablegen von Dateien und «Neue Fassung laden». Den Vermerk liest Lectora dafür im Browser aus der Datei; nichts geht an einen Server.
+- Webseite: Bei INTERN (auch INTERNE, INTERNO, AD USO INTERNO, USO INTERNO, INTERNAL) empfiehlt ein Warndialog die Datei `Lectora.html`. Lectora prüft das Dokument erst nach einer Bestätigung mit Häkchen; «Abbrechen», Escape und Schliessen verwerfen es.
+- Webseite: Die Startseite zeigt dauerhaft einen Hinweis, wofür die Webseite gedacht ist, mit «Als Datei speichern» (Seite der neusten Ausgabe).
+- Die geöffnete Datei `Lectora.html` und die Artefakt-Ausgabe auf claude.ai sind nicht betroffen: Sie prüfen weiterhin alle Dokumente lokal, auch mit dem Vermerk INTERN, VERTRAULICH oder GEHEIM. Für die KI-Funktionen der Artefakt-Ausgabe gelten die bisherigen Regeln.
+- Die Erkennung ist eine Näherung. Lectora sucht den Vermerk nach Muster in Kopf- und Fusszeilen, in Folienfüssen, an den Seitenrändern jeder PDF-Seite und am Anfang des Dokuments. Einen Vermerk an anderer Stelle, in einem Bild oder in abweichender Schreibweise erkennt es nicht; ein solches Dokument lädt die Webseite ohne Rückfrage.
+- Anleitung in Lectora, `README.md` und `docs/datenschutz.md` erklären den Grund: GitHub liefert den Programmcode der Webseite bei jedem Aufruf neu aus, eine gespeicherte Datei ändert sich dagegen nicht unbemerkt.
+
 ## 2.0.0 – 2026-11-18
 
 Erste Ausgabe aus dem öffentlichen Repository. Sie fasst die bisherige Entwicklung zusammen.
