@@ -12,7 +12,9 @@
 #   3. pages: dieselbe geprüfte Datei als index.html und die version.json dieser Version auf GitHub Pages
 #      (https://sem-sgg.github.io/lectora/); erst damit sehen die Offline-Ausgaben die neue Version (Versionsabfrage)
 # Wiederholen («Re-run failed jobs»): Besteht der Tag oder das Release aus einem früheren Versuch desselben Laufs, auf demselben
-# Commit und mit denselben Dateien, geht der Lauf weiter bis GitHub Pages. Der Auftrag pages lässt sich allein wiederholen.
+# Commit und mit denselben Dateien, geht der Lauf weiter bis GitHub Pages. Scheitert der Auftrag pages nach dem
+# Hochladen der Seite, scheitert auch seine Wiederholung (zweites Artefakt «github-pages»); dann den Workflow pages mit dem Tag
+# starten (docs/release.md, Abschnitt «GitHub Pages nachholen, wenn das Release schon besteht»).
 # Umgebung github-pages: von Hand läuft pages für den Zweig main (Standardregel), mit einem Tag für vX.Y.Z (Regel für Tags v*,
 # docs/repo-einstellungen.md). Die Ausgabe ohne Versionsabfrage wird gebaut und getestet, aber nicht veröffentlicht.
 name: release
