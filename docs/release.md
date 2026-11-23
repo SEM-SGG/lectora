@@ -14,7 +14,7 @@ Das meiste erledigt GitHub selbst. Es prüft die Version, baut die Datei, testet
 
 Du tust drei Dinge:
 
-1. **Version vorbereiten:** In vier Dateien die neue Nummer und einen kurzen Text eintragen, alles in einem Pull Request.
+1. **Version vorbereiten:** In drei Dateien die neue Nummer und einen kurzen Text eintragen, alles in einem Pull Request.
 2. **Pull Request zusammenführen,** sobald die Prüfungen grün sind.
 3. **Veröffentlichung starten:** im Bereich «Actions» auf einen Knopf drücken und die Nummer eingeben.
 
@@ -57,18 +57,17 @@ Die aktuelle Nummer findest du auf der Startseite des Repositorys in der rechten
 
 ## Schritt 1: Version vorbereiten
 
-Die Versionsnummer steht in vier Dateien. Alle vier müssen dieselbe Nummer tragen:
+Die Versionsnummer steht in drei Dateien. Alle drei müssen dieselbe Nummer tragen:
 
 | Datei | Was du änderst |
 | --- | --- |
 | `package.json` | eine Zeile: die Nummer |
 | `version.json` | Nummer, Datum und ein kurzer Hinweis in drei Sprachen |
 | `CHANGELOG.md` | ein neuer Abschnitt zuoberst: was neu ist |
-| `test/ui_test.py` | an fünf Stellen die Nummer |
 
 Die Datei `package-lock.json` nennt die Nummer auch. **Lass sie unverändert.** Nichts hängt davon ab, und sie enthält viele ähnliche Zeilen, die du nicht ändern darfst.
 
-Vergisst du eine der ersten drei Dateien, merkt GitHub das im Pull Request und nennt die Datei (siehe Schritt 2). Vergisst du `test/ui_test.py`, scheitert die Prüfung «Oberfläche, Barrierefreiheit, Offline-Ausgabe» ohne einen solchen Hinweis.
+Vergisst du eine Datei, merkt GitHub das im Pull Request und nennt die Datei (siehe Schritt 2).
 
 Im Beispiel wird aus Version 2.0.0 die Version 2.0.1, veröffentlicht am 1. Dezember 2026. Setze deine eigene Nummer und dein Datum ein.
 
@@ -94,7 +93,7 @@ Im Beispiel wird aus Version 2.0.0 die Version 2.0.1, veröffentlicht am 1. Deze
 9. Schreibe als Titel «Version 2.0.1». Schreibe in die Beschreibung in einem Satz, was sich für die Nutzerinnen und Nutzer ändert.
 10. Klicke unten rechts auf **Create pull request**.
 
-**So sieht es aus, wenn es geklappt hat:** Der Pull Request hat eine eigene Seite mit einer Nummer, zum Beispiel «#12». Unten auf der Seite laufen schon Prüfungen. Sie scheitern, bis alle vier Dateien geändert sind. Das ist in diesem Moment normal.
+**So sieht es aus, wenn es geklappt hat:** Der Pull Request hat eine eigene Seite mit einer Nummer, zum Beispiel «#12». Unten auf der Seite laufen schon Prüfungen. Sie scheitern, bis alle drei Dateien geändert sind. Das ist in diesem Moment normal.
 
 **Wenn es nicht klappt:** Fehlt im Fenster die Wahl eines neuen Zweigs, bist du schon auf einem anderen Zweig. Prüfe oben links das Menü **Branch**: Dort muss `main` stehen.
 
@@ -154,26 +153,7 @@ Im Beispiel wird aus Version 2.0.0 die Version 2.0.1, veröffentlicht am 1. Deze
 - Darunter steht mindestens ein Satz. Dieser Text erscheint später auf der Seite des Release.
 - Schreibe für die Nutzerinnen und Nutzer: was neu ist, was sich ändert, was behoben ist. Kein Text aus echten Dokumenten.
 
-### 1d. test/ui_test.py anpassen, im selben Zweig
-
-Ein Test prüft, dass Lectora die Versionsnummer richtig anzeigt und in gespeicherte Dateien schreibt. Er erwartet die Nummer als festen Text. Lectora selbst nimmt die Nummer aus `package.json`; steht im Test noch die alte, scheitert er.
-
-1. Prüfe im Menü **Branch**, dass `version-2.0.1` gewählt ist.
-2. Klicke auf den Ordner `test`, dann auf `ui_test.py` und auf das Bleistift-Symbol.
-3. Ersetze an genau fünf Stellen die alte Nummer durch die neue. Ändere sonst nichts, auch keine Leerzeichen, Anführungszeichen oder Schrägstriche. Die Zeilennummern gelten für Version 2.0.1 und können sich später leicht verschieben:
-
-   | Zeile (etwa) | Was geprüft wird | Vorher (Beispiel) | Nachher |
-   | --- | --- | --- | --- |
-   | 495 | gespeichertes Prüfprofil | `prof['lectora'] == '2.0.0'` | `prof['lectora'] == '2.0.1'` |
-   | 554 | Fuss der Anleitung, Deutsch | `r'^Version 2\.0\.0 · Stand` | `r'^Version 2\.0\.1 · Stand` |
-   | 556 | Fuss der Anleitung, Französisch | `'Version 2.0.0 · état au '` | `'Version 2.0.1 · état au '` |
-   | 557 | Fuss der Anleitung, Italienisch | `'Versione 2.0.0 · aggiornata al '` | `'Versione 2.0.1 · aggiornata al '` |
-   | 674 | gespeicherte Rückmeldung | `fb['lectora'] == '2.0.0'` | `fb['lectora'] == '2.0.1'` |
-
-   In Zeile 554 steht vor jedem Punkt der Nummer ein umgekehrter Schrägstrich `\`. Lass ihn stehen. Wer mit der Suche des Editors nach der alten Nummer `2.0.0` sucht, findet nur die anderen vier Stellen.
-4. Klicke **Commit changes...**, wähle **Commit directly to the `version-2.0.1` branch**¹ und klicke **Commit changes**.
-
-**So sieht es aus, wenn alles geklappt hat:** Öffne den Pull Request (Reiter **Pull requests**, dann «Version 2.0.1»). Im Reiter **Files changed**¹ stehen genau vier Dateien: `package.json`, `version.json`, `CHANGELOG.md` und `test/ui_test.py`. Bei `test/ui_test.py` sind genau fünf Zeilen geändert.
+**So sieht es aus, wenn alles geklappt hat:** Öffne den Pull Request (Reiter **Pull requests**, dann «Version 2.0.1»). Im Reiter **Files changed**¹ stehen genau drei Dateien: `package.json`, `version.json` und `CHANGELOG.md`.
 
 ## Schritt 2: Prüfungen abwarten und zusammenführen
 
@@ -182,7 +162,7 @@ Nach jeder Änderung prüft GitHub den Pull Request von Neuem. Das dauert etwa e
 1. Öffne den Pull Request.
 2. Sieh unten auf der Seite nach. Dort stehen die Prüfungen «Logik, Export, Hygiene» und «Oberfläche, Barrierefreiheit, Offline-Ausgabe».
 3. Warte, bis beide einen grünen Haken haben.
-4. Bitte eine zweite Person mit Schreibrecht, den Pull Request freizugeben. Sie öffnet ihn, prüft die vier Dateien und gibt ihn frei.
+4. Bitte eine zweite Person mit Schreibrecht, den Pull Request freizugeben. Sie öffnet ihn, prüft die drei Dateien und gibt ihn frei.
 5. Klicke unten auf **Merge pull request** und dann auf **Confirm merge**.
 6. Klicke danach auf **Delete branch**¹. Der Zweig wird nicht mehr gebraucht.
 
@@ -200,7 +180,6 @@ Nach jeder Änderung prüft GitHub den Pull Request von Neuem. Das dauert etwa e
 | «version.json ist nach der Änderung kein gültiges JSON mehr (Zeile 4, Spalte 3). …» | JSON ist das Format dieser Datei; ein einziges falsches Zeichen macht sie unlesbar. Meist fehlt ein Komma am Zeilenende oder ein Anführungszeichen. Vergleiche Zeichen für Zeichen mit dem Beispiel in Schritt 1b. |
 | «version.json: Der Hinweis auf Französisch enthält etwas, das wie eine Adresse aussieht …» | Entferne die Adresse oder den Dateinamen aus dem Hinweis. |
 | «version.json: Der Hinweis auf Italienisch hat 230 Zeichen, erlaubt sind 200. …» | Kürze den Hinweis. |
-| «Logik, Export, Hygiene» ist grün, «Oberfläche, Barrierefreiheit, Offline-Ausgabe» scheitert. Am Ende der Ausgabe steht «… gescheitert: ui_test.py». | Meist steht in `test/ui_test.py` noch die alte Nummer, an einer oder mehreren der fünf Stellen. Ändere sie wie in Schritt 1d. |
 
 Jede Korrektur machst du wie in Schritt 1b: Zweig `version-2.0.1` wählen, Datei bearbeiten, **Commit directly to the `version-2.0.1` branch**¹. Die Prüfungen starten danach von selbst neu.
 
@@ -265,8 +244,8 @@ Für alle, die den Ablauf kennen:
 - [ ] 1. Nummer wählen (X, Y oder Z um eins höher; nie zweimal dieselbe).
 - [ ] 2. `package.json` bearbeiten, Nummer ändern, neuer Zweig `version-X.Y.Z`, **Create pull request**.
 - [ ] 3. Im Zweig `version-X.Y.Z`: `version.json` (Nummer, Datum, Hinweis de/fr/it, ohne Adressen).
-- [ ] 4. Im Zweig `version-X.Y.Z`: `CHANGELOG.md`, neuer Abschnitt zuoberst `## X.Y.Z – JJJJ-MM-TT`, gleiches Datum; `test/ui_test.py`, an fünf Stellen die Nummer (eine davon als `X\.Y\.Z`).
-- [ ] 5. Im Pull Request: genau vier Dateien geändert; beide Prüfungen grün.
+- [ ] 4. Im Zweig `version-X.Y.Z`: `CHANGELOG.md`, neuer Abschnitt zuoberst `## X.Y.Z – JJJJ-MM-TT`, gleiches Datum.
+- [ ] 5. Im Pull Request: genau drei Dateien geändert; beide Prüfungen grün.
 - [ ] 6. Freigabe durch eine zweite Person; **Merge pull request** → **Confirm merge**.
 - [ ] 7. **Actions** → **release** → **Run workflow** → **Branch**: `main` → Version `X.Y.Z` → **Run workflow**.
 - [ ] 8. Lauf: drei grüne Haken (Prüfen und bauen, GitHub Release, GitHub Pages).
@@ -359,11 +338,10 @@ Für alle, die mit git arbeiten. Der Ablauf ist derselbe; statt des Knopfs start
    git switch -c version-2.1.0
    npm version 2.1.0 --no-git-tag-version
    ```
-   Passe `version.json`, `CHANGELOG.md` und `test/ui_test.py` an wie in Schritt 1 und prüfe:
+   Passe `version.json` und `CHANGELOG.md` an wie in Schritt 1 und prüfe:
    ```sh
    python3 tools/release_check.py --aktuell
    ```
-   `tools/release_check.py` prüft `test/ui_test.py` nicht; ob die fünf Stellen stimmen, zeigt `python3 test/run.py ui_test.py`.
    Die ganzen Tests (`npm test`, rund 20 Minuten, braucht LibreOffice, poppler-utils und qpdf) laufen im Pull Request ohnehin.
 2. Öffne einen Pull Request und führe ihn zusammen, wenn `checks` grün ist.
 3. Setze den Tag auf den zusammengeführten Stand und schiebe ihn:

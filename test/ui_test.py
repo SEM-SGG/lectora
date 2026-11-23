@@ -492,7 +492,7 @@ def werkzeug_ui(br, errors):
         pg.fill('#profName', 'Team Grundlagen'); pg.click('[data-fid="prof-save"]'); pg.wait_for_timeout(500)
         fn, prof = saved(pg)
         print('Profil', w, 'px: gespeichert', fn, '| Zustand:', pg.inner_text('#profState').replace('\n', ' '))
-        assert fn == 'Lectora-Profil_Team_Grundlagen.json' and prof['format'] == 'lectora-profil' and prof['schema'] == 1 and prof['lectora'] == '2.0.1' and prof['name'] == 'Team Grundlagen'
+        assert fn == 'Lectora-Profil_Team_Grundlagen.json' and prof['format'] == 'lectora-profil' and prof['schema'] == 1 and prof['lectora'] == VERSION and prof['name'] == 'Team Grundlagen'
         assert prof['settings']['off'] == ['L06'] and prof['settings']['params'] == {'L01.note': 20} and prof['settings']['terms'].startswith('Mitarbeiter') and prof['settings']['acts'] == '999.1; ABC; DEF; GHI'
         raw = _json.dumps(prof, ensure_ascii=False); assert 'weisung' not in raw.lower() and 'Auskunft' not in raw, 'keine Dokumentinhalte, keine Dateinamen'
         assert 'Team Grundlagen' in pg.inner_text('#profState') and 'Seit dem Speichern unverändert' in pg.inner_text('#profState') and not pg.query_selector('[data-fid="prof-dirty"]')
@@ -551,10 +551,10 @@ def werkzeug_ui(br, errors):
     pg.context.close()
     # Anleitung: Version im Fuss, Profile erklärt
     pg = page(1440, 900); pg.evaluate('DP.ui.go("help")'); pg.wait_for_timeout(300)
-    foot = pg.inner_text('#gFoot'); assert re.match(r'^Version 2\.0\.1 · Stand \d{1,2}\. \w+ \d{4}$', foot), foot
+    foot = pg.inner_text('#gFoot'); assert re.match(rf'^Version {re.escape(VERSION)} · Stand \d{{1,2}}\. \w+ \d{{4}}$', foot), foot
     assert 'nie Dokumentinhalte' in pg.inner_text('main') and 'Prüfprofile' in pg.inner_text('main')
-    pg.evaluate('DP.ui.setLang("fr")'); pg.wait_for_timeout(200); assert pg.inner_text('#gFoot').startswith('Version 2.0.1 · état au ')
-    pg.evaluate('DP.ui.setLang("it")'); pg.wait_for_timeout(200); assert pg.inner_text('#gFoot').startswith('Versione 2.0.1 · aggiornata al ')
+    pg.evaluate('DP.ui.setLang("fr")'); pg.wait_for_timeout(200); assert pg.inner_text('#gFoot').startswith(f'Version {VERSION} · état au ')
+    pg.evaluate('DP.ui.setLang("it")'); pg.wait_for_timeout(200); assert pg.inner_text('#gFoot').startswith(f'Versione {VERSION} · aggiornata al ')
     print('Anleitung: Fuss', foot); pg.context.close()
 
     # ===== 2. Nachprüfung: neue Fassung über die Dokumentkarte, Übernahmen, Band, Filter, Bericht, weitere Fassung, Rückfragen =====
@@ -671,7 +671,7 @@ def werkzeug_ui(br, errors):
         pg.click('[data-fid="fb-save"]'); pg.wait_for_timeout(400)
         fn, fb = saved(pg); raw = _json.dumps(fb, ensure_ascii=False)
         print('Rückmeldung', w, 'px:', fn, raw)
-        assert re.match(r'^Lectora-Rueckmeldung_\d{4}-\d\d-\d\d\.json$', fn) and fb['format'] == 'lectora-rueckmeldung' and fb['schema'] == 1 and fb['lectora'] == '2.0.1' and fb['excerpts'] is False and len(fb['entries']) == 3
+        assert re.match(r'^Lectora-Rueckmeldung_\d{4}-\d\d-\d\d\.json$', fn) and fb['format'] == 'lectora-rueckmeldung' and fb['schema'] == 1 and fb['lectora'] == VERSION and fb['excerpts'] is False and len(fb['entries']) == 3
         assert '.docx' not in raw and 'DSB' not in raw and not any('quote' in e or 'file' in e or 'sentence' in e for e in fb['entries'])
         e6 = next(e for e in fb['entries'] if e['crit'] == 'L06'); assert e6 == {'crit': 'L06', 'key': 'f.L06', 'source': 'rule', 'sev': 'info', 'lang': 'de', 'type': 'weisung', 'format': 'docx', 'params': {}, 'note': 'sollte ist hier eine Empfehlung'}, e6
         ex = next(e for e in fb['entries'] if e['source'] == 'compare'); assert ex['lang'] == 'fr' and ex['refLang'] == 'de'
