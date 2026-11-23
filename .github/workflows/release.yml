@@ -12,9 +12,10 @@
 #   3. pages: dieselbe geprüfte Datei als index.html und die version.json dieser Version auf GitHub Pages
 #      (https://sem-sgg.github.io/lectora/); erst damit sehen die Offline-Ausgaben die neue Version (Versionsabfrage)
 # Wiederholen («Re-run failed jobs»): Besteht der Tag oder das Release aus einem früheren Versuch desselben Laufs, auf demselben
-# Commit und mit denselben Dateien, geht der Lauf weiter bis GitHub Pages. Scheitert der Auftrag pages nach dem
-# Hochladen der Seite, scheitert auch seine Wiederholung (zweites Artefakt «github-pages»); dann den Workflow pages mit dem Tag
-# starten (docs/release.md, Abschnitt «GitHub Pages nachholen, wenn das Release schon besteht»).
+# Commit und mit denselben Dateien, geht der Lauf weiter bis GitHub Pages. Der Auftrag pages lädt die Seite in jedem Versuch
+# unter einem eigenen Namen hoch (github-pages-<Versuch>); seine Wiederholung geht deshalb auch nach dem Hochladen. Ausweg, wenn
+# sie trotzdem scheitert: den Workflow pages mit dem Tag starten (docs/release.md, Abschnitt «GitHub Pages nachholen, wenn das
+# Release schon besteht»).
 # Umgebung github-pages: von Hand läuft pages für den Zweig main (Standardregel), mit einem Tag für vX.Y.Z (Regel für Tags v*,
 # docs/repo-einstellungen.md). Die Ausgabe ohne Versionsabfrage wird gebaut und getestet, aber nicht veröffentlicht.
 name: release
@@ -209,8 +210,17 @@ jobs:
           # Erst jetzt (Tests bestanden, Release angelegt) erfahren die Offline-Ausgaben von der neuen Version
           cp veroeffentlichung/version.json site/version.json
           touch site/.nojekyll
+      # Ein Name je Versuch: Bei «Re-run failed jobs» findet deploy-pages sonst auch die Seite des früheren Versuchs
+      # und bricht ab («Multiple artifacts named …»), weil es den Namen in allen Versuchen des Laufs sucht
       - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
           path: site
+          name: github-pages-${{ github.run_attempt }}
+      - name: Warten, bis die Seite in der Liste des Laufs steht
+        # deploy-pages sucht das Artefakt in der Liste des Laufs. Unmittelbar nach dem Hochladen fehlt es dort manchmal noch
+        # («No artifacts named …», Lauf von 2.0.1). Die Pause macht das seltener, schliesst es aber nicht aus.
+        run: sleep 30
       - id: deploy
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
+        with:
+          artifact_name: github-pages-${{ github.run_attempt }}
