@@ -79,3 +79,4 @@ Einzelheiten zu Tests, Gruppen und Umgebungsvariablen: [docs/entwicklung.md](doc
 | Profile | [docs/profile.md](docs/profile.md) |
 | Rückmeldungen, Fehlalarme | [docs/rueckmeldungen.md](docs/rueckmeldungen.md) |
 | Datenschutz | [docs/datenschutz.md](docs/datenschutz.md) |
+| Produktdokumentation (DE, FR, IT; Stand Version 2.0.1) | [docs/lectora-dokumentation.html](docs/lectora-dokumentation.html) |
