@@ -20,7 +20,7 @@ Lectora selbst steht noch unter keiner Lizenz (siehe README). Die folgenden Komp
 | IBM Plex Sans | 5.3.0 | OFL-1.1 | Alle Ausgaben: Schnitte 300, 400, 400 kursiv, 600 (Teilmenge latin, WOFF2) als data:-Adresse im Stilblock. |
 | IBM Plex Serif | 5.3.0 | OFL-1.1 | Alle Ausgaben: Schnitte 400 und 400 kursiv (latin, WOFF2). |
 | IBM Plex Mono | 5.3.0 | OFL-1.1 | Alle Ausgaben: Schnitt 400 (latin, WOFF2). |
-| Lucide (lucide-static) | 1.73.0 | ISC; Icons aus Feather zusätzlich MIT | Alle Ausgaben: Pfade der verwendeten Icons (Liste in build.mjs, ICON_MAP) als Text im Skript. |
+| Lucide (lucide-static) | 1.77.0 | ISC; Icons aus Feather zusätzlich MIT | Alle Ausgaben: Pfade der verwendeten Icons (Liste in build.mjs, ICON_MAP) als Text im Skript. |
 
 Die Beispieldokumente in der Datei sind von Lectora selbst erzeugt (test/make_fixtures.py) und frei erfunden.
 
@@ -897,7 +897,7 @@ FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
 OTHER DEALINGS IN THE FONT SOFTWARE.
 ```
 
-### Lucide (lucide-static) 1.73.0
+### Lucide (lucide-static) 1.77.0
 
 ```text
 ISC License
