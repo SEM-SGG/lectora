@@ -1,6 +1,6 @@
 {
-  "version": "2.1.1",
-  "date": "2026-11-24",
+  "version": "2.2.0",
+  "date": "2026-11-25",
   "note": {
     "de": "Erprobungsphase: Etikett BETA neben dem Namen. Neu oben ein Käfersymbol, um Fehler zu melden oder eine Änderung vorzuschlagen (öffnet GitHub).",
     "fr": "Phase d’essai : mention BÊTA à côté du nom. Nouveau : un symbole d’insecte en haut pour signaler une erreur ou proposer une modification (ouvre GitHub).",

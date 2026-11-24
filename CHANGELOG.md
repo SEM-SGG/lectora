@@ -2,7 +2,7 @@
 
 Jede Version hat einen Eintrag. Die Überschrift hat die Form `## X.Y.Z – JJJJ-MM-TT`; der Workflow `release` übernimmt den obersten Eintrag als Text der Veröffentlichung.
 
-## 2.1.1 – 2026-11-24
+## 2.2.0 – 2026-11-25
 
 Lectora geht in die Erprobung (Dezember 2026 bis Januar 2027). Fehler und Änderungswünsche lassen sich direkt aus der Kopfzeile melden.
 
