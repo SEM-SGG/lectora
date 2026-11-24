@@ -140,7 +140,7 @@ def main():
                 check(l + ' check recheck+fa'); pg.click('[data-fid="view-list"]'); pg.wait_for_timeout(400); check(l + ' check list fa note'); pg.click('[data-fid="view-doc"]'); pg.wait_for_timeout(200)
                 pg.evaluate('DP.state.filter.hidden = false; DP.ui.go("export")'); pg.wait_for_timeout(400); check(l + ' export feedback')
                 pg.evaluate('DP.ui.go("check")'); pg.wait_for_timeout(400); pg.evaluate('document.querySelector("[data-fid=aiDoc-go]").click()'); pg.wait_for_timeout(400); check(l + ' dialog'); pg.keyboard.press('Escape'); pg.wait_for_timeout(200)
-                if w < 840: pg.click('#menuBtn'); pg.wait_for_timeout(300); check(l + ' menu'); pg.keyboard.press('Escape')
+                if w < 1056: pg.click('#menuBtn'); pg.wait_for_timeout(300); check(l + ' menu'); pg.keyboard.press('Escape')
             print(f'{w}px: Ansichten in DE/FR/IT geprüft, Farbfelder gemessen:', pg.evaluate('window.__sw || 0'))
             pg.evaluate('DP.ui.setLang("de")')
             if w in (1056, 840): pg.close(); continue
@@ -195,7 +195,7 @@ def main():
                         if r: total.append(f'{w} offline {lang} {where} Fokus {fid}: {r}')
                     pg.evaluate('DP.ui.go("criteria")'); pg.wait_for_timeout(300); check(f'{lang} {where} Kriterien mit Standardprofil')
                     pg.close()
-            # GitHub Pages: Hinweis zu klassifizierten Dokumenten, Sperrdialog (VERTRAULICH, INTERN), Links der Anleitung (Dokumentation, Fehler melden, Mail);
+            # GitHub Pages: Rückmeldesymbol der Kopfzeile, Hinweis zu klassifizierten Dokumenten, Sperrdialog (VERTRAULICH, INTERN), Links der Anleitung (Dokumentation, Fehler melden, Mail);
             # Fokusrahmen auf jedem Bedienelement (mit der Tastatur erreicht, damit :focus-visible gilt)
             def kfocus(lang, fid):
                 sel = f'[data-fid="{fid}"]'
@@ -212,7 +212,7 @@ def main():
             for lang in ('de', 'fr', 'it'):
                 pg = br.new_page(viewport={'width': w, 'height': h}, locale=lang + '-CH', reduced_motion='reduce'); mock_version(pg)
                 pg.goto(pages + '/' + os.path.basename(OFFLINE_FILE)); pg.wait_for_selector('[data-fid="web-classif-note"]', timeout=10000); pg.wait_for_timeout(300)
-                check(f'{lang} pages Hinweis Vermerke'); kfocus(lang, 'web-note-dl'); kfocus(lang, 'web-note-doc')
+                check(f'{lang} pages Hinweis Vermerke'); kfocus(lang, 'web-note-dl'); kfocus(lang, 'web-note-doc'); kfocus(lang, 'feedback')
                 pg.set_input_files('#file', [os.path.join(FX, 'klassif_vertraulich_fuss.docx')]); pg.wait_for_selector('#dlg[open] [data-fid="web-classif-blocked"]', timeout=30000); pg.wait_for_timeout(300)
                 check(f'{lang} pages Sperrdialog')
                 for fid in ('webblock-dl', 'webblock-close'): kfocus(lang, fid)

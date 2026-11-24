@@ -1,9 +1,9 @@
 {
-  "version": "2.1.0",
-  "date": "2026-11-23",
+  "version": "2.1.1",
+  "date": "2026-11-24",
   "note": {
-    "de": "Klassifizierte Dokumente prüft nur noch die gespeicherte Datei; Webseite und Artefakt laden ab INTERN nichts und senden nichts an Claude. Neu: Warnung vor nicht exportierten Entscheiden.",
-    "fr": "Seul le fichier enregistré contrôle les documents classifiés ; page web et artefact ne chargent rien dès INTERNE. Nouveau : alerte si des décisions ne sont pas exportées.",
-    "it": "Solo il file salvato verifica i documenti classificati; pagina web e artefatto non caricano nulla da AD USO INTERNO. Nuovo: avviso se vi sono decisioni non esportate."
+    "de": "Erprobungsphase: Etikett BETA neben dem Namen. Neu oben ein Käfersymbol, um Fehler zu melden oder eine Änderung vorzuschlagen (öffnet GitHub).",
+    "fr": "Phase d’essai : mention BÊTA à côté du nom. Nouveau : un symbole d’insecte en haut pour signaler une erreur ou proposer une modification (ouvre GitHub).",
+    "it": "Fase di prova: etichetta BETA accanto al nome. Nuovo: un simbolo dell’insetto in alto per segnalare un errore o proporre una modifica (apre GitHub)."
   }
 }

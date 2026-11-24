@@ -165,12 +165,19 @@ a.util-btn[hidden] { display: none; }
 .utility .seg button[aria-pressed="true"] { background: var(--inverse-canvas); border-color: var(--inverse-canvas); color: var(--on-primary); font-weight: 600; }
 .topnav { display: flex; align-items: stretch; height: var(--size-top-nav); padding: 0 0 0 var(--space-md); background: var(--canvas); border-bottom: 1px solid var(--hairline); }
 /* Wortmarke: reiner Text, «Lectora» in 600, Untertitel regulär; Schaltfläche zur Startseite */
-.brand { display: flex; align-items: center; gap: var(--space-xxs); flex: none; min-width: 0; height: 100%; margin-right: var(--space-md); padding: 0 var(--space-md); border: 0; border-radius: var(--radius-none); background: transparent; color: var(--ink); font-size: 14px; letter-spacing: 0.16px; white-space: nowrap; cursor: pointer; transition: background-color var(--motion-fast) var(--motion-ease); }
+.brand { display: flex; align-items: center; gap: var(--space-xxs); flex: none; min-width: 0; height: 100%; margin-right: 0; padding: 0 var(--space-md); border: 0; border-radius: var(--radius-none); background: transparent; color: var(--ink); font-size: 14px; letter-spacing: 0.16px; white-space: nowrap; cursor: pointer; transition: background-color var(--motion-fast) var(--motion-ease); }
 .brand:hover { background: var(--canvas-hover); }
 .brand-name { font-weight: 600; }
 /* Zeichen der Wortmarke: aufgeschlagenes Buch mit Haken, links vor «Lectora»; Blau, weil die Marke eine Schaltfläche ist */
 .brand-ic { margin-right: var(--space-xxs); color: var(--primary); }
 .brand-sub { font-weight: 400; }
+/* Rechts neben der Wortmarke: Etikett «BETA» der Erprobungsphase (neutraler Tag, nicht bedienbar; Schalter BETA in src/ui.js) und das Symbol
+   «Fehler melden oder Änderung vorschlagen» (Link in einem neuen Tab, so gross wie die Menüschaltfläche). Übernimmt den Abstand der Wortmarke
+   zur Navigation. Im Druck ausgeblendet. */
+.brand-x { display: flex; align-items: center; flex: none; gap: var(--space-xxs); height: 100%; }
+.tag.beta { height: 20px; cursor: default; }
+.tag.beta[hidden], .fb-link[hidden] { display: none; }
+.icon-btn.fb-link { width: var(--size-control-lg); height: 100%; text-decoration: none; }
 .nav { display: flex; align-items: stretch; flex: 1 1 auto; min-width: 0; }
 .nav-link { display: inline-flex; align-items: center; gap: var(--space-xs); height: 100%; padding: 0 var(--space-md); border: 0; border-bottom: 2px solid transparent; border-radius: var(--radius-none); background: transparent; color: var(--ink-muted); font-size: 14px; letter-spacing: 0.16px; white-space: nowrap; cursor: pointer; transition: background-color var(--motion-fast) var(--motion-ease), color var(--motion-fast) var(--motion-ease); }
 .nav-link:hover { background: var(--canvas-hover); color: var(--ink); }
@@ -826,19 +833,22 @@ kbd { display: inline-block; padding: 0 var(--space-xxs); border: 1px solid var(
   .summary.has-met { grid-template-columns: minmax(0, 1fr); gap: var(--space-md); }
   .met-box { padding: var(--space-md) 0 0; border-left: 0; border-top: 1px solid var(--hairline); }
 }
-/* Untertitel der Wortmarke ab 1056 px (gemessen: mit Untertitel braucht die Leiste in FR 914 px) */
-@media (max-width: 1055px) {
+/* Untertitel der Wortmarke ab 1312 px, Navigation als Menü unter 1056 px (bis 2.1.0: 1056 und 840 px). Seit der Erprobungsphase stehen
+   Etikett «BETA» (46 px) und Rückmeldesymbol (48 px) neben der Wortmarke. Gemessen mit drei zweistelligen Zählern braucht die Leiste
+   in FR mit Untertitel 1065 px, ohne Untertitel 910 px (DE 853, IT 853 px); ein vierter Zähler und «99+» kommen dazu. Ohne
+   Etikett (Schalter BETA aus) bleiben die Grenzen; die Leiste hat dann mehr Luft. */
+@media (max-width: 1311px) {
   .brand-sub { display: none; }
 }
-/* Navigation als Menü unter 840 statt 672 px: gemessen braucht die Leiste ohne Untertitel in FR mit vier Zählern 764 px,
-   in DE und IT 707 px; zweistellige Zähler kommen dazu. Bei Carbons 672 px würden die Einträge überlaufen. */
-@media (max-width: 839px) {
+@media (max-width: 1055px) {
   .menu-btn { display: inline-grid; }
   .nav { position: absolute; top: 100%; left: 0; right: 0; display: none; flex-direction: column; align-items: stretch; padding: var(--space-xxs) 0; background: var(--canvas); border-radius: var(--radius-sm); box-shadow: var(--shadow-overlay); }
   .topbar.menu-open .nav { display: flex; animation: menu-in var(--motion-slow) var(--motion-ease) both; }
   .nav-link { height: var(--size-control-lg); padding: 0 var(--space-md); border-bottom: 0; border-left: 3px solid transparent; justify-content: space-between; font-size: 14px; }
   .nav-link[aria-current="page"] { background: var(--surface-2); border-left-color: var(--primary); }
   .nav-link[aria-current="page"] .badge:not(.err) { background: var(--canvas); }
+}
+@media (max-width: 839px) {
   /* Ziele unter 840 px: Utility-Leiste 40 px, jede Zelle mindestens 40 × 40 px */
   .utility { height: var(--size-control-md); }
   .util-btn, .utility .seg button, #clearBtn { min-width: var(--size-control-md); }
@@ -1137,3 +1147,8 @@ svg.ic.flip { transform: rotate(180deg); }
 }
 .ai-dlg ul.ai-send { gap: var(--space-xxs); }
 .find .rw-warn, .find .rw-err { max-width: calc(var(--size-measure) + 2 * var(--space-md)); }
+
+/* ===== Druck: Kennzeichnung der Erprobungsphase und Rückmeldesymbol nicht drucken ===== */
+@media print {
+  .brand-x { display: none; }
+}

@@ -87,6 +87,8 @@ Getestet mit Chromium (der Engine von Google Chrome und Microsoft Edge) in den a
 
 - **Fehler:** Lege im Repository ein [Issue](https://github.com/SEM-SGG/lectora/issues/new/choose) mit der Vorlage «Fehler» an.
 - **Eine Regel meldet einen Fehlalarm:** Vorlage «Regel meldet Fehlalarm».
+- **Wunsch oder Änderungsvorschlag:** Vorlage «Wunsch oder Änderungsvorschlag».
+- **In Lectora:** Das Käfersymbol oben neben dem Namen öffnet die Auswahl dieser Vorlagen in einem neuen Tab, ebenso «Fehler melden» in der Anleitung.
 - **Ohne GitHub-Konto:** Schreibe an die Funktionsadresse der Sektion, `sektion-grenze@sem.admin.ch`.
 - **Wichtig:** Dieses Repository ist öffentlich. Schreibe nie Text aus einem Dokument in ein Issue (eine Meldung auf GitHub), auch nicht auszugsweise. Auch Rückmeldedateien mit Textauszügen gehören nie in ein Issue; per Mail sendest du sie nur innerhalb der Arbeitsumgebung des Bundes (siehe [Datenregel](#datenregel) und [docs/rueckmeldungen.md](docs/rueckmeldungen.md)).
 - Sicherheitslücken meldest du nicht öffentlich, sondern wie in [SECURITY.md](SECURITY.md) beschrieben.
