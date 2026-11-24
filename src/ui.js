@@ -18,6 +18,9 @@
   const DOC_URL = 'https://sem-sgg.github.io/lectora/dokumentation.html';
   const ISSUE_URL = 'https://github.com/SEM-SGG/lectora/issues/new/choose';
   const CONTACT = 'sektion-grenze@sem.admin.ch';
+  /** Erprobungsphase: true zeigt das Etikett «BETA» rechts neben der Wortmarke (alle Ausgaben). false blendet nur das Etikett aus;
+      das Symbol «Fehler melden oder Änderung vorschlagen» (ISSUE_URL) bleibt. Ablauf: docs/pflege.md, «BETA-Kennzeichnung entfernen». */
+  const BETA = true;
   /** Offline-Ausgabe über http(s) geöffnet, also auf GitHub Pages oder einem Webserver: Dokumente mit Klassifizierungsvermerk (INTERN,
       VERTRAULICH, GEHEIM) prüft Lectora dort nicht (readFiles, Datenregel der SGG). Als lokale Datei (file:) und in der Artefakt-Ausgabe gilt WEB nicht. */
   const WEB = !!DP.offline && /^https?:$/.test(location.protocol);
@@ -2520,7 +2523,7 @@
   /* ---------- Rahmen ---------- */
   const NAV = ['docs', 'check', 'compare', 'export', 'criteria', 'help'];
   let menuOpen = false;
-  /** Navigation unter 768 px: Offenlegung über die Menüschaltfläche (aria-expanded, Escape schliesst). */
+  /** Navigation unter 1056 px: Offenlegung über die Menüschaltfläche (aria-expanded, Escape schliesst). */
   function setMenu(open, focusBtn) {
     menuOpen = open;
     $('topbar').classList.toggle('menu-open', open);
@@ -2534,6 +2537,18 @@
     $('skip').textContent = t('app.skip');
     $('brandSub').textContent = t('app.sub');
     $('brandBtn').setAttribute('aria-label', t('app.home')); $('brandBtn').dataset.tip = t('tip.home');
+    // Erprobungsphase: Etikett neben der Wortmarke (nicht bedienbar, Erklärung als Kurzinfo und für Screenreader), Schalter BETA
+    const beta = $('betaTag');
+    if (beta) {
+      beta.hidden = !BETA;
+      if (BETA) { beta.replaceChildren(h('span', { 'aria-hidden': 'true' }, t('app.beta')), h('span', { class: 'sr' }, t('tip.beta'))); beta.dataset.tip = t('tip.beta'); }
+    }
+    // Rückmeldung: Symbol zur Auswahl der Vorlagen für Issues (ISSUE_URL), neuer Tab wie die übrigen externen Links; ohne Adresse kein Symbol
+    const fb = $('fbLink');
+    if (fb) {
+      fb.hidden = !ISSUE_URL;
+      if (ISSUE_URL) { fb.href = ISSUE_URL; if (!fb.firstChild) fb.append(icon('bug')); fb.setAttribute('aria-label', t('app.report')); fb.dataset.tip = t('tip.report'); }
+    }
     const mark = $('offMark');
     if (mark && DP.offline) {
       // Kennzeichnung der Offline-Ausgabe: Version und Stand; die Kurzinfo sagt, welche Verbindung die Datei aufbaut, ein Klick führt zur Anleitung

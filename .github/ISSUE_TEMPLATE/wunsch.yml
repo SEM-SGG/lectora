@@ -1,0 +1,39 @@
+name: Wunsch oder Änderungsvorschlag
+description: Etwas an Lectora soll neu dazukommen oder anders werden.
+labels: ["wunsch"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Dieses Repository ist öffentlich.** Schreibe keinen Text aus einem Dokument in dieses Formular, auch nicht auszugsweise.
+        Füge keine Dokumente, keine Rückmeldedateien mit Textstellen und keine Bildschirmfotos von Dokumenten an.
+        Ein Bildschirmfoto der Oberfläche mit den Beispieldokumenten von Lectora ist in Ordnung.
+        Es gilt die Datenregel der SGG (README.md): nichts mit Vermerk INTERN oder höher, keine Personendaten.
+        Ohne GitHub-Konto: sektion-grenze@sem.admin.ch.
+  - type: textarea
+    id: worum
+    attributes:
+      label: Worum geht es?
+      description: Was soll Lectora neu können oder anders machen?
+      placeholder: "Die Liste der Befunde soll sich nach Kriterium sortieren lassen."
+    validations:
+      required: true
+  - type: textarea
+    id: wozu
+    attributes:
+      label: Wozu dient es?
+      description: Bei welcher Arbeit hilft es, und was ist heute umständlich? Ohne Text aus echten Dokumenten.
+    validations:
+      required: true
+  - type: textarea
+    id: aussehen
+    attributes:
+      label: Wie sollte es aussehen? (optional)
+      description: Ein Vorschlag in eigenen Worten oder eine Skizze. Bildschirmfotos nur von der Oberfläche mit den Beispieldokumenten.
+  - type: checkboxes
+    id: kein-text
+    attributes:
+      label: Bestätigung
+      options:
+        - label: Dieses Issue enthält keinen Text und keine Bilder aus echten Dokumenten.
+          required: true

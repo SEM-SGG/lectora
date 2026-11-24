@@ -438,20 +438,79 @@ def carbon_shots(br, errors):
         ov = pg.evaluate('document.documentElement.scrollWidth > document.documentElement.clientWidth || document.querySelector("main").scrollWidth > document.querySelector("main").clientWidth + 1')
         print('Carbon-Abnahme', w, 'px: Screenshots geschrieben, horizontaler Überlauf:', ov); assert not ov
         ctx.close()
-    # Top-Navigation: Einträge laufen in keiner Sprache über; das Menü erscheint erst unter 840 px
+    # Top-Navigation: Einträge laufen in keiner Sprache über (mit Etikett BETA und Rückmeldesymbol); das Menü erscheint erst unter 1056 px
     ctx = br.new_context(viewport={'width': 1440, 'height': 900}, locale='de-CH'); pg = ctx.new_page(); pg.add_init_script(MOCK)
     pg.goto(url(8770) + '/dist-local/index.html'); pg.wait_for_timeout(500)
     pg.set_input_files('#file', [os.path.join(FX, n) for n in docs]); pg.wait_for_function(f'DP.state.docs.length === {len(docs)} && !DP.state.busy', timeout=30000)
     pg.evaluate('DP.state.ref = DP.state.docs[0].id; DP.state.tgt = DP.state.docs[1].id; DP.ui.go("compare")'); pg.wait_for_timeout(400)
     for l in ('de', 'fr', 'it'):
         pg.evaluate(f'DP.ui.setLang("{l}")')
-        for vw in (1440, 1056, 1055, 840):
+        for vw in (1440, 1312, 1311, 1056):
             pg.set_viewport_size({'width': vw, 'height': 900}); pg.wait_for_timeout(80)
-            r = pg.evaluate('(() => { const n = document.getElementById("mainNav"), b = n.lastElementChild.getBoundingClientRect(); return [n.scrollWidth <= n.clientWidth + 1, b.right <= innerWidth, getComputedStyle(document.getElementById("menuBtn")).display]; })()')
-            assert r[0] and r[1] and r[2] == 'none', (l, vw, r)
-        pg.set_viewport_size({'width': 839, 'height': 900}); pg.wait_for_timeout(80); assert pg.evaluate('getComputedStyle(document.getElementById("menuBtn")).display') != 'none'
-    print('Top-Navigation DE/FR/IT: ohne Überlauf von 1440 bis 840 px, darunter Menü')
+            r = pg.evaluate('(() => { const n = document.getElementById("mainNav"), b = n.lastElementChild.getBoundingClientRect(); return [n.scrollWidth <= n.clientWidth + 1, b.right <= innerWidth, getComputedStyle(document.getElementById("menuBtn")).display, document.getElementById("fbLink").getBoundingClientRect().right <= n.getBoundingClientRect().left + 0.5]; })()')
+            assert r[0] and r[1] and r[2] == 'none' and r[3], (l, vw, r)
+        for vw in (1055, 840):
+            pg.set_viewport_size({'width': vw, 'height': 900}); pg.wait_for_timeout(80); assert pg.evaluate('getComputedStyle(document.getElementById("menuBtn")).display') != 'none', (l, vw)
+    print('Top-Navigation DE/FR/IT: ohne Überlauf von 1440 bis 1056 px, darunter Menü')
     ctx.close()
+# ---------- Kopfzeile: Etikett BETA (Schalter BETA in src/ui.js) und Rückmeldesymbol (ISSUE_URL), alle Sprachen, 1440 und 375 px ----------
+ISSUE_URL = 'https://github.com/SEM-SGG/lectora/issues/new/choose'
+HEAD = """(() => { const t = document.getElementById("betaTag"), f = document.getElementById("fbLink"), b = document.getElementById("brandBtn"), tn = document.querySelector(".topnav");
+  const vis = (e) => !!e && !e.hidden && getComputedStyle(e).display !== "none" && e.getBoundingClientRect().width > 0;
+  const r = (e) => e.getBoundingClientRect(), mb = document.getElementById("menuBtn");
+  return { tag: vis(t), tagText: t.querySelector("[aria-hidden]") ? t.querySelector("[aria-hidden]").textContent : "", tagSr: t.querySelector(".sr") ? t.querySelector(".sr").textContent : "", tagTip: t.dataset.tip || "",
+    tagInBrand: b.contains(t), tagFocusable: t.tabIndex >= 0 || !!t.querySelector("a, button, [tabindex]"), tagRight: vis(t) ? r(t).left >= r(b).right - 0.5 : null,
+    fb: vis(f), fbTag: f.tagName, fbInBrand: b.contains(f), href: f.getAttribute("href"), target: f.target, rel: f.rel, name: f.getAttribute("aria-label"), tip: f.dataset.tip || "", icon: !!f.querySelector("svg.ic path, svg.ic circle"),
+    fbAfter: vis(t) ? r(f).left >= r(t).right - 0.5 : r(f).left >= r(b).right - 0.5, fbW: Math.round(r(f).width), fbH: Math.round(r(f).height),
+    btns: [...document.querySelectorAll(".topbar .icon-btn, .topbar .menu-btn, #clearBtn")].filter(e => e !== f && vis(e)).map(e => [Math.round(r(e).width), Math.round(r(e).height)]),
+    tnOk: tn.scrollWidth <= tn.clientWidth + 1 && r(f).right <= innerWidth + 0.5 && r(mb).right <= innerWidth + 0.5, oneLine: Math.round(r(tn).height), docOk: document.documentElement.scrollWidth <= innerWidth + 1 }; })()"""
+WANT = {'de': ('BETA', 'Beta: Dieses Tool ist in Erprobung. Rückmeldungen sind willkommen.', 'Fehler melden oder Änderung vorschlagen'),
+        'fr': ('BÊTA', 'Bêta\u00a0: cet outil est en phase d’essai. Vos retours sont les bienvenus.', 'Signaler une erreur ou proposer une modification'),
+        'it': ('BETA', 'Beta: questo strumento è in fase di prova. I riscontri sono benvenuti.', 'Segnalare un errore o proporre una modifica')}
+def beta_header(br, errors):
+    def check(ok, msg):
+        if not ok: errors.append('Kopfzeile: ' + msg)
+    # Der Test gilt für beide Stellungen des Schalters: geprüft werden die gebaute Ausgabe und eine Kopie mit dem umgekehrten Schalter
+    src = open(os.path.join(ROOT, 'dist-local', 'index.html'), encoding='utf-8').read()
+    on = 'const BETA = true;' in src
+    check(src.count('const BETA = true;') + src.count('const BETA = false;') == 1, 'Schalter «const BETA = true;» oder «… false;» genau einmal in der Ausgabe')
+    alt = os.path.join(ROOT, 'dist-local', 'index-beta-umgekehrt.html')
+    open(alt, 'w', encoding='utf-8').write(src.replace('const BETA = true;', 'const BETA = false;') if on else src.replace('const BETA = false;', 'const BETA = true;'))
+    try: header_checks(br, check, 'index.html', on); header_checks(br, check, 'index-beta-umgekehrt.html', not on)
+    finally: os.remove(alt)
+    print('Kopfzeile: Etikett BETA (Schalter ein und aus) und Rückmeldesymbol in allen Ansichten, DE/FR/IT, 1440 und 375 px, Tastatur, Druck geprüft')
+
+def header_checks(br, check, page, on):
+    for w, hgt in ((1440, 900), (375, 812)):
+        ctx = br.new_context(viewport={'width': w, 'height': hgt}, locale='de-CH'); pg = ctx.new_page(); pg.add_init_script(MOCK)
+        pg.goto(url(8770) + '/dist-local/' + page); pg.wait_for_timeout(500)
+        pg.set_input_files('#file', [os.path.join(FX, 'weisung_de_demo.docx'), os.path.join(FX, 'weisung_fr_errors.docx')]); pg.wait_for_function('DP.state.docs.length === 2 && !DP.state.busy', timeout=30000)
+        for route in ('docs', 'check', 'compare', 'export', 'criteria', 'help'):
+            pg.evaluate(f'DP.ui.go("{route}")'); pg.wait_for_timeout(150)
+            r = pg.evaluate(HEAD); check(r['tag'] == on and r['fb'], f'{w} px {route} BETA={on}: Etikett {r["tag"]}, Symbol {r["fb"]}')
+        for l in ('de', 'fr', 'it'):
+            pg.evaluate(f'DP.ui.setLang("{l}")'); pg.wait_for_timeout(150); r = pg.evaluate(HEAD); lab, tip, name = WANT[l]
+            if on:
+                check(r['tagText'] == lab and r['tagSr'] == tip and r['tagTip'] == tip, f'{w} {l}: Text des Etiketts {r["tagText"], r["tagSr"]}')
+                check(not r['tagInBrand'] and not r['tagFocusable'] and r['tagRight'], f'{w} {l}: Etikett rechts neben der Wortmarke, ausserhalb des Knopfs, nicht bedienbar')
+            else:
+                gap = pg.evaluate('Math.round(document.getElementById("fbLink").getBoundingClientRect().left - document.getElementById("brandBtn").getBoundingClientRect().right)')
+                check(gap == 0, f'{w} {l}: ohne Etikett rückt das Symbol an die Wortmarke ({gap} px)')
+            check(r['fbTag'] == 'A' and not r['fbInBrand'] and r['href'] == ISSUE_URL and r['target'] == '_blank' and r['rel'] == 'noopener noreferrer', f'{w} {l}: Link {r["href"], r["target"], r["rel"]}')
+            check(r['name'] == name and r['tip'].startswith(('Öffnet GitHub', 'Ouvre GitHub', 'Apre GitHub')) and r['icon'] and r['fbAfter'], f'{w} {l}: Name, Kurzinfo, Käfer, Lage {r["name"], r["tip"]}')
+            check(all(r['fbW'] >= bw and r['fbH'] >= bh for bw, bh in r['btns']) and r['fbW'] >= 40 and r['fbH'] >= 40, f'{w} {l}: Klickfläche {r["fbW"]}×{r["fbH"]} kleiner als andere Symbolknöpfe {r["btns"]}')
+            check(r['tnOk'] and r['docOk'] and r['oneLine'] <= 49, f'{w} {l}: Kopfzeile läuft über oder bricht um {r}')
+        pg.evaluate('DP.ui.setLang("de")'); pg.wait_for_timeout(150)
+        # Tastatur: nach der Wortmarke folgt das Rückmeldesymbol (das Etikett ist kein Tabstopp), Fokusrahmen sichtbar, Kurzinfo mit Name und Hinweis
+        pg.focus('#brandBtn'); pg.keyboard.press('Tab'); pg.wait_for_timeout(200)
+        foc = pg.evaluate('(() => { const a = document.activeElement, s = getComputedStyle(a); return [a.id, s.outlineStyle !== "none" && parseFloat(s.outlineWidth) >= 2, document.getElementById("tip").hidden ? "" : document.getElementById("tip").textContent]; })()')
+        check(foc[0] == 'fbLink' and foc[1] and 'Fehler melden oder Änderung vorschlagen' in foc[2] and 'Meldungen sind öffentlich' in foc[2], f'{w}: Tastatur und Kurzinfo {foc}')
+        if w > 1000 and on:
+            pg.mouse.move(2, hgt - 2); pg.hover('#betaTag'); pg.wait_for_timeout(800)
+            check('in Erprobung' in (pg.text_content('#tip') or '') and pg.is_visible('#tip'), 'Kurzinfo des Etiketts beim Zeigen')
+        pg.emulate_media(media='print'); check(not pg.evaluate(HEAD)['tag'] and not pg.evaluate(HEAD)['fb'], f'{w}: im Druck ausgeblendet'); pg.emulate_media(media='screen')
+        pg.mouse.move(2, hgt - 2); pg.wait_for_timeout(200); pg.screenshot(path=os.path.join(SHOTS, f'k{w}_kopfzeile_beta_{"ein" if on else "aus"}.png'), clip={'x': 0, 'y': 0, 'width': w, 'height': 140})
+        ctx.close()
 # ---------- Arbeitswerkzeug: Prüfprofil, Nachprüfung einer neuen Fassung, Fehlalarm und Rückmeldung (Screenshots w1440_*, w375_*) ----------
 def werkzeug_ui(br, errors):
     import json as _json
@@ -1018,6 +1077,7 @@ def run():
         review_regressions(br, errors)
         carbon_shots(br, errors)
         carbon_checks(br, errors)
+        beta_header(br, errors)
         br.close()
     print('FEHLER:', errors if errors else 'keine')
     return 1 if errors else 0

@@ -2,6 +2,22 @@
 
 Jede Version hat einen Eintrag. Die Überschrift hat die Form `## X.Y.Z – JJJJ-MM-TT`; der Workflow `release` übernimmt den obersten Eintrag als Text der Veröffentlichung.
 
+## 2.2.0 – 2026-11-25
+
+Lectora geht in die Erprobung (Dezember 2026 bis Januar 2027). Fehler und Änderungswünsche lassen sich direkt aus der Kopfzeile melden.
+
+### Neu
+
+- Kopfzeile: Das Etikett «BETA» (französisch «BÊTA») rechts neben dem Namen kennzeichnet die Erprobungsphase. Es ist nicht anklickbar; die Kurzinfo und Screenreader erklären es («Dieses Tool ist in Erprobung. Rückmeldungen sind willkommen.»). Ein einziger Schalter in `src/ui.js` blendet es nach der Erprobung aus (Ablauf in `docs/pflege.md`).
+- Kopfzeile: Ein Käfersymbol rechts neben dem Etikett öffnet auf GitHub in einem neuen Tab die Auswahl der Vorlagen für Issues. Name und Kurzinfo: «Fehler melden oder Änderung vorschlagen»; die Kurzinfo erinnert daran, dass Meldungen öffentlich sind (kein Text aus Dokumenten, keine Personendaten). Das Symbol bleibt auch nach der Erprobung. «Fehler melden» in der Anleitung bleibt bestehen.
+- Neue Vorlage für Issues «Wunsch oder Änderungsvorschlag» neben «Fehler» und «Regel meldet Fehlalarm».
+
+### Geändert
+
+- Kopfzeile: Weil Etikett und Symbol Platz brauchen, erscheint die Navigation unter 1056 px (bisher 840 px) als Menü, und der Untertitel «Dokumentenprüfung» steht erst ab 1312 px (bisher 1056 px) neben dem Namen.
+- Etikett und Symbol erscheinen nicht im Druck. Die Exporte (Word, PDF, PowerPoint, Prüfbericht) sind nicht betroffen.
+- Anleitung («Hilfe und Rückmeldung»), `README.md` und Produktdokumentation nennen das Symbol und die neue Vorlage.
+
 ## 2.1.0 – 2026-11-23
 
 Lectora setzt die Datenregel der SGG um. Merkregel: Klassifizierte Dokumente prüft nur die gespeicherte Datei `Lectora.html`. Webseite und Artefakt: nur unklassifizierte Dokumente.

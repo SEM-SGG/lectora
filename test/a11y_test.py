@@ -69,6 +69,12 @@ with sync_playwright() as pw:
         print('  criteria aufgeklappt+Parameter Verstösse:', pg.evaluate(AXE_RUN))
         pg.focus('#par-L01-note'); pg.keyboard.press('Tab'); pg.wait_for_timeout(200)
         print('  criteria+Kurzinfo sichtbar:', pg.is_visible('#tip'), 'Verstösse:', pg.evaluate(AXE_RUN))
+        # Kopfzeile: Kurzinfo des Rückmeldesymbols (Tastatur) und des Etiketts BETA (Zeigen)
+        pg.focus('#brandBtn'); pg.keyboard.press('Tab'); pg.wait_for_timeout(200)
+        print('  Kopfzeile Rückmeldesymbol+Kurzinfo sichtbar:', pg.is_visible('#tip'), 'Verstösse:', pg.evaluate(AXE_RUN))
+        if pg.is_visible('#betaTag'):
+            pg.hover('#betaTag'); pg.wait_for_timeout(800)
+            print('  Kopfzeile Etikett BETA+Kurzinfo sichtbar:', pg.is_visible('#tip'), 'Verstösse:', pg.evaluate(AXE_RUN))
         pg.evaluate('DP.ui.go("check")'); pg.wait_for_timeout(600); print('  check+Parameterhinweis Verstösse:', pg.evaluate(AXE_RUN))
         # Vergleich «Alle drei» (DE, FR, IT) mit allen Zeilen, eigene Erlasse mit ungültiger Zeile
         TRI = 'DP.state.ref = DP.state.docs[0].id; DP.state.tgt = DP.state.docs[1].id; DP.state.tgt2 = DP.state.docs[4].id; DP.state.cmpMode = "tri"; DP.state.cmpOnly = false; DP.ui.go("compare")'
@@ -145,6 +151,7 @@ with sync_playwright() as pw:
         for vw, vh in ((1280, 900), (400, 800)):
             pg = br.new_page(viewport={'width': vw, 'height': vh}, locale='de-CH'); mock_version(pg); pg.goto('file://' + off[-1]); pg.wait_for_timeout(500); pg.evaluate(AXE)
             print(f'  offline start {vw}px Verstösse:', pg.evaluate(AXE_RUN))
+            if not pg.evaluate('!document.getElementById("fbLink").hidden && document.getElementById("fbLink").getBoundingClientRect().width > 0'): VIOL.append(f'offline {vw}px: Rückmeldesymbol fehlt')
             pg.set_input_files('#file', [os.path.join(FX, n) for n in ('weisung_de_demo.docx', 'weisung_fr_errors.docx', 'weisung_it_clean.docx')])
             for _ in range(100):
                 if pg.evaluate('DP.state.docs.length === 3 && !DP.state.busy'): break

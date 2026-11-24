@@ -54,7 +54,7 @@ Lies den Kommentar am Anfang von `src/styles.css` und verwende die vorhandenen T
 - Schweregrad und Erfolg über die Signalpaare (`*-text` auf `*-bg`) mit Wort und Icon; «Hinweis» (info) ist neutral grau.
 - Akzentfarben aus «KI Toolkit» nur als kleines Farbfeld neben dem Wort: Bordeaux = KI, Blau = Word, Ziegel = PDF, Ocker = PowerPoint, Grün = Sprachvergleich. Kein Lavendel, kein Violett.
 - Bedienelemente 40 px hoch (kompakt 32 px am Desktop; unter 672 px mindestens 40 px). 4-px-Raster. Fokus = `--focus-inset`. Bewegung: `--motion-fast` (110 ms), `--motion-slow` (240 ms); alles aus bei `prefers-reduced-motion`.
-- Schaltflächen brechen nie um (`white-space: nowrap`); Layouts geben ihnen Platz in DE, FR und IT bei 1440, 1056, 840 und 375 px. Menü unter 840 px; Seitenleisten stapeln unter 1056 px.
+- Schaltflächen brechen nie um (`white-space: nowrap`); Layouts geben ihnen Platz in DE, FR und IT bei 1440, 1056, 840 und 375 px. Menü unter 1056 px, Untertitel der Wortmarke ab 1312 px (gemessen mit Etikett «BETA» und Rückmeldesymbol in der Kopfzeile, Kommentar in `src/styles.css`); Seitenleisten stapeln unter 1056 px.
 - Barrierefreiheit nach WCAG 2.1 AA: echte Elemente, Beschriftungen, alles per Tastatur, Fokus geht nach einer Aktion nie verloren, Bedeutung nie nur über Farbe, Text ≥ 4,5:1, Grafik und Ränder von Bedienelementen ≥ 3:1.
 
 ## Befehle

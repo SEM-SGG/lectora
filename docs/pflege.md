@@ -11,6 +11,7 @@ Was regelmässig anfällt:
 | Neue Version veröffentlichen | nach Bedarf | [release.md](release.md) |
 | Artefakt auf claude.ai aktualisieren | nach jeder Version | [artefakt-erstellen.md](artefakt-erstellen.md) |
 | Übergabe an eine Nachfolge | einmal | [unten](#zeitgesteuerter-lauf-übergabe-verspätung-start-von-hand), dazu [repo-einstellungen.md](repo-einstellungen.md) |
+| BETA-Kennzeichnung entfernen | einmal, nach der Erprobung | [unten](#beta-kennzeichnung-entfernen) |
 
 Knöpfe und Menüs von GitHub stehen in **Fettschrift**, mit dem englischen Wort, das auf dem Bildschirm steht.
 
@@ -68,6 +69,26 @@ Der Workflow «erlasse» startet von selbst am 3. jedes Monats (geplant um 04:23
 **Was ein Lauf von Hand bewirkt:** Er tut dasselbe wie der zeitgesteuerte Lauf. Er eröffnet keine Issues. Einen zweiten Pull Request eröffnet er nicht: Der Workflow arbeitet immer auf dem Zweig `erlasse/abgleich`; ist der Pull Request eines früheren Laufs noch offen, ersetzt er dessen Inhalt und Beschreibung durch das neue Ergebnis. Was du in diesem Zweig von Hand geändert hast (Schritt 3 in [erlasstabelle.md](erlasstabelle.md#automatisch-jeden-monat)), geht dabei verloren. Starte ihn deshalb von Hand nur, wenn kein Pull Request «Erlasstabelle: Abgleich mit Fedlex» offen ist oder wenn du dessen Änderungen nicht brauchst. Findet der Lauf keine Unterschiede, tut er nichts; ein offener Pull Request bleibt dann, wie er ist. Startest du ihn zweimal kurz nacheinander, wartet der zweite Lauf, bis der erste fertig ist.
 
 **Wenn GitHub den Workflow abgeschaltet hat:** Bei öffentlichen Repositories schaltet GitHub zeitgesteuerte Workflows nach 60 Tagen ohne Aktivität im Repository ab. Zeigt **Actions** einen entsprechenden Hinweis, wähle den Workflow und klicke **Enable workflow**. Wer das tut, erhält ab dann die Fehlermails.
+
+## BETA-Kennzeichnung entfernen
+
+Während der Erprobung steht in der Kopfzeile von Lectora rechts neben dem Namen das Etikett «BETA» (französisch «BÊTA»). Rechts davon steht ein Käfersymbol: Es öffnet auf GitHub die Auswahl der Vorlagen für Issues («Fehler», «Regel meldet Fehlalarm», «Wunsch oder Änderungsvorschlag»). Ist die Erprobung abgeschlossen, entfernst du nur das Etikett. Das Käfersymbol bleibt, damit Nutzerinnen und Nutzer weiterhin Fehler und Wünsche melden können.
+
+Das Etikett hängt an einem einzigen Schalter: der Zeile `const BETA = true;` am Anfang von `src/ui.js`. Gib diesen Auftrag an einen KI-Agenten:
+
+```text
+Im Repository SEM-SGG/lectora ist die Erprobung abgeschlossen. Entferne die BETA-Kennzeichnung nach AGENTS.md: Setze in
+src/ui.js den Schalter auf «const BETA = false;». Entferne den Hinweis auf die Erprobung und das Etikett aus
+docs/lectora-dokumentation.html (DE, FR, IT, Abschnitt «Hilfe und Rückmeldung») und den Abschnitt «BETA-Kennzeichnung
+entfernen» aus docs/pflege.md. Das Käfersymbol und das Formular «Wunsch oder Änderungsvorschlag» bleiben. Ergänze
+CHANGELOG.md, führe alle Tests aus (npm test) und lege einen Pull Request gegen main an.
+```
+
+So schliesst du den Vorgang ab:
+
+1. Warte im Pull Request des Agenten, bis beide Prüfungen einen grünen Haken zeigen, und bitte eine zweite Person um Freigabe.
+2. Klicke auf **Merge pull request** und dann auf **Confirm merge**. Oben erscheint **Merged** in Violett.
+3. Das Etikett verschwindet erst mit der nächsten Veröffentlichung ([release.md](release.md)) und danach im Artefakt auf claude.ai ([artefakt-erstellen.md](artefakt-erstellen.md)).
 
 ## Produktdokumentation
 
